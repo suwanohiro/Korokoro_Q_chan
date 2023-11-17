@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="swnLib">
+      <UniqueIdentifier>{fa35325e-10e2-4b97-b29b-acf774310e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\Input">
+      <UniqueIdentifier>{c4643fa8-1cdc-4c86-b809-4ceba51d1ab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\StringAction">
+      <UniqueIdentifier>{37dcbd27-d64e-4e8d-85c9-a8719caece94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\WebColor">
+      <UniqueIdentifier>{98c78fe7-85f3-4662-936c-7b03a4c4cfc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\Input\InputData">
+      <UniqueIdentifier>{d760a6f6-539b-4f29-980c-b7a061fb517a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\FileAction">
+      <UniqueIdentifier>{2bb9d19a-70dc-4e1e-acf1-74c2b8f095bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\VectorAction">
+      <UniqueIdentifier>{1843436a-9988-44e5-815a-eae889f32d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\Socket">
+      <UniqueIdentifier>{0f2b286c-c916-4731-85e4-0c5341b30201}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\Socket\Client">
+      <UniqueIdentifier>{1d7528f8-38c0-4cc7-84e3-84d92a36c0c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLib\Socket\Server">
+      <UniqueIdentifier>{56d37ec5-d3a8-49a1-8a18-03a7324e4492}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="swnLib\StringAction\StringAction.cpp">
+      <Filter>swnLib\StringAction</Filter>
+    </ClCompile>
+    <ClCompile Include="swnLib\FileAction\FileAction.cpp">
+      <Filter>swnLib\FileAction</Filter>
+    </ClCompile>
+    <ClCompile Include="swnLib\Socket\Socket.cpp">
+      <Filter>swnLib\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="swnLib\Socket\Client\Client.cpp">
+      <Filter>swnLib\Socket\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="swnLib\Socket\Server\Server.cpp">
+      <Filter>swnLib\Socket\Server</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameApp.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Input\InputData\KeyBord.h">
+      <Filter>swnLib\Input\InputData</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Input\InputData\MouseKey.h">
+      <Filter>swnLib\Input\InputData</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Input\KeyInput.h">
+      <Filter>swnLib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Input\MouseInput.h">
+      <Filter>swnLib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Input\UserInput.h">
+      <Filter>swnLib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\WebColor\WebColor.h">
+      <Filter>swnLib\WebColor</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\StringAction\StringAction.h">
+      <Filter>swnLib\StringAction</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\FileAction\FileAction.h">
+      <Filter>swnLib\FileAction</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\VectorAction\VectorAction.h">
+      <Filter>swnLib\VectorAction</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Socket\Socket.h">
+      <Filter>swnLib\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Socket\Client\Client.h">
+      <Filter>swnLib\Socket\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\Socket\Server\Server.h">
+      <Filter>swnLib\Socket\Server</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Version.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
