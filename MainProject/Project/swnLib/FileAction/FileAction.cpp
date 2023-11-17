@@ -39,25 +39,11 @@ std::string FileAction::Read(const std::string& currentFilePath) {
     return buffer.str();
 }
 
-std::vector<std::vector<std::string>> FileAction::ReadCSV(const std::string& currentFilePath) {
+CsvData FileAction::ReadCSV(const std::string& currentFilePath) {
     // 指定されたCSVファイルを読み込む
     // 読み込んだデータを2次元ベクターに格納して返す
     std::string textData = Read(currentFilePath);
-    static std::vector<std::vector<std::string>> result;
-    std::istringstream iss(textData);
-    std::string line;
-
-    while (std::getline(iss, line)) {
-        std::vector<std::string> work;
-        std::istringstream lineStream(line);
-        std::string cell;
-
-        while (std::getline(lineStream, cell, ',')) {
-            work.push_back(cell);
-        }
-
-        result.push_back(work);
-    }
+    CsvData result = StringAction::convertCSV(textData);
 
     return result;
 }

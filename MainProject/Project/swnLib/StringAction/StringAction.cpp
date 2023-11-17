@@ -47,7 +47,7 @@ std::vector<std::string> StringAction::split(std::string baseStr, std::string cu
 	}
 
 	result.push_back(baseStr.substr(start, end));
-	return std::vector<std::string>();
+	return result;
 }
 
 std::vector<std::string> StringAction::split(std::string baseStr, std::regex regex)
@@ -61,5 +61,19 @@ std::vector<std::string> StringAction::split(std::string baseStr, std::regex reg
 		result.push_back(*iter);
 	}
 
-	return std::vector<std::string>();
+	return result;
+}
+
+CsvData StringAction::convertCSV(std::string baseStr)
+{
+	CsvData result;
+	std::vector<std::string> work = split(baseStr, "\n");
+
+	for (int cnt = 0; cnt < work.size(); cnt++) {
+		std::vector<std::string> tmp = split(work[cnt], ",");
+
+		result.push_back(tmp);
+	}
+
+	return result;
 }

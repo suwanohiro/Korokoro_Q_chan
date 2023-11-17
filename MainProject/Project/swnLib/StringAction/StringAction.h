@@ -3,6 +3,8 @@
 
 #include <regex>
 
+typedef std::vector<std::vector<std::string>> CsvData;
+
 class StringAction
 {
 public:
@@ -32,5 +34,7 @@ public:
 	/// <param name="regex">正規表現</param>
 	/// <returns>変換した配列データ</returns>
 	static std::vector<std::string> split(std::string baseStr, std::regex regex);
+
+	static CsvData convertCSV(std::string baseStr);
 };
 

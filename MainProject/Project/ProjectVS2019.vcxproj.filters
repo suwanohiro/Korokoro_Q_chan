@@ -43,6 +43,15 @@
     <Filter Include="swnLib\Socket\Server">
       <UniqueIdentifier>{56d37ec5-d3a8-49a1-8a18-03a7324e4492}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RenderMap">
+      <UniqueIdentifier>{6dee761d-d151-4872-9140-6df01fedb602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderMap\MapTile">
+      <UniqueIdentifier>{4cc5b565-1c49-48a4-8347-0dd45cd8dd9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderMap\MapTile\Tiles">
+      <UniqueIdentifier>{1ede8f00-6e3c-4ffc-8c50-82444b26956d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -65,6 +74,15 @@
     </ClCompile>
     <ClCompile Include="swnLib\Socket\Server\Server.cpp">
       <Filter>swnLib\Socket\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMap\RenderMap.cpp">
+      <Filter>RenderMap</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMap\MapTile\MapTile.cpp">
+      <Filter>RenderMap\MapTile</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMap\MapTile\Tiles\Tile_Ground.cpp">
+      <Filter>RenderMap\MapTile\Tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +124,21 @@
     </ClInclude>
     <ClInclude Include="swnLib\Socket\Server\Server.h">
       <Filter>swnLib\Socket\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLib\swnLib.h">
+      <Filter>swnLib</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMap\RenderMap.h">
+      <Filter>RenderMap</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMap\MapTile\MapTile.h">
+      <Filter>RenderMap\MapTile</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMap\MapTile\Tiles\Tile_Ground.h">
+      <Filter>RenderMap\MapTile\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMap\MapTile\Tiles\Tile_GroundType.h">
+      <Filter>RenderMap\MapTile\Tiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

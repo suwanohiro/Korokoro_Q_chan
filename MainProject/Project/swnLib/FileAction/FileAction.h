@@ -1,7 +1,10 @@
 #pragma once
 
+#include "../StringAction/StringAction.h"
 #include <string>
 #include <vector>
+
+typedef std::vector<std::vector<std::string>> CsvData;
 
 class FileAction {
 public:
@@ -12,7 +15,7 @@ public:
     static std::string Read(const std::string& currentFilePath);
 
     // CSVファイルの読み込みを行う関数
-    static std::vector<std::vector<std::string>> ReadCSV(const std::string& currentFilePath);
+    static CsvData ReadCSV(const std::string& currentFilePath);
 
     // ファイルの書き込みを行う関数
     static void Write(const std::string& currentFilePath, const std::string& writestring, const std::string& fileReadMode);

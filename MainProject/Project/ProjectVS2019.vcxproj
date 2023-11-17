@@ -97,6 +97,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="RenderMap\MapTile\MapTile.cpp" />
+    <ClCompile Include="RenderMap\MapTile\Tiles\Tile_Ground.cpp" />
+    <ClCompile Include="RenderMap\RenderMap.cpp" />
     <ClCompile Include="swnLib\FileAction\FileAction.cpp" />
     <ClCompile Include="swnLib\Socket\Client\Client.cpp" />
     <ClCompile Include="swnLib\Socket\Server\Server.cpp" />
@@ -106,6 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="RenderMap\MapTile\MapTile.h" />
+    <ClInclude Include="RenderMap\MapTile\Tiles\Tile_Ground.h" />
+    <ClInclude Include="RenderMap\MapTile\Tiles\Tile_GroundType.h" />
+    <ClInclude Include="RenderMap\RenderMap.h" />
     <ClInclude Include="swnLib\FileAction\FileAction.h" />
     <ClInclude Include="swnLib\Input\InputData\KeyBord.h" />
     <ClInclude Include="swnLib\Input\InputData\MouseKey.h" />
@@ -116,6 +123,7 @@
     <ClInclude Include="swnLib\Socket\Server\Server.h" />
     <ClInclude Include="swnLib\Socket\Socket.h" />
     <ClInclude Include="swnLib\StringAction\StringAction.h" />
+    <ClInclude Include="swnLib\swnLib.h" />
     <ClInclude Include="swnLib\VectorAction\VectorAction.h" />
     <ClInclude Include="swnLib\WebColor\WebColor.h" />
   </ItemGroup>
