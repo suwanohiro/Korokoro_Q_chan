@@ -8,7 +8,7 @@ RenderMap::RenderMap(std::string mapFilePath)
 void RenderMap::Load()
 {
 	_mapData = FileAction::ReadCSV(_mapFilePath);
-	_mapTile.Load("Ground2.png");
+	_mapTile.Load("Ground3.png");
 }
 
 void RenderMap::Initialize()

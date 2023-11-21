@@ -9,7 +9,7 @@ private:
 	/// <summary>
 	/// マップ1タイルあたりのサイズ
 	/// </summary>
-	const Vector2 oneTileSize = { 30, 30 };
+	const Vector2 oneTileSize = { 60, 60 };
 
 	/// <summary>
 	/// 地面タイプ
