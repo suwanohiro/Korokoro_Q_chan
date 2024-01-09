@@ -2,15 +2,13 @@
 
 int WINAPI _tWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow )
 {
-	const Vector2 windowSize = { 1280, 720 };
-
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
 	Mof::LPFramework pFrame = new Mof::CDX11GameFramework(); 
 	Mof::WINDOWSGAMEFRAMEWORKINITIALIZEINFO Info;
 	Info.pApplication = new CGameApp();
-	Info.WindowCreateInfo.Width = windowSize.x;
-	Info.WindowCreateInfo.Height = windowSize.y;
+	Info.WindowCreateInfo.Width = 1280;
+	Info.WindowCreateInfo.Height = 720;
 	if ( pFrame->Initialize(&Info) )
 	{
 		pFrame->Run();

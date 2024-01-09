@@ -2,7 +2,12 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <vector>
+//#include <filesystem>
+#include <string>
 #include <Windows.h>
+
+//namespace fs = std::filesystem;
 
 std::string FileAction::ConvertFileLink(const std::string& relativePath) {
     char path[MAX_PATH];
@@ -32,18 +37,18 @@ std::string FileAction::Read(const std::string& currentFilePath) {
     // ファイルパスを変換
     // ファイルを開いて読み込み、内容を文字列として返す
     std::string path = ConvertFileLink(currentFilePath);
-    std::ifstream file(path);
+    std::ifstream file(path, std::ios::in | std::ios::binary);
     std::stringstream buffer;
     buffer << file.rdbuf();
     file.close();
     return buffer.str();
 }
 
-std::vector<std::vector<std::string>> FileAction::ReadCSV(const std::string& currentFilePath) {
+CSVData FileAction::ReadCSV(const std::string& currentFilePath) {
     // 指定されたCSVファイルを読み込む
     // 読み込んだデータを2次元ベクターに格納して返す
     std::string textData = Read(currentFilePath);
-    static std::vector<std::vector<std::string>> result;
+    CSVData result;
     std::istringstream iss(textData);
     std::string line;
 
@@ -60,6 +65,17 @@ std::vector<std::vector<std::string>> FileAction::ReadCSV(const std::string& cur
     }
 
     return result;
+}
+
+JSON FileAction::ReadJSON(const std::string& currentFilePath)
+{
+    // ファイルを読み込む
+    std::string jsonstr = FileAction::Read(currentFilePath);
+
+    // JSON文字列をパース
+    JSON jobj = JSON::parse(jsonstr);
+
+    return jobj;
 }
 
 void FileAction::Write(const std::string& currentFilePath, const std::string& writestring, const std::string& fileReadMode) {

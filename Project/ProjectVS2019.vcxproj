@@ -42,8 +42,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Tools/MofLibrary/Include;../../../MofLibrary/Include;$(IncludePath);</IncludePath>
-    <LibraryPath>C:\Tools/MofLibrary/Library;../../../MofLibrary/Library;$(LibraryPath);</LibraryPath>
+    <IncludePath>C:/Tools/MofLibrary/Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:/Tools/MofLibrary/Library;C:/Tools/MofLibrary/Library;$(LibraryPath);</LibraryPath>
     <OutDir>$(SolutionDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -60,7 +60,6 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\Library\Include</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,27 +96,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
-    <ClCompile Include="swnLib\FileAction\FileAction.cpp" />
-    <ClCompile Include="swnLib\Socket\Client\Client.cpp" />
-    <ClCompile Include="swnLib\Socket\Server\Server.cpp" />
-    <ClCompile Include="swnLib\Socket\Socket.cpp" />
-    <ClCompile Include="swnLib\StringAction\StringAction.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
-    <ClInclude Include="swnLib\FileAction\FileAction.h" />
-    <ClInclude Include="swnLib\Input\InputData\KeyBord.h" />
-    <ClInclude Include="swnLib\Input\InputData\MouseKey.h" />
-    <ClInclude Include="swnLib\Input\KeyInput.h" />
-    <ClInclude Include="swnLib\Input\MouseInput.h" />
-    <ClInclude Include="swnLib\Input\UserInput.h" />
-    <ClInclude Include="swnLib\Socket\Client\Client.h" />
-    <ClInclude Include="swnLib\Socket\Server\Server.h" />
-    <ClInclude Include="swnLib\Socket\Socket.h" />
-    <ClInclude Include="swnLib\StringAction\StringAction.h" />
-    <ClInclude Include="swnLib\VectorAction\VectorAction.h" />
-    <ClInclude Include="swnLib\WebColor\WebColor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

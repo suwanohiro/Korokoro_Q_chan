@@ -1,0 +1,7 @@
+*.pdb
+*.exe
+
+/.vs
+/.vscode
+
+*/Debug

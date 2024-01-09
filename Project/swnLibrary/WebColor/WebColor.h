@@ -158,7 +158,7 @@ struct RGBData {
 };
 
 static RGBData __getRGBArray(const char* colorCode) {
-    std::vector<std::string> colorData = StringAction::split(colorCode, 2);
+    std::vector<std::string> colorData = StringAction::Split(colorCode, 2);
 
     RGBData result;
 
