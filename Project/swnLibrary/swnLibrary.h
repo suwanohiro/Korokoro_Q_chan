@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Mof.h"
+
 constexpr float swnLibraryVersion = 1.00;
 
 #include "./FileAction/FileAction.h"
