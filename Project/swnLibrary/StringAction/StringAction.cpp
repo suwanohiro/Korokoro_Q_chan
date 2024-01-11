@@ -2,10 +2,6 @@
 
 Vector2 StringAction::GetStringSize(LPCMofChar pText)
 {
-	LPCMofChar a = "";
-
-	const char* aaa = a;
-
 	return GetStringSize(pText, NULL);
 }
 
