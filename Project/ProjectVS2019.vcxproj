@@ -98,6 +98,10 @@
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="Scene\Scene_Base.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\Block.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\BlockManager.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\Block_Base.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\Block_Ground.cpp" />
     <ClCompile Include="Scene\Scene_Game\Scene_Game.cpp" />
     <ClCompile Include="swnLibrary\FileAction\FileAction.cpp" />
     <ClCompile Include="swnLibrary\Socket\Client\Client.cpp" />
@@ -109,6 +113,10 @@
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Scene\Scene_Base.hpp" />
+    <ClInclude Include="Scene\Scene_Game\Block\Block.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\BlockManager.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\Block_Base.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\Block_Ground.h" />
     <ClInclude Include="Scene\Scene_Game\Scene_Game.hpp" />
     <ClInclude Include="Scene\Scene_List.hpp" />
     <ClInclude Include="swnLibrary\FileAction\FileAction.h" />

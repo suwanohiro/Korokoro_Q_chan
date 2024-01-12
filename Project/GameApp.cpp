@@ -2,7 +2,7 @@
 
 CGameApp::CGameApp()
 {
-	_scene = new Scene_Game("debug");
+	_scene = new Scene_Game("test_stage_2024-01-12_1");
 }
 
 MofBool CGameApp::Initialize(void){

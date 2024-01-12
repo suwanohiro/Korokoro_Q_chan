@@ -2,6 +2,8 @@
 
 #include "Mof.h"
 
+#include <variant>
+
 constexpr float swnLibraryVersion = 1.00;
 
 #include "./FileAction/FileAction.h"
@@ -10,3 +12,5 @@ constexpr float swnLibraryVersion = 1.00;
 #include "./Socket/Socket.h"
 #include "./Socket/Client/Client.h"
 #include "./Socket/Server/Server.h"
+
+using spCTexture = std::shared_ptr<CTexture>;
