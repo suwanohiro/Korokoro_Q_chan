@@ -24,8 +24,6 @@ void Scene_Game::__loadMapData()
 		}
 
 		// ブロックデータは全て_blockDatasに格納
-		// _blockDatas.push_back(std::get<spBlock_Base>(work));
-
 		if (std::holds_alternative<spBlock_Ground>(work)) {
 			_blockDatas.push_back(std::get<spBlock_Ground>(work));
 		}
@@ -40,14 +38,13 @@ Scene_Game::Scene_Game(std::string mapFileName)
 	// マップファイルを読み込む
 	const std::string mapPath = "Resource/MapData/" + mapFileName + ".swnstg";
 	_mapData = FileAction::ReadJSON(mapPath);
-
-	_blockManager.Initialize("BlockDatas");
-
-	__loadMapData();
 }
 
 void Scene_Game::Initialize()
 {
+	_blockManager.Initialize("BlockDatas");
+
+	__loadMapData();
 }
 
 void Scene_Game::Update()
@@ -56,7 +53,6 @@ void Scene_Game::Update()
 
 void Scene_Game::Render()
 {
-	CGraphicsUtilities::RenderString(0, 0, "test");
 	for (int cnt = 0; cnt < _blockDatas.size(); cnt++) {
 		_blockDatas[cnt].get()->Render();
 	}

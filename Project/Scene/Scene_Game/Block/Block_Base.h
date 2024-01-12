@@ -32,6 +32,11 @@ public:
 	void Render();
 
 	/// <summary>
+	/// “–‚½‚è”»’è•`‰æ
+	/// </summary>
+	void RenderRect();
+
+	/// <summary>
 	/// ŠJ•úˆ—
 	/// </summary>
 	void Release();

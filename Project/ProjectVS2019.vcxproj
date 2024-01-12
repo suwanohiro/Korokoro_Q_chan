@@ -98,6 +98,7 @@
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="Scene\Scene_Base.cpp" />
+    <ClCompile Include="Scene\Scene_GameOver\Scene_GameOver.cpp" />
     <ClCompile Include="Scene\Scene_Game\Block\Block.cpp" />
     <ClCompile Include="Scene\Scene_Game\Block\BlockManager.cpp" />
     <ClCompile Include="Scene\Scene_Game\Block\Block_Base.cpp" />
@@ -113,6 +114,7 @@
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Scene\Scene_Base.hpp" />
+    <ClInclude Include="Scene\Scene_GameOver\Scene_GameOver.h" />
     <ClInclude Include="Scene\Scene_Game\Block\Block.h" />
     <ClInclude Include="Scene\Scene_Game\Block\BlockManager.h" />
     <ClInclude Include="Scene\Scene_Game\Block\Block_Base.h" />

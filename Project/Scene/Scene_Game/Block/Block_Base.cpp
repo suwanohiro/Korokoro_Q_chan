@@ -9,9 +9,6 @@ Block_Base::Block_Base(BlockData blockData, Vector2 position)
 		(float)getTexture()->GetHeight()
 	};
 
-	textureSize.x = 40;
-	textureSize.y = 40;
-
 	_position = Vector2(
 		position.x * textureSize.x,
 		position.y * textureSize.y
@@ -30,6 +27,10 @@ Block_Base::~Block_Base()
 void Block_Base::Render()
 {
 	getTexture()->Render(_position.x, _position.y);
+}
+
+void Block_Base::RenderRect()
+{
 	CGraphicsUtilities::RenderRect(_rect, getRGB(WebColor::lightblue));
 }
 

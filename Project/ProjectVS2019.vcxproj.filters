@@ -99,6 +99,9 @@
     <ClCompile Include="Scene\Scene_Game\Block\Block_Ground.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Scene_GameOver\Scene_GameOver.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -147,6 +150,9 @@
       <Filter>Scene\Game\Block\BlockManager</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Game\Block\Block_Ground.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Scene_GameOver\Scene_GameOver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
