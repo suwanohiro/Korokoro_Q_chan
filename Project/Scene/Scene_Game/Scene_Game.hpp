@@ -5,6 +5,9 @@
 class Scene_Game : public Scene_Base
 {
 private:
+	JSON _mapData;
+
+	void __loadMapData();
 
 protected:
 

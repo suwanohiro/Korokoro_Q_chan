@@ -1,9 +1,5 @@
 #include	"GameApp.h"
 
-void outputString(std::string msg) {
-	OutputDebugString((msg + "\n").c_str());
-}
-
 CGameApp::CGameApp()
 {
 	_scene = new Scene_Game("debug");

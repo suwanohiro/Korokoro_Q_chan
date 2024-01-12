@@ -1,12 +1,29 @@
 #include "Scene_Game.hpp"
 
+void Scene_Game::__loadMapData()
+{
+	const auto mainLayer = _mapData["MapData"]["Main"];
+	const auto mapData = mainLayer["MapData"];
+	const int length = mainLayer["Length"];
+
+	for (int cnt = 0; cnt < length; cnt++) {
+		const auto blockData = mapData[cnt];
+		const std::string BlockID = blockData["BlockID"];
+		const auto Pos = blockData["Position"];
+		const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
+	}
+
+	CTexture a;
+	a.Load("");
+}
+
 Scene_Game::Scene_Game(std::string mapFileName)
 {
 	// マップファイルを読み込む
 	const std::string mapPath = "Resource/MapData/" + mapFileName + ".swnstg";
-	JSON mapData = FileAction::ReadJSON(mapPath);
+	_mapData = FileAction::ReadJSON(mapPath);
 
-	const int length = mapData["MapData"]["Main"]["Length"];
+	const int length = _mapData["MapData"]["Main"]["Length"];
 
 	OutputDebugString("\n");
 	OutputDebugString("\n");
@@ -21,10 +38,10 @@ Scene_Game::Scene_Game(std::string mapFileName)
 	OutputDebugString("\n");
 	OutputDebugString("\n");
 	for (int cnt = 0; cnt < length; cnt++) {
-		auto work = mapData["MapData"]["Main"]["MapData"][cnt];
+		auto work = _mapData["MapData"]["Main"]["MapData"][cnt];
 
 
-		const std::string str(mapData["MapData"]["Main"]["MapData"][cnt]["BlockID"]);
+		const std::string str(_mapData["MapData"]["Main"]["MapData"][cnt]["BlockID"]);
 
 
 		const int posX = work["Position"]["x"];
