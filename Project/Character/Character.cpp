@@ -11,8 +11,9 @@ void Character::__updateMotion()
 	__setMotionRect();
 }
 
-Character::Character()
+Character::Character(spAudioManager audioManager)
 	: GameObject()
+	, _audioManager(audioManager)
 	, _moveSpd(0, 0)
 	, _HP(0)
 	, _maxHP(0)

@@ -26,6 +26,7 @@ protected:
 
 	void __damage();
 
+	bool __getIsMove() { return _isMove; }
 	void __setIsMove(bool value) { _isMove = value; }
 	bool __isMove() { return _isMove; }
 
@@ -35,11 +36,12 @@ protected:
 	spEnemyShotArray __getShotArray() { return _shotArray; };
 
 public:
-	Enemy();
+	Enemy(spAudioManager audioManager);
 
-	bool Load() override;
 	virtual void Initialize(Vector2 initPos) override;
 	virtual void Update() override;
+	virtual void Render(Vector2 correction) override;
+	virtual void Release() override;
 
 	void CollisionStage(Vector2 value) override;
 

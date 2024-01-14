@@ -6,19 +6,23 @@ void Enemy1::__fire(Vector2 playerPos, Vector2 w)
 	const Vector2 motionRectSize = __getMotionRectSize();
 
 	spEnemyShot shot(new EnemyShot());
+	shot->Initialize(playerPos);
 
 	__setShotWait(120);
 
 	const Vector2 vector = pos + motionRectSize * 0.5;
 	shot->Fire(playerPos, vector);
 
+	shot->setTexture(__getShotspTexture());
+
 	//UŒ‚SE‚ð—¬‚·
-	// m_Audio->Play(Audio_EnemyAttack, false);
+	__getAudioManager()->play(AudioTrack::SE_Enemy_Attack);
+
 	__getShotArray().push_back(shot);
 }
 
-Enemy1::Enemy1()
-	: Enemy()
+Enemy1::Enemy1(spAudioManager audioManager)
+	: Enemy(audioManager)
 	, _shotWait(0)
 {
 }

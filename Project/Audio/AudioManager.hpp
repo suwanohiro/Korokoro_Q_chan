@@ -22,7 +22,7 @@ enum class AudioTrack {
 	SE_Enemy_Move,
 	SE_Enemy_Attack,
 	SE_Enemy_Damage,
-	SE_EnemyDead,
+	SE_Enemy_Dead,
 
 	Length
 };

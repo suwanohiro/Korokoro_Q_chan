@@ -37,16 +37,11 @@ void Enemy::__damage()
 	__setMoveSpd(move_x, getMoveSpd().y);
 }
 
-Enemy::Enemy()
-	: Character()
+Enemy::Enemy(spAudioManager audioManager)
+	: Character(audioManager)
 	, _isMove(false)
 	, _isInScreen(false)
 {
-}
-
-bool Enemy::Load()
-{
-	return true;
 }
 
 void Enemy::Initialize(Vector2 initPos)
@@ -80,11 +75,35 @@ void Enemy::Update()
 	// ダメージ時の処理
 	__damage();
 
-	// SE関連処理
-	// TODO : 未実装
+	//移動SEを流す
+	const bool isPlay = __getAudioManager()->isPlay(AudioTrack::SE_Enemy_Move);
+	if (__getIsMove() && !isPlay) __getAudioManager()->play(AudioTrack::SE_Enemy_Move);
+	else if (!__getIsMove()) __getAudioManager()->stop(AudioTrack::SE_Enemy_Dead);
 
 	// 重力処理
-	// TODO : 未実装
+	Gravity::addGravity(getMoveSpd());
+}
+
+void Enemy::Render(Vector2 correction)
+{
+	Character::Render(correction);
+
+	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
+		const spEnemyShot work = __getShotArray()[cnt];
+
+		work->Render(correction);
+	}
+}
+
+void Enemy::Release()
+{
+	Character::Release();
+
+	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
+		const spEnemyShot work = __getShotArray()[cnt];
+
+		work->Release();
+	}
 }
 
 void Enemy::CollisionStage(Vector2 value)
@@ -125,9 +144,11 @@ void Enemy::Damage(int value, bool isReverse)
 	__changeMotion(EnemyMotion::Damage);
 
 	// ダメージエフェクトを発生させる
-	// ダメージSEを再生する
-
 	// TODO : 未実装
+
+	// ダメージSEを再生する
+	__getAudioManager()->play(AudioTrack::SE_Enemy_Damage);
+
 
 	// 変更を反映
 	__setMoveSpd(move);

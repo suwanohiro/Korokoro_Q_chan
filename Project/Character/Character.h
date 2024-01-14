@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../GameObject/GameObject.hpp"
+#include "../Audio/AudioManager.hpp"
+#include "../Gravity/Gravity.hpp"
 #include "../Character/Shot/Shot.hpp"
 
 template <typename T = spShot>
@@ -9,6 +11,8 @@ using spShotArray = std::vector<T>;
 class Character : public GameObject
 {
 private:
+	spAudioManager _audioManager;
+
 	Vector2 _moveSpd;
 
 	int _HP;
@@ -22,6 +26,8 @@ private:
 	spCTexture _shotTexture;
 
 protected:
+	spAudioManager __getAudioManager() { return _audioManager; }
+
 	void __setMaxHP(int value) { _maxHP = value; }
 
 	void __setMoveSpd(Vector2 value) { _moveSpd = value; }
@@ -45,7 +51,7 @@ protected:
 	CTexture* __getShotTexture() { return __getShotspTexture().get(); }
 
 public:
-	Character();
+	Character(spAudioManager audioManager);
 
 	virtual void LateUpdate() override;
 
