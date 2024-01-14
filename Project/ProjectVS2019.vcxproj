@@ -96,7 +96,14 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio\AudioManager.cpp" />
+    <ClCompile Include="Character\Character.cpp" />
+    <ClCompile Include="Character\Enemy\Enemy.cpp" />
+    <ClCompile Include="Character\Enemy\Enemy1.cpp" />
+    <ClCompile Include="Character\Enemy\EnemyShot\EnemyShot.cpp" />
+    <ClCompile Include="Character\Shot\Shot.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="Scene\Scene_Base.cpp" />
     <ClCompile Include="Scene\Scene_GameOver\Scene_GameOver.cpp" />
     <ClCompile Include="Scene\Scene_Game\Block\Block.cpp" />
@@ -104,6 +111,7 @@
     <ClCompile Include="Scene\Scene_Game\Block\Block_Base.cpp" />
     <ClCompile Include="Scene\Scene_Game\Block\Block_Ground.cpp" />
     <ClCompile Include="Scene\Scene_Game\Scene_Game.cpp" />
+    <ClCompile Include="swnLibrary\AudioCtrl\AudioCtrl.cpp" />
     <ClCompile Include="swnLibrary\FileAction\FileAction.cpp" />
     <ClCompile Include="swnLibrary\Socket\Client\Client.cpp" />
     <ClCompile Include="swnLibrary\Socket\Server\Server.cpp" />
@@ -112,7 +120,14 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio\AudioManager.hpp" />
+    <ClInclude Include="Character\Character.h" />
+    <ClInclude Include="Character\Enemy\Enemy.hpp" />
+    <ClInclude Include="Character\Enemy\Enemy1.hpp" />
+    <ClInclude Include="Character\Enemy\EnemyShot\EnemyShot.hpp" />
+    <ClInclude Include="Character\Shot\Shot.hpp" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameObject\GameObject.hpp" />
     <ClInclude Include="Scene\Scene_Base.hpp" />
     <ClInclude Include="Scene\Scene_GameOver\Scene_GameOver.h" />
     <ClInclude Include="Scene\Scene_Game\Block\Block.h" />
@@ -121,6 +136,7 @@
     <ClInclude Include="Scene\Scene_Game\Block\Block_Ground.h" />
     <ClInclude Include="Scene\Scene_Game\Scene_Game.hpp" />
     <ClInclude Include="Scene\Scene_List.hpp" />
+    <ClInclude Include="swnLibrary\AudioCtrl\AudioCtrl.h" />
     <ClInclude Include="swnLibrary\FileAction\FileAction.h" />
     <ClInclude Include="swnLibrary\FileAction\json.hpp" />
     <ClInclude Include="swnLibrary\Socket\Client\Client.h" />

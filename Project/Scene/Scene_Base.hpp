@@ -47,3 +47,4 @@ public:
 	virtual void Release() = 0;
 };
 
+using spScene_Base = std::shared_ptr<Scene_Base>;

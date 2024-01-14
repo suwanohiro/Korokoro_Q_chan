@@ -6,8 +6,6 @@ void Scene_Game::__loadMapData()
 	const auto mapData = mainLayer["MapData"];
 	const int length = mainLayer["Length"];
 
-	std::vector<std::string> errorID;
-
 	for (int cnt = 0; cnt < length; cnt++) {
 		const auto blockData = mapData[cnt];
 		const std::string BlockID = blockData["BlockID"];
@@ -17,10 +15,7 @@ void Scene_Game::__loadMapData()
 		addBlockResult work = _blockManager.addBlock(BlockID, Position);
 
 		if (std::holds_alternative<int>(work)) {
-			if (std::get<int>(work) == NULL) {
-				errorID.push_back(BlockID);
-				continue;
-			}
+			if (std::get<int>(work) == NULL) continue;
 		}
 
 		// ブロックデータは全て_blockDatasに格納
@@ -54,7 +49,7 @@ void Scene_Game::Update()
 void Scene_Game::Render()
 {
 	for (int cnt = 0; cnt < _blockDatas.size(); cnt++) {
-		_blockDatas[cnt].get()->Render();
+		_blockDatas[cnt]->Render();
 	}
 }
 

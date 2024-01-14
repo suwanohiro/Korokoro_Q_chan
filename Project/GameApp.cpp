@@ -2,7 +2,7 @@
 
 CGameApp::CGameApp()
 {
-	_scene = new Scene_Game("mario");
+	_scene = spScene_Base(new Scene_Game("mario"));
 }
 
 MofBool CGameApp::Initialize(void){

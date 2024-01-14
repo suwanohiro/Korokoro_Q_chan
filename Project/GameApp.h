@@ -7,7 +7,7 @@
 
 class CGameApp : public CSingleGameApplication {
 private:
-	Scene_Base* _scene;
+	spScene_Base _scene;
 
 public:
 	CGameApp();
