@@ -5,20 +5,14 @@ void Character::__updateDamageWait()
 	if (getDamageWait() > 0) _damageWait--;
 }
 
-void Character::__updateMotion()
-{
-	__getMotion().AddTimer(CUtilities::GetFrameSecond());
-	__setMotionRect();
-}
-
-Character::Character(spAudioManager audioManager)
+Character::Character(spAudioManager audioManager, spEffectManager effectManager)
 	: GameObject()
 	, _audioManager(audioManager)
+	, _effectManager(effectManager)
 	, _moveSpd(0, 0)
 	, _HP(0)
 	, _maxHP(0)
 	, _damageWait(0)
-	, _motion()
 {
 }
 
@@ -26,7 +20,7 @@ void Character::LateUpdate()
 {
 	if (!isActive()) return;
 
-	__updateMotion();
+	GameObjectMotion::Update();
 	__updateDamageWait();
 }
 

@@ -14,7 +14,7 @@ private:
 	void __updateShotWait(int value) { _shotWait += value; }
 
 public:
-	Enemy1(spAudioManager audioManager);
+	Enemy1(spAudioManager audioManager, spEffectManager effectManager);
 
 	void Attack() override { Attack(Vector2(0, 0), Vector2(0, 0)); };
 	void Attack(Vector2 playerPos, Vector2 w);

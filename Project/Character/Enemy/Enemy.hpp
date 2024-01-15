@@ -36,7 +36,7 @@ protected:
 	spEnemyShotArray __getShotArray() { return _shotArray; };
 
 public:
-	Enemy(spAudioManager audioManager);
+	Enemy(spAudioManager audioManager, spEffectManager effectManager);
 
 	virtual void Initialize(Vector2 initPos) override;
 	virtual void Update() override;

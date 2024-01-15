@@ -1,17 +1,20 @@
 #pragma once
 
 #include "../GameObject/GameObject.hpp"
+#include "../GameObject/GameObjectMotion.hpp"
 #include "../Audio/AudioManager.hpp"
+#include "../Effect/EffectManager.hpp"
 #include "../Gravity/Gravity.hpp"
 #include "../Character/Shot/Shot.hpp"
 
 template <typename T = spShot>
 using spShotArray = std::vector<T>;
 
-class Character : public GameObject
+class Character : public GameObject, public GameObjectMotion
 {
 private:
 	spAudioManager _audioManager;
+	spEffectManager _effectManager;
 
 	Vector2 _moveSpd;
 
@@ -20,13 +23,11 @@ private:
 
 	int _damageWait;
 
-	CSpriteMotionController _motion;
-	CRectangle _motionRect;
-
 	spCTexture _shotTexture;
 
 protected:
 	spAudioManager __getAudioManager() { return _audioManager; }
+	spEffectManager __getEffectManager() { return _effectManager; }
 
 	void __setMaxHP(int value) { _maxHP = value; }
 
@@ -36,22 +37,13 @@ protected:
 	void __setDamageWait(int value) { _damageWait = value; }
 	void __updateDamageWait();
 
-	void __setMotion(CSpriteMotionController value) { _motion = value; }
-	CSpriteMotionController __getMotion() { return _motion; }
-	bool __isEndMotion() { return __getMotion().IsEndMotion(); }
-	void __updateMotion();
-
-	void __setMotionRect() { _motionRect = _motion.GetSrcRect(); }
-	CRectangle __getMotionRect() { return _motionRect; }
-	Vector2 __getMotionRectSize() { return Vector2(__getMotionRect().GetWidth(), __getMotionRect().GetHeight()); }
-
 	void __setHP(int value) { _HP = value; }
 
 	spCTexture __getShotspTexture() { return _shotTexture; }
 	CTexture* __getShotTexture() { return __getShotspTexture().get(); }
 
 public:
-	Character(spAudioManager audioManager);
+	Character(spAudioManager audioManager, spEffectManager effectManager);
 
 	virtual void LateUpdate() override;
 

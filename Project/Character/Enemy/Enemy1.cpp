@@ -21,8 +21,8 @@ void Enemy1::__fire(Vector2 playerPos, Vector2 w)
 	__getShotArray().push_back(shot);
 }
 
-Enemy1::Enemy1(spAudioManager audioManager)
-	: Enemy(audioManager)
+Enemy1::Enemy1(spAudioManager audioManager, spEffectManager effectManager)
+	: Enemy(audioManager, effectManager)
 	, _shotWait(0)
 {
 }

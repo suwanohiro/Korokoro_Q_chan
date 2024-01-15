@@ -12,7 +12,8 @@ void Enemy::__damage()
 			setActive(false);
 
 			// 死亡時処理
-			// TODO : 爆発エフェクト等未実装の為、ここも未実装
+			const Vector2 effectPos = getPosition() + __getMotionRectSize() * 0.5f;
+			__getEffectManager()->startEffect(EffectType::DownEnemy, effectPos);
 		}
 
 		const float move_x = (isReverse()) ? -3.0f : 3.0f;
@@ -37,8 +38,8 @@ void Enemy::__damage()
 	__setMoveSpd(move_x, getMoveSpd().y);
 }
 
-Enemy::Enemy(spAudioManager audioManager)
-	: Character(audioManager)
+Enemy::Enemy(spAudioManager audioManager, spEffectManager effectManager)
+	: Character(audioManager, effectManager)
 	, _isMove(false)
 	, _isInScreen(false)
 {
@@ -144,7 +145,8 @@ void Enemy::Damage(int value, bool isReverse)
 	__changeMotion(EnemyMotion::Damage);
 
 	// ダメージエフェクトを発生させる
-	// TODO : 未実装
+	const Vector2 effectPos = getPosition() + __getMotionRectSize() * 0.5f;
+	__getEffectManager()->startEffect(EffectType::Damage, effectPos);
 
 	// ダメージSEを再生する
 	__getAudioManager()->play(AudioTrack::SE_Enemy_Damage);
