@@ -7,6 +7,7 @@ void Character::__updateDamageWait()
 
 Character::Character(spAudioManager audioManager, spEffectManager effectManager)
 	: GameObject()
+	, GameObjectMotion()
 	, _audioManager(audioManager)
 	, _effectManager(effectManager)
 	, _moveSpd(0, 0)

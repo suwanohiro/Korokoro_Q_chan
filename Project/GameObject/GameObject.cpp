@@ -33,6 +33,7 @@ bool GameObject::TextureLoad(std::string filePath)
 void GameObject::Initialize(Vector2 initPos)
 {
 	_position = initPos;
+	setActive(true);
 }
 
 void GameObject::FixedUpdate()

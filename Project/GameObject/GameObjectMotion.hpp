@@ -18,5 +18,8 @@ protected:
 	Vector2 __getMotionRectSize() { return Vector2(__getMotionRect().GetWidth(), __getMotionRect().GetHeight()); }
 
 	void Update();
+
+public:
+	GameObjectMotion();
 };
 
