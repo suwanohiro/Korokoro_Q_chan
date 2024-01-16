@@ -15,8 +15,7 @@ public:
 	EnemyShot();
 
 	void Initialize(Vector2 initPos) override;
-	void Update() override { Update(Vector2(0, 0)); };
-	void Update(Vector2 w);
+	void Update() override;
 
 	void Fire(Vector2 playerPos) override { Fire(playerPos, Vector2(0, 0)); };
 	void Fire(Vector2 playerPos, Vector2 vector);

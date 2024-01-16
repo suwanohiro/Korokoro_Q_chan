@@ -11,7 +11,7 @@ void BlockManager::__loadBlockData(std::string blockDataFileName)
 {
 	// ブロックデータを読み込む
 	const std::string filePath = "Resource/MapData/" + blockDataFileName + ".swnjsn";
-	JSON blockDatas = FileAction::ReadJSON(filePath);
+	const JSON blockDatas = FileAction::ReadJSON(filePath);
 
 	const int length = blockDatas["Length"];
 

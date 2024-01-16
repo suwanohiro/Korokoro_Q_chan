@@ -11,8 +11,7 @@ public:
 	virtual void Initialize(Vector2 initPos) override;
 	virtual void Update() override;
 	virtual void LateUpdate() override;
-	virtual void Render() override { Render(Vector2(0, 0)); };
-	virtual void Render(Vector2 value);
+	virtual void Render() override;
 
 	virtual void Start(Vector2 startPos);
 };

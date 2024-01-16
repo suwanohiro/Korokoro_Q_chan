@@ -1,6 +1,6 @@
 #include "Enemy1.hpp"
 
-void Enemy1::__fire(Vector2 playerPos, Vector2 w)
+void Enemy1::__fire(Vector2 playerPos)
 {
 	const Vector2 pos = getPosition();
 	const Vector2 motionRectSize = __getMotionRectSize();
@@ -23,7 +23,6 @@ void Enemy1::__fire(Vector2 playerPos, Vector2 w)
 
 Enemy1::Enemy1(spAudioManager audioManager, spEffectManager effectManager)
 	: Enemy(audioManager, effectManager)
-	, _shotWait(0)
 {
 }
 
@@ -37,14 +36,14 @@ void Enemy1::Attack(Vector2 playerPos, Vector2 w)
 	setReverse(!isReverse);
 
 	//ƒXƒNƒŠ[ƒ“•
-	const Vector2 screenSize = getScreenSize() + w;
+	const Vector2 screenSize = __getScreenSize() + w;
 
 	//“G‚ª‰æ–Ê‚É‰f‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	const bool isInScreen = (pos.x + motionRectSize.x > w.x && screenSize.x > pos.x);
-	__setIsInScreen(isInScreen);
+	__isInScreen(isInScreen);
 
 	const bool isFire = (getDamageWait() <= 0 && __getShotWait() <= 0 && __isInScreen());
-	if (isFire) __fire(playerPos, w);
+	if (isFire) __fire(playerPos);
 	else __updateShotWait(-1);
 
 	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
@@ -52,6 +51,8 @@ void Enemy1::Attack(Vector2 playerPos, Vector2 w)
 
 		if (!work->isActive()) continue;
 
-		work->Update(screenSize);
+		work->FixedUpdate(screenSize);
+		work->Update();
+		work->LateUpdate();
 	}
 }

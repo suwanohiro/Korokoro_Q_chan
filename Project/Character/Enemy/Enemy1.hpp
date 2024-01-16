@@ -5,13 +5,7 @@
 class Enemy1 : public Enemy
 {
 private:
-	int _shotWait;
-
-	void __fire(Vector2 playerPos, Vector2 w);
-
-	int __getShotWait() { return _shotWait; }
-	void __setShotWait(int value) { _shotWait = value; }
-	void __updateShotWait(int value) { _shotWait += value; }
+	void __fire(Vector2 playerPos);
 
 public:
 	Enemy1(spAudioManager audioManager, spEffectManager effectManager);

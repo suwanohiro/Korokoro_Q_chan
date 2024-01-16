@@ -1,6 +1,8 @@
 #include "EffectManager.hpp"
 
 EffectManager::EffectManager()
+	: _effectTexture()
+	, _effectArray()
 {
 }
 
@@ -23,11 +25,12 @@ bool EffectManager::Load()
 	return true;
 }
 
-void EffectManager::FixedUpdate()
+void EffectManager::FixedUpdate(Vector2 scroll)
 {
+	const int a = _effectArray.size();
 	for (int cnt = 0; cnt < _effectArray.size(); cnt++) {
 		const spEffect work = _effectArray[cnt];
-		work->FixedUpdate();
+		work->FixedUpdate(scroll);
 	}
 }
 
@@ -50,12 +53,11 @@ void EffectManager::LateUpdate()
 	}
 }
 
-void EffectManager::Render(Vector2 value)
+void EffectManager::Render()
 {
 	for (int cnt = 0; cnt < _effectArray.size(); cnt++) {
 		const spEffect work = _effectArray[cnt];
-
-		work->Render(value);
+		work->Render();
 	}
 }
 

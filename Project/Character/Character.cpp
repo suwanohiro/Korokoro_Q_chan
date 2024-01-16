@@ -14,6 +14,7 @@ Character::Character(spAudioManager audioManager, spEffectManager effectManager)
 	, _HP(0)
 	, _maxHP(0)
 	, _damageWait(0)
+	, _shotWait(0)
 {
 }
 
@@ -25,7 +26,7 @@ void Character::LateUpdate()
 	__updateDamageWait();
 }
 
-void Character::Render(Vector2 correction)
+void Character::Render()
 {
 	if (!isActive()) return;
 
@@ -38,6 +39,6 @@ void Character::Render(Vector2 correction)
 		rec.Left = work;
 	}
 
-	const Vector2 pos = getPosition() - correction;
+	const Vector2 pos = getPosition() - __getScroll();
 	getTexture()->Render(pos.x, pos.y, rec);
 }

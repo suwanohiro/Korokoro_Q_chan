@@ -19,7 +19,16 @@ private:
 
 	Vector2 _position;
 
+	Vector2 _scroll;
+
 protected:
+	/// <summary>
+	/// スクリーンサイズを取得する
+	/// </summary>
+	Vector2 __getScreenSize();
+
+	Vector2 __getScroll() { return _scroll; }
+	void __setScroll(Vector2 value) { _scroll = value; }
 
 public:
 	GameObject();
@@ -41,7 +50,7 @@ public:
 	/// </summary>
 	virtual void Initialize(Vector2 initPos);
 
-	virtual void FixedUpdate();
+	virtual void FixedUpdate(Vector2 scroll);
 
 	/// <summary>
 	/// 更新処理
@@ -70,11 +79,6 @@ public:
 	/// 開放処理
 	/// </summary>
 	virtual void Release();
-
-	/// <summary>
-	/// スクリーンサイズを取得する
-	/// </summary>
-	Vector2 getScreenSize();
 
 	/// <summary>
 	/// 座標を取得する
@@ -114,6 +118,7 @@ public:
 	/// アクティブ状態かどうか
 	/// </summary>
 	bool isActive() { return _isActive; }
+	void isActive(bool value) { _isActive = value; }
 	
 	/// <summary>
 	/// 画像反転表示するかどうか
@@ -123,9 +128,10 @@ public:
 	void setTexture(spCTexture value);
 
 	void setPosition(Vector2 pos) { _position = pos; }
-	void setPosition(float x, float y) { _position = Vector2(x, y); }
+	void setPosition(float x, float y) { setPosition(Vector2(x, y)); }
+	void updatePosition(Vector2 pos) { _position += pos; }
+	void updatePosition(float x, float y) { updatePosition(Vector2(x, y)); }
 
-	void setActive(bool value) { _isActive = value; }
 
 	void setReverse(bool value) { _isReverse = value; }
 };

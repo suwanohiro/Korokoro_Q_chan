@@ -1,5 +1,14 @@
 #include "AudioManager.hpp"
 
+spAudioCtrl AudioManager::__getTrack(AudioTrack target)
+{
+	int target_int = (int)target;
+
+	if (_audioArray.size() <= target_int) return spAudioCtrl(new AudioCtrl);
+
+	return _audioArray[target_int];
+}
+
 AudioManager::AudioManager()
 	: _audioArray()
 {
@@ -24,10 +33,15 @@ bool AudioManager::Load()
 
 void AudioManager::play(AudioTrack target)
 {
+	play(target, false);
+}
+
+void AudioManager::play(AudioTrack target, bool isLoop)
+{
 	// Ä¶’†‚È‚ç‚±‚±‚Åˆ—I—¹
 	if (isPlay(target)) return;
 
-	__getTrack(target)->play();
+	__getTrack(target)->play(isLoop);
 }
 
 void AudioManager::setVolume(int vol)

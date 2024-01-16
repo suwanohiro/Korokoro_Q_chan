@@ -1,8 +1,8 @@
 #include	"GameApp.h"
 
 CGameApp::CGameApp()
-	: _audioManager()
-	, _effectManager()
+	: _audioManager(new AudioManager)
+	, _effectManager(new EffectManager)
 {
 	_scene = spScene_Base(new Scene_Game("mario"));
 }
@@ -28,7 +28,8 @@ MofBool CGameApp::Update(void){
 	// FixedUpdate
 	// 
 	/////////////////////////////////////////////////////
-	_effectManager->FixedUpdate();
+	// TODO : FixedUpdate‚Ìˆø”‚ğ³í‚È‚à‚Ì‚ÉC³‚·‚é
+	_effectManager->FixedUpdate(Vector2(0, 0));
 
 
 	/////////////////////////////////////////////////////
@@ -58,8 +59,7 @@ MofBool CGameApp::Render(void){
 
 	_scene->Render();
 
-	// TODO : _effectManager->Render(Vector2())‚Ìˆø”‚ğ‚Ç‚¤‚É‚©‚·‚é
-	_effectManager->Render(Vector2());
+	_effectManager->Render();
 
 	//•`‰æ‚ÌI—¹
 	g_pGraphics->RenderEnd();

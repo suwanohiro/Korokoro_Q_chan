@@ -97,6 +97,9 @@
     <Filter Include="ResourceManager">
       <UniqueIdentifier>{32b6952a-dff6-4ca6-9995-cf5de2862ac8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Character\Player\PlayerShot">
+      <UniqueIdentifier>{fd761ab2-644d-4e01-8907-980b558c4dbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -181,6 +184,9 @@
       <Filter>Effect</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager\ResourceManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\Player\PlayerShot\PlayerShot.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -279,6 +285,15 @@
       <Filter>Effect</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager\ResourceManager.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Enemy\EnemyMotion.hpp">
+      <Filter>Character\Enemy\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Player\PlayerMotion.hpp">
+      <Filter>Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Player\PlayerShot\PlayerShot.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

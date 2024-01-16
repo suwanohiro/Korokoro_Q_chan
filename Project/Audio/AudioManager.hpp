@@ -32,7 +32,7 @@ class AudioManager
 private:
 	std::vector<spAudioCtrl> _audioArray;
 
-	spAudioCtrl __getTrack(AudioTrack target) { return _audioArray[(int)target]; }
+	spAudioCtrl __getTrack(AudioTrack target);
 
 public:
 	AudioManager();
@@ -41,6 +41,7 @@ public:
 	bool Load();
 
 	void play(AudioTrack target);
+	void play(AudioTrack target, bool isLoop);
 	bool isPlay(AudioTrack target) { return __getTrack(target)->isPlay(); }
 	void stop(AudioTrack target) { __getTrack(target)->stop(); }
 

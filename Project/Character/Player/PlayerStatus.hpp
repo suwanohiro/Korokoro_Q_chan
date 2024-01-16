@@ -3,7 +3,7 @@
 // プレイヤーステータス
 
 // 最大HP
-constexpr int		Player_MaxHP = 100;
+constexpr int		Player_initMaxHP = 100;
 
 constexpr float		Player_WallMove = 1.0f;
 
@@ -27,4 +27,4 @@ constexpr float		ADD_HP = 0.05f;// * 10000
 // 弾の発射限界数
 constexpr int		PLAYERSHOT_COUNT = 2;
 // 弾の発射間隔
-constexpr int		PLAYERSHOT_WAIT = 20;
+constexpr int		PlayerShot_Wait = 20;

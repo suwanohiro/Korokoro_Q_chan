@@ -23,6 +23,8 @@ private:
 
 	int _damageWait;
 
+	int _shotWait;
+
 	spCTexture _shotTexture;
 
 protected:
@@ -39,6 +41,10 @@ protected:
 
 	void __setHP(int value) { _HP = value; }
 
+	int __getShotWait() { return _shotWait; }
+	void __setShotWait(int value) { _shotWait = value; }
+	void __updateShotWait(int value) { _shotWait += value; }
+
 	spCTexture __getShotspTexture() { return _shotTexture; }
 	CTexture* __getShotTexture() { return __getShotspTexture().get(); }
 
@@ -47,11 +53,15 @@ public:
 
 	virtual void LateUpdate() override;
 
-	virtual void Render() override { Render(Vector2(0, 0)); };
-	virtual void Render(Vector2 correction);
+	virtual void Render() override;
 
 	void CollisionStage(float ox, float oy) { CollisionStage(Vector2(ox, oy)); };
 	virtual void CollisionStage(Vector2 value) = 0;
+
+	/// <summary>
+	/// ê∂ë∂ÇµÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©
+	/// </summary>
+	bool isAlive() { return getHP() > 0; }
 
 	void updateHP(int value) { _HP += value; }
 	int getHP() { return _HP; }

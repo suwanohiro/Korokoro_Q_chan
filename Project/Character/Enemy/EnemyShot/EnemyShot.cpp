@@ -4,7 +4,7 @@ EnemyShot::EnemyShot()
 	: Shot()
 {
 	__setSpeed(4.0f);
-	setActive(false);
+	isActive(false);
 }
 
 void EnemyShot::Initialize(Vector2 initPos)
@@ -13,8 +13,9 @@ void EnemyShot::Initialize(Vector2 initPos)
 	__setVector(0, 0);
 }
 
-void EnemyShot::Update(Vector2 w)
+void EnemyShot::Update()
 {
+	const Vector2 scroll = __getScroll();
 	Vector2 pos = getPosition();
 
 	//弾を発射
@@ -22,15 +23,15 @@ void EnemyShot::Update(Vector2 w)
 	pos += (__getVector() * spd);
 
 	//スクリーン幅
-	Vector2 screenSize = getScreenSize();
+	Vector2 screenSize = __getScreenSize();
 
 	//画面外で消去
 	const Vector2 work = pos + getTextureSize();
-	const bool isOusScreen_x = (work.x < w.x || screenSize.x < pos.x);
-	const bool isOutScreen_y = (work.y < w.y || screenSize.y < pos.y);
+	const bool isOusScreen_x = (work.x < scroll.x || screenSize.x < pos.x);
+	const bool isOutScreen_y = (work.y < scroll.y || screenSize.y < pos.y);
 	const bool isOutScreen = (isOusScreen_x || isOutScreen_y);
 
-	if (isOutScreen) setActive(false);
+	if (isOutScreen) isActive(false);
 
 	// 変更を反映
 	setPosition(pos);

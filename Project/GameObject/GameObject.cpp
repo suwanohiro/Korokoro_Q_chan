@@ -33,11 +33,12 @@ bool GameObject::TextureLoad(std::string filePath)
 void GameObject::Initialize(Vector2 initPos)
 {
 	_position = initPos;
-	setActive(true);
+	isActive(true);
 }
 
-void GameObject::FixedUpdate()
+void GameObject::FixedUpdate(Vector2 scroll)
 {
+	__setScroll(scroll);
 }
 
 void GameObject::Update()
@@ -60,7 +61,8 @@ void GameObject::Render()
 		rec.Left = work;
 	}
 
-	getTexture()->Render(_position.x, _position.y, rec);
+	const Vector2 renderPos = getPosition() - __getScroll();
+	getTexture()->Render(renderPos.x, renderPos.y, rec);
 }
 
 void GameObject::RenderRect()
@@ -78,7 +80,7 @@ void GameObject::Release()
 	getTexture()->Release();
 }
 
-Vector2 GameObject::getScreenSize()
+Vector2 GameObject::__getScreenSize()
 {
 	return Vector2(
 		(float)g_pGraphics->GetTargetWidth(),

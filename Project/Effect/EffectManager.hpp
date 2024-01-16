@@ -22,10 +22,10 @@ public:
 	~EffectManager() { Release(); }
 
 	bool Load();
-	void FixedUpdate();
+	void FixedUpdate(Vector2 scroll);
 	void Update();
 	void LateUpdate();
-	void Render(Vector2 value);
+	void Render();
 	void Release();
 
 	void startEffect(EffectType type, Vector2 pos);

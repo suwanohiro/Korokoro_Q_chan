@@ -102,6 +102,7 @@
     <ClCompile Include="Character\Enemy\Enemy1.cpp" />
     <ClCompile Include="Character\Enemy\EnemyShot\EnemyShot.cpp" />
     <ClCompile Include="Character\Player\Player.cpp" />
+    <ClCompile Include="Character\Player\PlayerShot\PlayerShot.cpp" />
     <ClCompile Include="Character\Shot\Shot.cpp" />
     <ClCompile Include="Effect\Effect.cpp" />
     <ClCompile Include="Effect\EffectManager.cpp" />
@@ -130,8 +131,11 @@
     <ClInclude Include="Character\Character.h" />
     <ClInclude Include="Character\Enemy\Enemy.hpp" />
     <ClInclude Include="Character\Enemy\Enemy1.hpp" />
+    <ClInclude Include="Character\Enemy\EnemyMotion.hpp" />
     <ClInclude Include="Character\Enemy\EnemyShot\EnemyShot.hpp" />
     <ClInclude Include="Character\Player\Player.hpp" />
+    <ClInclude Include="Character\Player\PlayerMotion.hpp" />
+    <ClInclude Include="Character\Player\PlayerShot\PlayerShot.hpp" />
     <ClInclude Include="Character\Player\PlayerStatus.hpp" />
     <ClInclude Include="Character\Shot\Shot.hpp" />
     <ClInclude Include="Effect\Effect.hpp" />
