@@ -18,7 +18,7 @@ enum class PlayerMotion {
 class Player : public Character
 {
 private:
-	float _wallMove;
+	bool _isJump;
 
 	void __changeMotion(PlayerMotion target) { __getMotion().ChangeMotion((int)target); }
 

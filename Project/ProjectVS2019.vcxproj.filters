@@ -85,6 +85,18 @@
     <Filter Include="Audio">
       <UniqueIdentifier>{ce4d4acf-e475-4134-928e-1d6ac328b9b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Character\Player">
+      <UniqueIdentifier>{18e3fd36-5b4f-4e76-8674-ef1a2e312c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gravity">
+      <UniqueIdentifier>{4d725791-563d-4855-83a3-38650022e8e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{945e23c7-d305-4f48-aba9-039f4ce5805d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{32b6952a-dff6-4ca6-9995-cf5de2862ac8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -152,6 +164,24 @@
     </ClCompile>
     <ClCompile Include="Audio\AudioManager.cpp">
       <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Character\Player\Player.cpp">
+      <Filter>Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GameObjectMotion.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Gravity\Gravity.cpp">
+      <Filter>Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\Effect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\EffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\ResourceManager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +259,27 @@
     </ClInclude>
     <ClInclude Include="Audio\AudioManager.hpp">
       <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Player\Player.hpp">
+      <Filter>Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Player\PlayerStatus.hpp">
+      <Filter>Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\GameObjectMotion.hpp">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Gravity\Gravity.hpp">
+      <Filter>Gravity</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\Effect.hpp">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\EffectManager.hpp">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\ResourceManager.hpp">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

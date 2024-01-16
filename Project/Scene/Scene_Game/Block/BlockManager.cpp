@@ -15,20 +15,6 @@ void BlockManager::__loadBlockData(std::string blockDataFileName)
 
 	const int length = blockDatas["Length"];
 
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
-	OutputDebugString("\n");
 	for (int cnt = 0; cnt < length; cnt++) {
 		const auto blockData = blockDatas["BlockDatas"][cnt];
 		const std::string BlockID = blockData["BlockID"];
@@ -39,10 +25,7 @@ void BlockManager::__loadBlockData(std::string blockDataFileName)
 		const std::string ImageFileName = blockData["ImageFileName"];
 		const std::string ImageFilePath = "Image/Blocks/" + ImageFileName;
 		const spCTexture texture(new CTexture);
-		const bool flg = texture.get()->Load(ImageFilePath.c_str());
-
-		OutputDebugString((flg) ? "true" : "false");
-		OutputDebugString("\n");
+		const bool flg = texture->Load(ImageFilePath.c_str());
 
 		const BlockData work = { BlockID, texture };
 		__addBlockData(work);

@@ -5,8 +5,11 @@
 // 最大HP
 constexpr int		Player_MaxHP = 100;
 
+constexpr float		Player_WallMove = 1.0f;
+
 // スピード
 constexpr float		PLAYER_SPEED = 3.0f;
+
 // 最大スピード
 constexpr float		PLAYER_MAXSPEED = 10.0f;
 
@@ -18,7 +21,7 @@ constexpr int		PLAYER_ATTACKWIDTH = 30;
 constexpr int		PLAYER_RECTDECREASE = 12;
 
 // HP回復量
-constexpr float		ADD_HP = 0.05;// * 10000
+constexpr float		ADD_HP = 0.05f;// * 10000
 
 
 // 弾の発射限界数
