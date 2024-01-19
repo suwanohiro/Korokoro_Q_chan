@@ -186,6 +186,9 @@ public:
 	void SetStCollision(bool flg) { m_bStCollision = flg; }
 	void SetPos(Vector2 pos) { m_Position = pos; }
 	void SetPos(float x, float y) { m_Position = Vector2(x, y); }
+	Vector2 GetPos() { return m_Position; }
+
+	void SetHP(float value) { m_HP = value; }
 
 	CRectangle GetAttackRect() {
 		//”»’è‚ð•Ô‚·‚æ‚¤‚É‚·‚é

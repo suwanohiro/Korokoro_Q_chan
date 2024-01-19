@@ -119,21 +119,50 @@ void CStage::__updateScroll()
 	//プレイヤーの矩形取得
 	CRectangle prec = _player->getHitBox();
 	//スクリーンの幅
-	const float sw = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
+	const float screenWidth = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
 
 	//ステージ全体の幅
-	const float stgw = _maxBlockTextureSize.x * _mapSize.x;
+	const float stageWidth = _maxBlockTextureSize.x * _mapSize.x;
 
-	//座標が画面端によっている（各端から200pixel）場合スクロールを行って補正する
-	const float scrollLimit = 200.0f;
-	if (prec.Left - m_ScrollX < scrollLimit) {
-		m_ScrollX -= scrollLimit - (prec.Left - m_ScrollX);
+	//座標が画面端によっている（各端から400pixel）場合スクロールを行って補正する
+	const float limit = 400.0f;
+
+	struct {
+		float Left;
+		float Right;
+	} scrollLimit;
+
+	scrollLimit.Left = m_ScrollX;
+	scrollLimit.Right = m_ScrollX;
+
+	scrollLimit.Left += limit;
+	scrollLimit.Right += screenWidth - limit;
+
+	if (prec.Left < scrollLimit.Left) {
+		m_ScrollX -= (scrollLimit.Left - prec.Left);
 		if (m_ScrollX < 0) m_ScrollX = 0;
 	}
-	else if (prec.Right - m_ScrollX > sw - scrollLimit) {
-		m_ScrollX += (prec.Right - m_ScrollX) - (sw - scrollLimit);
-		if (m_ScrollX >= stgw - sw) m_ScrollX = stgw - sw;
+	else if (prec.Right > scrollLimit.Right) {
+		m_ScrollX += (prec.Right - scrollLimit.Right);
+		const float limitScrollRight = stageWidth - screenWidth;
+		if (m_ScrollX > limitScrollRight) m_ScrollX = limitScrollRight;
+
+		// もしステージの全長が画面幅より小さければ
+		// if (stageWidth < screenWidth) m_ScrollX = 0;
 	}
+
+	return;
+
+
+	// const float limit = 200.0f;
+	// if (prec.Left - m_ScrollX < scrollLimit.Left) {
+	// 	m_ScrollX -= limit - (prec.Left - m_ScrollX);
+	// 	if (m_ScrollX < 0) m_ScrollX = 0;
+	// }
+	// else if (prec.Right - m_ScrollX > screenWidth - scrollLimit.Right) {
+	// 	m_ScrollX += (prec.Right - m_ScrollX) - (screenWidth - limit);
+	// 	if (m_ScrollX >= stageWidth - screenWidth) m_ScrollX = stageWidth - screenWidth;
+	// }
 }
 
 void CStage::__updatePlayer()
@@ -142,6 +171,17 @@ void CStage::__updatePlayer()
 
 	_player->Update();
 	_player->UpdateUI();
+
+	//スクリーンの幅
+	const float screenWidth = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
+	Vector2 pos = _player->GetPos();
+	const float recRight = _player->getHitBox().Right;
+	if (pos.x < 0) pos.x = 0;
+
+	const float rightLimit = m_ScrollX + screenWidth;
+	if (rightLimit < recRight) pos.x = rightLimit;
+
+	_player->SetPos(pos);
 
 	//ステージとプレイヤーの当たり判定
 	float ox = 0, oy = 0;
@@ -306,6 +346,7 @@ bool CStage::LoadMapData(std::string mapFileName){
 	_blockArray.clear();
 	_isPlayerSeted = false;
 
+	_blockDataArray.clear();
 	__loadBlockData();
 
 	// マップファイルを読み込む
@@ -489,6 +530,17 @@ void CStage::Render(void){
 	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
 		_enemyArray[cnt]->Render(m_ScrollX, m_ScrollY);
 	}
+
+	Vector2 pos = _player->GetPos();
+	const float screenHeight = g_pGraphics->GetTargetHeight();
+	const float BottomLimit = m_ScrollY + screenHeight;
+
+	// TODO : あとで消す
+	if (BottomLimit < pos.y) _player->SetHP(0);
+	CGraphicsUtilities::RenderString(0, 150, "PlayerPos : %0.2f, %0.2f", pos.x, pos.y);
+
+
+	CGraphicsUtilities::RenderString(0, 100, "X : %0.2f\nY : %0.2f", m_ScrollX, m_ScrollY);
 
 	if (!_isPlayerSeted) return;
 	_player->Render(m_ScrollX, m_ScrollY);

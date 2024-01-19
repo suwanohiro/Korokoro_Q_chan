@@ -180,7 +180,6 @@ void CPlayer::Update(void)
 	UpdateMove();
 	//実際に座標を移動させる
 	m_Position.x += m_Move.x;
-	//m_Position.y += m_Move.y + m_WallMove;
 	m_Position.y += m_Move.y;
 
 	//移動SEを流す
@@ -251,15 +250,6 @@ void CPlayer::Update(void)
 		//死亡SEを流す
 		m_Audio->Play(Audio_PlayerDead, false);
 	}
-	//地面に接触するとジャンプ終了（いったん画面下端で停止するように設定する）
-	if (m_Position.y + m_SrcRect.GetHeight() >= g_pGraphics->GetTargetHeight()) {
-		m_Position.y = g_pGraphics->GetTargetHeight() - m_SrcRect.GetHeight();
-		m_Move.y = 0;
-		if (m_bJump) {
-			m_bJump = false;
-			m_Motion.ChangeMotion(MOTION_JUMPEND);
-		}
-	}
 	//アニメーションの更新
 	m_Motion.AddTimer(CUtilities::GetFrameSecond());
 	m_SrcRect = m_Motion.GetSrcRect();
@@ -267,9 +257,6 @@ void CPlayer::Update(void)
 	if (m_DamageWait > 0) {
 		m_DamageWait--;
 	}
-
-	
-
 }
 
 void CPlayer::UpdateKey(void)
