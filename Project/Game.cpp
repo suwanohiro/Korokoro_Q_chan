@@ -43,7 +43,9 @@ void CGame::Initialize(){
 	//ステージの状態初期化
 	m_Stage.Initialize(&m_EffectManager, m_Audio);
 
-	m_Stage.LoadMapData("test_stage_2024-01-12_1");
+	CSVData mapList = FileAction::ReadCSV("Resource/MapData/MapList.swn");
+
+	m_Stage.LoadMapData(mapList[0][0]);
 
 	//エフェクトの状態初期化
 	m_EffectManager.Initialize();
