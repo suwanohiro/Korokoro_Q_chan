@@ -83,10 +83,14 @@ void CStage::__addBlock(std::string BlockID, Vector2 position)
 
 		_enemyArray.push_back(work);
 	}
-	else if (ID.isID("item")) {
+	else if (ID.isID("coin") || ID.isID("orb")) {
 		// TODO : Item追加処理仮実装状態
 		spCItem work(new CItem);
-		work->Initialize(position.x, position.y, 0);
+		ItemType type = (ID.isID("coin")) ? ItemType::WayPoint : ItemType::Recover;
+		Vector2 pos = position;
+		pos *= blockData.Texture->GetWidth();
+		work->Initialize(pos.x, pos.y, (int)type);
+		work->SetTexture(blockData.Texture.get());
 
 		_itemArray.push_back(work);
 	}
@@ -218,6 +222,8 @@ void CStage::__updateItem(spCItem targetElem)
 {
 	targetElem->Update();
 
+	if (!targetElem->GetShow()) return;
+
 	float ox = 0, oy = 0;
 	const bool flg = Collision(targetElem->GetRect(), ox, oy);
 
@@ -344,6 +350,8 @@ CStage::~CStage(){
 bool CStage::LoadMapData(std::string mapFileName){
 	// 既存のデータを一度削除する
 	_blockArray.clear();
+	_enemyArray.clear();
+	_itemArray.clear();
 	_isPlayerSeted = false;
 
 	_blockDataArray.clear();
