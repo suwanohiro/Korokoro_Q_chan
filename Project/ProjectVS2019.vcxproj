@@ -60,6 +60,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\Library\Include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -95,16 +96,86 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio\AudioManager.cpp" />
+    <ClCompile Include="Character\Character.cpp" />
+    <ClCompile Include="Character\CharacterManager.cpp" />
+    <ClCompile Include="Character\Enemy\Enemy.cpp" />
+    <ClCompile Include="Character\Enemy\Enemy1.cpp" />
+    <ClCompile Include="Character\Enemy\EnemyShot\EnemyShot.cpp" />
+    <ClCompile Include="Character\Player\Player.cpp" />
+    <ClCompile Include="Character\Player\PlayerShot\PlayerShot.cpp" />
+    <ClCompile Include="Character\Shot\Shot.cpp" />
+    <ClCompile Include="Effect\Effect.cpp" />
+    <ClCompile Include="Effect\EffectManager.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\GameObjectMotion.cpp" />
+    <ClCompile Include="Gravity\Gravity.cpp" />
+    <ClCompile Include="ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="Scene\Scene_Base.cpp" />
+    <ClCompile Include="Scene\Scene_GameOver\Scene_GameOver.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\Block.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\BlockManager.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\Block_Base.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Block\Block_Ground.cpp" />
+    <ClCompile Include="Scene\Scene_Game\Scene_Game.cpp" />
+    <ClCompile Include="swnLibrary\AudioCtrl\AudioCtrl.cpp" />
+    <ClCompile Include="swnLibrary\FileAction\FileAction.cpp" />
+    <ClCompile Include="swnLibrary\Socket\Client\Client.cpp" />
+    <ClCompile Include="swnLibrary\Socket\Server\Server.cpp" />
+    <ClCompile Include="swnLibrary\Socket\Socket.cpp" />
+    <ClCompile Include="swnLibrary\StringAction\StringAction.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio\AudioManager.hpp" />
+    <ClInclude Include="Character\Character.h" />
+    <ClInclude Include="Character\CharacterManager.hpp" />
+    <ClInclude Include="Character\Enemy\Enemy.hpp" />
+    <ClInclude Include="Character\Enemy\Enemy1.hpp" />
+    <ClInclude Include="Character\Enemy\EnemyMotion.hpp" />
+    <ClInclude Include="Character\Enemy\EnemyShot\EnemyShot.hpp" />
+    <ClInclude Include="Character\Enemy\EnemyStatus.hpp" />
+    <ClInclude Include="Character\Player\Player.hpp" />
+    <ClInclude Include="Character\Player\PlayerMotion.hpp" />
+    <ClInclude Include="Character\Player\PlayerShot\PlayerShot.hpp" />
+    <ClInclude Include="Character\Player\PlayerStatus.hpp" />
+    <ClInclude Include="Character\Shot\Shot.hpp" />
+    <ClInclude Include="Effect\Effect.hpp" />
+    <ClInclude Include="Effect\EffectManager.hpp" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameObject\GameObject.hpp" />
+    <ClInclude Include="GameObject\GameObjectMotion.hpp" />
+    <ClInclude Include="Gravity\Gravity.hpp" />
+    <ClInclude Include="ResourceManager\ResourceManager.hpp" />
+    <ClInclude Include="Scene\Scene_Base.hpp" />
+    <ClInclude Include="Scene\Scene_GameOver\Scene_GameOver.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\Block.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\BlockData.hpp" />
+    <ClInclude Include="Scene\Scene_Game\Block\BlockManager.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\Block_Base.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\Block_Ground.h" />
+    <ClInclude Include="Scene\Scene_Game\Scene_Game.hpp" />
+    <ClInclude Include="Scene\Scene_List.hpp" />
+    <ClInclude Include="swnLibrary\AudioCtrl\AudioCtrl.h" />
+    <ClInclude Include="swnLibrary\FileAction\FileAction.h" />
+    <ClInclude Include="swnLibrary\FileAction\json.hpp" />
+    <ClInclude Include="swnLibrary\Socket\Client\Client.h" />
+    <ClInclude Include="swnLibrary\Socket\Server\Server.h" />
+    <ClInclude Include="swnLibrary\Socket\Socket.h" />
+    <ClInclude Include="swnLibrary\StringAction\StringAction.h" />
+    <ClInclude Include="swnLibrary\swnLibrary.h" />
+    <ClInclude Include="swnLibrary\WebColor\WebColor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
     <ResourceCompile Include="Version.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\MapData\debug - コピー.swnstg" />
+    <None Include="..\Resource\MapData\debug.swnstg" />
+    <None Include="..\Resource\MapData\test_stage_1_debug.swnstg" />
   </ItemGroup>
 </Project>

@@ -53,6 +53,9 @@ CSVData FileAction::ReadCSV(const std::string& currentFilePath) {
     std::string line;
 
     while (std::getline(iss, line)) {
+        // ³‹K•\Œ»‚ğg—p‚µ‚Ä\r‚ğíœ‚·‚é
+        line = std::regex_replace(line, std::regex("\r"), "");
+
         std::vector<std::string> work;
         std::istringstream lineStream(line);
         std::string cell;
