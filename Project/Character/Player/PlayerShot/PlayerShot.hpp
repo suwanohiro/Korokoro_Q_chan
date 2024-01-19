@@ -13,7 +13,7 @@ public:
 	void Render() override;
 
 	void Fire(Vector2 playerPos) override { Fire(playerPos, false); };
-	void Fire(Vector2 playerPos, bool isReverse);
+	void Fire(Vector2 playerPos, bool IsReverse);
 };
 
 using spPlayerShot = std::shared_ptr<PlayerShot>;

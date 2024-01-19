@@ -5,7 +5,7 @@ enum class PlayerMotion {
 	Move,
 	JumpStart,
 	JumpEnd,
-	Attack,
+	Attack1,
 	Attack2,
 	Damage,
 	WallMove,

@@ -35,6 +35,8 @@ protected:
 
 	void __setMoveSpd(Vector2 value) { _moveSpd = value; }
 	void __setMoveSpd(float x, float y) { _moveSpd = Vector2(x, y); }
+	void __updateMoveSpd(Vector2 value) { _moveSpd += value; }
+	void __updateMoveSpd(float x, float y) { __updateMoveSpd(Vector2(x, y)); }
 
 	void __setDamageWait(int value) { _damageWait = value; }
 	void __updateDamageWait();
@@ -58,6 +60,8 @@ public:
 	void CollisionStage(float ox, float oy) { CollisionStage(Vector2(ox, oy)); };
 	virtual void CollisionStage(Vector2 value) = 0;
 
+	virtual void Damage(int value, bool IsReverse) = 0;
+
 	/// <summary>
 	/// ê∂ë∂ÇµÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©
 	/// </summary>
@@ -73,5 +77,4 @@ public:
 	void setShotTexture(spCTexture value) { _shotTexture = value; }
 };
 
-template <typename T = spShot>
 using spCharacter = std::shared_ptr<Character>;

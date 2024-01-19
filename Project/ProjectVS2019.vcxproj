@@ -98,6 +98,7 @@
   <ItemGroup>
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="Character\Character.cpp" />
+    <ClCompile Include="Character\CharacterManager.cpp" />
     <ClCompile Include="Character\Enemy\Enemy.cpp" />
     <ClCompile Include="Character\Enemy\Enemy1.cpp" />
     <ClCompile Include="Character\Enemy\EnemyShot\EnemyShot.cpp" />
@@ -129,10 +130,12 @@
   <ItemGroup>
     <ClInclude Include="Audio\AudioManager.hpp" />
     <ClInclude Include="Character\Character.h" />
+    <ClInclude Include="Character\CharacterManager.hpp" />
     <ClInclude Include="Character\Enemy\Enemy.hpp" />
     <ClInclude Include="Character\Enemy\Enemy1.hpp" />
     <ClInclude Include="Character\Enemy\EnemyMotion.hpp" />
     <ClInclude Include="Character\Enemy\EnemyShot\EnemyShot.hpp" />
+    <ClInclude Include="Character\Enemy\EnemyStatus.hpp" />
     <ClInclude Include="Character\Player\Player.hpp" />
     <ClInclude Include="Character\Player\PlayerMotion.hpp" />
     <ClInclude Include="Character\Player\PlayerShot\PlayerShot.hpp" />
@@ -148,6 +151,7 @@
     <ClInclude Include="Scene\Scene_Base.hpp" />
     <ClInclude Include="Scene\Scene_GameOver\Scene_GameOver.h" />
     <ClInclude Include="Scene\Scene_Game\Block\Block.h" />
+    <ClInclude Include="Scene\Scene_Game\Block\BlockData.hpp" />
     <ClInclude Include="Scene\Scene_Game\Block\BlockManager.h" />
     <ClInclude Include="Scene\Scene_Game\Block\Block_Base.h" />
     <ClInclude Include="Scene\Scene_Game\Block\Block_Ground.h" />

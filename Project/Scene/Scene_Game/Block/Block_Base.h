@@ -1,11 +1,7 @@
 #pragma once
 
 #include "../../../GameObject/GameObject.hpp"
-
-struct BlockData {
-	std::string BlockID;
-	spCTexture Texture;
-};
+#include "./BlockData.hpp"
 
 class Block_Base : public GameObject
 {
@@ -13,7 +9,7 @@ protected:
 	std::string _blockID;
 
 public:
-	Block_Base(BlockData blockData, Vector2 position);
+	Block_Base(BlockDataElem blockData, Vector2 position);
 	~Block_Base();
 
 	/// <summary>

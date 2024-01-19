@@ -189,6 +189,9 @@
     <ClCompile Include="Character\Player\PlayerShot\PlayerShot.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Character\CharacterManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -295,6 +298,15 @@
     </ClInclude>
     <ClInclude Include="Character\Player\PlayerShot\PlayerShot.hpp">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\CharacterManager.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Scene_Game\Block\BlockData.hpp">
+      <Filter>Scene\Game\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Enemy\EnemyStatus.hpp">
+      <Filter>Character\Enemy\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

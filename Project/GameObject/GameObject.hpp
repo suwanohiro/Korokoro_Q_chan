@@ -124,6 +124,7 @@ public:
 	/// ‰æ‘œ”½“]•\Ž¦‚·‚é‚©‚Ç‚¤‚©
 	/// </summary>
 	bool isReverse() { return _isReverse; }
+	void isReverse(bool value) { _isReverse = value; }
 
 	void setTexture(spCTexture value);
 
@@ -131,9 +132,6 @@ public:
 	void setPosition(float x, float y) { setPosition(Vector2(x, y)); }
 	void updatePosition(Vector2 pos) { _position += pos; }
 	void updatePosition(float x, float y) { updatePosition(Vector2(x, y)); }
-
-
-	void setReverse(bool value) { _isReverse = value; }
 };
 
 using spGameObject = std::shared_ptr<GameObject>;

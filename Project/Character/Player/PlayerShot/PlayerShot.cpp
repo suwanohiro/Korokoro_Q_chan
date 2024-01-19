@@ -27,9 +27,9 @@ void PlayerShot::Render()
 	getTexture()->Render(x, getPosition().y);
 }
 
-void PlayerShot::Fire(Vector2 playerPos, bool isReverse)
+void PlayerShot::Fire(Vector2 playerPos, bool IsReverse)
 {
 	Shot::Fire(playerPos);
-	setReverse(isReverse);
+	isReverse(IsReverse);
 }
 

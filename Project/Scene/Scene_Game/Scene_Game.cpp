@@ -2,29 +2,29 @@
 
 void Scene_Game::__loadMapData()
 {
-	const auto mainLayer = _mapData["MapData"]["Main"];
-	const auto mapData = mainLayer["MapData"];
-	const int length = mainLayer["Length"];
+	//const auto mainLayer = _mapData["MapData"]["Main"];
+	//const auto mapData = mainLayer["MapData"];
+	//const int length = mainLayer["Length"];
 
-	for (int cnt = 0; cnt < length; cnt++) {
-		const auto blockData = mapData[cnt];
-		const std::string BlockID = blockData["BlockID"];
-		const auto Pos = blockData["Position"];
-		const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
+	//for (int cnt = 0; cnt < length; cnt++) {
+	//	const auto blockData = mapData[cnt];
+	//	const std::string BlockID = blockData["BlockID"];
+	//	const auto Pos = blockData["Position"];
+	//	const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
 
-		addBlockResult work = _blockManager.addBlock(BlockID, Position);
+	//	addBlockResult work = _blockManager.__addBlock(BlockID, Position);
 
-		if (std::holds_alternative<int>(work)) {
-			if (std::get<int>(work) == NULL) continue;
-		}
+	//	if (std::holds_alternative<int>(work)) {
+	//		if (std::get<int>(work) == NULL) continue;
+	//	}
 
-		// ブロックデータは全て_blockDatasに格納
-		if (std::holds_alternative<spBlock_Ground>(work)) {
-			_blockDatas.push_back(std::get<spBlock_Ground>(work));
-		}
+	//	// ブロックデータは全て_blockDatasに格納
+	//	if (std::holds_alternative<spBlock_Ground>(work)) {
+	//		_blockDatas.push_back(std::get<spBlock_Ground>(work));
+	//	}
 
-		// 別途格納すべきデータはこの下に記述
-	}
+	//	// 別途格納すべきデータはこの下に記述
+	//}
 }
 
 Scene_Game::Scene_Game(std::string mapFileName)
@@ -37,7 +37,9 @@ Scene_Game::Scene_Game(std::string mapFileName)
 
 void Scene_Game::Initialize()
 {
-	_blockManager.Initialize("BlockDatas");
+	// TODO : initPosを定義する
+	Vector2 initPos;
+	_blockManager.Initialize(initPos, "BlockDatas");
 
 	__loadMapData();
 }

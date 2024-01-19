@@ -3,6 +3,7 @@
 #include "../Character.h"
 #include "./EnemyShot/EnemyShot.hpp"
 #include "./EnemyMotion.hpp"
+#include "./EnemyStatus.hpp"
 
 using spEnemyShotArray = spShotArray<spEnemyShot>;
 
@@ -27,7 +28,6 @@ protected:
 	bool __isInScreen() { return _isInScreen; }
 	void __isInScreen(bool value) { _isInScreen = value; }
 
-	spEnemyShotArray __getShotArray() { return _shotArray; };
 
 public:
 	Enemy(spAudioManager audioManager, spEffectManager effectManager);
@@ -41,8 +41,12 @@ public:
 
 	void CollisionStage(Vector2 value) override;
 
-	void Damage(int value, bool isReverse);
+	virtual void Damage(int value, bool IsReverse) override;
 
-	virtual void Attack() = 0;
+	// TODO : Enemy_getshotArray()‚ðprotected‚É–ß‚·
+	spEnemyShotArray getShotArray() { return _shotArray; };
+
+	virtual void Attack() {};
 };
 
+using spEnemy = std::shared_ptr <Enemy>;

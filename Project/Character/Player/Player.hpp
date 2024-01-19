@@ -5,14 +5,41 @@
 #include "./PlayerMotion.hpp"
 #include "./PlayerShot/PlayerShot.hpp"
 
+#include "../Enemy/Enemy.hpp"
+
 using spPlayerShotArray = spShotArray<spPlayerShot>;
+
+enum class KeyContents {
+	LEFTMOVE = MOFKEY_LEFT,
+	RIGHTMOVE = MOFKEY_RIGHT,
+	ATTACK = MOFKEY_S,
+	ATTACK2 = MOFKEY_D,
+	JUMP = MOFKEY_A,
+	WALLUPMOVE = MOFKEY_UP,
+	WALLDOWNMOVE = MOFKEY_DOWN
+};
+
+struct MoveFlg {
+	bool x = false;
+	bool y = false;
+
+	MoveFlg(bool _x = false, bool _y = false) {
+		x = _x;
+		y = _y;
+	}
+};
+
+// UŒ‚•ûŒü
+enum class AttackDirections {
+	Left,
+	Right
+};
 
 class Player : public Character
 {
 private:
 	bool _isJump;
-	bool _isMoveX;
-	bool _isMoveY;
+	MoveFlg _isMove;
 	bool _isHit;
 	bool _isWallMove;
 	bool _isStageCollision;
@@ -22,9 +49,53 @@ private:
 
 
 	bool __updateMotion();
-	void __updateKey();
 	void __updateMove();
 	void __updateJumpEnd();
+
+	void __updateKey();
+	void __inputMove();
+	void __inputJump();
+	void __inputAttack1();
+	void __inputAttack2();
+	void __inputWallMove();
+
+	/// <summary>
+	/// ƒvƒŒƒCƒ„[’e‚Æ‚Ì“–‚½‚è”»’èˆ—
+	/// </summary>
+	/// <param name="enemy">‘ÎÛ‚Æ‚È‚é“G—v‘f</param>
+	/// <param name="isDamagedEnemy">ƒ_ƒ[ƒW’†‚©‚Ç‚¤‚© (“G)</param>
+	/// <returns>“–‚½‚Á‚½‚©‚Ç‚¤‚©</returns>
+	bool __collisionShot(spEnemy enemy, bool isDamagedEnemy);
+
+	/// <summary>
+	/// “G‚Ì’e‚Æ‚Ì“–‚½‚è”»’èˆ—
+	/// </summary>
+	/// <param name="enemy">‘ÎÛ‚Æ‚È‚é“G—v‘f</param>
+	/// <param name="isDamagedEnemy">ƒ_ƒ[ƒW’†‚©‚Ç‚¤‚© (ƒvƒŒƒCƒ„[)</param>
+	/// <returns>“–‚½‚Á‚½‚©‚Ç‚¤‚©</returns>
+	bool __collisionEnemyShot(spEnemy enemy, bool isDamagedPlayer);
+
+	/// <summary>
+	/// “G‚Æ‚Ì“–‚½‚è”»’èˆ—
+	/// </summary>
+	/// <param name="enemy">‘ÎÛ‚Æ‚È‚é“G—v‘f</param>
+	/// <returns>“–‚½‚Á‚½‚©‚Ç‚¤‚©</returns>
+	bool __collisionEnemy(spEnemy enemy);
+
+	/// <summary>
+	/// “G‚Ì‹éŒ`‚Æ©•ª‚ÌUŒ‚‹éŒ`‚Å“G‚ªƒ_ƒ[ƒW
+	/// </summary>
+	/// <param name="enemy">‘ÎÛ‚Æ‚È‚é“G—v‘f</param>
+	/// <returns>“–‚½‚Á‚½‚©‚Ç‚¤‚©</returns>
+	bool __collisionAttack(spEnemy enemy);
+
+	/// <summary>
+	/// Œ¸‘¬ˆ—
+	/// </summary>
+	void __deceleration();
+	void __decelerationWall();
+
+	void __gravity();
 
 	/// <summary>
 	/// ‰æ–Ê‰º‚Ö—‰ºˆ—
@@ -47,22 +118,30 @@ private:
 	bool __isPlayerMove() { return getMoveSpd().x != 0 || (__isWallMove() && getMoveSpd().y != 0); }
 	bool __isPlayerStop();
 
-	bool __isJump() { return _isJump; }
+	bool __isJump() const { return _isJump; }
 	void __isJump(bool value) { _isJump = value; }
 
-	bool __isHit() { return _isHit; }
+	bool __isHit() const { return _isHit; }
 	void __isHit(bool value) { _isHit = value; }
 
-	bool __isWallMove() { return _isWallMove; }
+	bool __isWallMove() const { return _isWallMove; }
 	void __isWallMove(bool value) { _isWallMove = value; }
 
-	bool __isStageCollision() { return _isStageCollision; }
+	bool __isStageCollision() const { return _isStageCollision; }
 	void __isStageCollision(bool value) { _isStageCollision = value; }
 
-	bool __isShot() { return _isShot; }
+	bool __isShot() const { return _isShot; }
 	void __isShot(bool value) { _isShot = value; }
 
-	spPlayerShotArray __getShotArray() { return _shotArray; }
+	MoveFlg __isMove() const { return _isMove; }
+	void __isMove(MoveFlg value) { _isMove = value; }
+	void __isMove(bool x, bool y) { _isMove = MoveFlg(x, y); }
+
+	spPlayerShotArray __getShotArray() const { return _shotArray; }
+
+	bool __isAttack1() { return (__getMotionNo() == PlayerMotion::Attack1); }
+	bool __isAttack2() { return (__getMotionNo() == PlayerMotion::Attack2); }
+
 
 public:
 	Player(spAudioManager audioManager, spEffectManager effectManager);
@@ -73,5 +152,21 @@ public:
 	void LateUpdate() override;
 	void Render() override;
 	void Release() override;
+
+	void CollisionStage(Vector2 value) override;
+
+	void Damage(int value, bool IsReverse) override;
+
+	/// <summary>
+	/// •ÇˆÚ“®‚É•ÏX‚³‚¹‚é
+	/// </summary>
+	/// <param name="direction">UŒ‚•ûŒü</param>
+	void ChangeWallMove(AttackDirections direction);
+
+	bool CollisionEnemy(spEnemy enemy);
+
+	CRectangle getHitBox();
+	CRectangle getAttack2Box();
 };
 
+using spPlayer = std::shared_ptr<Player>;

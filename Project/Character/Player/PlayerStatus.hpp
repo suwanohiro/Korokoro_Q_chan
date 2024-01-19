@@ -24,6 +24,8 @@ constexpr int		PLAYER_RECTDECREASE = 12;
 constexpr float		ADD_HP = 0.05f;// * 10000
 
 
+// ’e‚ÌˆĞ—Í
+constexpr int		PlayerShot_Power = 5;
 // ’e‚Ì”­ËŒÀŠE”
 constexpr int		PLAYERSHOT_COUNT = 2;
 // ’e‚Ì”­ËŠÔŠu

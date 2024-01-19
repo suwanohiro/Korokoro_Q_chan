@@ -7,7 +7,6 @@ void Enemy::__damage()
 
 	// 終了で待機に戻す
 	if (__isEndMotion()) {
-		// TODO : 変更先がMoveとなっているが待機じゃないか確認
 		// TODO : -> Move以外のモーションが無いため一時的措置としてMoveを代入
 		__changeMotion(EnemyMotion::Move);
 
@@ -55,7 +54,7 @@ void Enemy::Initialize(Vector2 initPos)
 	Character::Initialize(initPos);
 	__setMoveSpd(-3.0f, 0);
 	isActive(true);
-	setReverse(true);
+	isReverse(true);
 	__isMove(false);
 	__setHP(10);
 	__setDamageWait(0);
@@ -81,8 +80,8 @@ void Enemy::FixedUpdate(Vector2 scroll)
 
 	Character::FixedUpdate(scroll);
 
-	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
-		const spEnemyShot work = __getShotArray()[cnt];
+	for (int cnt = 0; cnt < getShotArray().size(); cnt++) {
+		const spEnemyShot work = getShotArray()[cnt];
 		work->FixedUpdate(scroll);
 	}
 }
@@ -98,9 +97,6 @@ void Enemy::Update()
 	const bool isPlay = __getAudioManager()->isPlay(AudioTrack::SE_Enemy_Move);
 	if (__isMove() && !isPlay) __getAudioManager()->play(AudioTrack::SE_Enemy_Move);
 	else if (!__isMove()) __getAudioManager()->stop(AudioTrack::SE_Enemy_Dead);
-
-	// 重力処理
-	Gravity::addGravity(getMoveSpd());
 }
 
 void Enemy::LateUpdate()
@@ -109,12 +105,17 @@ void Enemy::LateUpdate()
 
 	Character::LateUpdate();
 
-	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
-		const spEnemyShot work = __getShotArray()[cnt];
+	// 重力処理
+	Vector2 moveSpd = getMoveSpd();
+	Gravity::addGravity(moveSpd);
+	__setMoveSpd(moveSpd);
+
+	for (int cnt = 0; cnt < getShotArray().size(); cnt++) {
+		const spEnemyShot work = getShotArray()[cnt];
 		work->LateUpdate();
 
 		// エフェクト要素が無効状態ならば要素を削除する
-		if (!work->isActive()) __getShotArray().erase(__getShotArray().begin() + cnt);
+		if (!work->isActive()) getShotArray().erase(getShotArray().begin() + cnt);
 	}
 }
 
@@ -124,8 +125,8 @@ void Enemy::Render()
 
 	Character::Render();
 
-	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
-		const spEnemyShot work = __getShotArray()[cnt];
+	for (int cnt = 0; cnt < getShotArray().size(); cnt++) {
+		const spEnemyShot work = getShotArray()[cnt];
 		work->Render();
 	}
 }
@@ -134,8 +135,8 @@ void Enemy::Release()
 {
 	Character::Release();
 
-	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
-		const spEnemyShot work = __getShotArray()[cnt];
+	for (int cnt = 0; cnt < getShotArray().size(); cnt++) {
+		const spEnemyShot work = getShotArray()[cnt];
 		work->Release();
 	}
 }
@@ -158,22 +159,22 @@ void Enemy::CollisionStage(Vector2 value)
 	//左移動中の左埋まり、右移動中の右埋まりの場合は移動を初期化する。
 	if (puddleLeft || puddleRight) move.x *= -1;
 
-	if (puddleLeft) setReverse(true);
-	else if (puddleRight) setReverse(false);
+	if (puddleLeft) isReverse(true);
+	else if (puddleRight) isReverse(false);
 
 	// 変更を反映
 	__setMoveSpd(move);
 }
 
-void Enemy::Damage(int value, bool isReverse)
+void Enemy::Damage(int value, bool IsReverse)
 {
 	Vector2 move = getMoveSpd();
-
+	
 	__isMove(false);
 	updateHP(-value);
 	__setDamageWait(60);
-	move.x = (isReverse) ? -5.0f : 5.0f;
-	setReverse(!isReverse);
+	move.x = (IsReverse) ? -5.0f : 5.0f;
+	isReverse(!IsReverse);
 
 	__changeMotion(EnemyMotion::Damage);
 
