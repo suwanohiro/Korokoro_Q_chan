@@ -101,12 +101,15 @@ void CStage::__addBlock(std::string BlockID, Vector2 position)
 
 void CStage::__setPlayer(Vector2 pos)
 {
+	if (_isPlayerSeted) return;
+
 	spCPlayer work(new CPlayer);
 	work->Load();
 	work->Initialize();
 	work->SetPos(pos);
 	work->SetEffectManager(_pmng);
 	work->SetAudio(_audio);
+	_isPlayerSeted = true;
 
 	_player = work;
 }
@@ -135,7 +138,10 @@ void CStage::__updateScroll()
 
 void CStage::__updatePlayer()
 {
+	if (!_isPlayerSeted) return;
+
 	_player->Update();
+	_player->UpdateUI();
 
 	//ステージとプレイヤーの当たり判定
 	float ox = 0, oy = 0;
@@ -275,7 +281,7 @@ CStage::CStage()
 	, m_ScrollX(0)
 	, m_ScrollY(0)
 	, m_StCollision(false)
-	, _player(new CPlayer)
+	, _player(nullptr)
 	, _mapSize(0, 0)
 	, _maxBlockTextureSize(0, 0)
 {
@@ -298,6 +304,9 @@ CStage::~CStage(){
 bool CStage::LoadMapData(std::string mapFileName){
 	// 既存のデータを一度削除する
 	_blockArray.clear();
+	_isPlayerSeted = false;
+
+	__loadBlockData();
 
 	// マップファイルを読み込む
 	const std::string mapPath = "Resource/MapData/" + mapFileName + ".swnstg";
@@ -318,7 +327,14 @@ bool CStage::LoadMapData(std::string mapFileName){
 		
 		__addBlock(BlockID, Position);
 	}
+
+	int a = _blockArray.size();
 	return true;
+}
+
+bool CStage::LoadBKTexture()
+{
+	return m_BackTexture.Load("bg.png");
 }
 
 /**
@@ -340,7 +356,7 @@ void CStage::Initialize(CEffectManager* pmng, CAudio* audio){
  * 引数
  * [in]			pl					プレイヤー、スクロールの判定に使用
  */
-void CStage::Update(CPlayer& pl){
+void CStage::Update(){
 	////////////////////////////////////////////////////////////////////////
 	// 
 	// FixedUpdate
@@ -474,7 +490,9 @@ void CStage::Render(void){
 		_enemyArray[cnt]->Render(m_ScrollX, m_ScrollY);
 	}
 
+	if (!_isPlayerSeted) return;
 	_player->Render(m_ScrollX, m_ScrollY);
+	_player->RenderUI();
 }
 
 /**
@@ -496,6 +514,8 @@ void CStage::RenderDebug(void){
 	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
 		_enemyArray[cnt]->RenderDebug(m_ScrollX, m_ScrollY);
 	}
+
+	if (_player != nullptr) _player->RenderDebug(m_ScrollX, m_ScrollY);
 }
 
 /**
@@ -516,7 +536,7 @@ void CStage::Release(void){
 		_enemyArray[cnt]->Release();
 	}
 
-	_player->Release();
+	if (_player != nullptr) _player->Release();
 
 	m_BackTexture.Release();
 }

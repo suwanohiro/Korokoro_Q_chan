@@ -27,6 +27,7 @@ private:
 	///////////////////////////////////////////////////////
 
 	spCPlayer _player;
+	bool _isPlayerSeted;
 
 	std::vector<spCEnemy> _enemyArray;
 	std::vector<spCItem> _itemArray;
@@ -74,8 +75,9 @@ public:
 	CStage();
 	~CStage();
 	bool LoadMapData(std::string mapFileName);
+	bool LoadBKTexture();
 	void Initialize(CEffectManager* pmng, CAudio* audio);
-	void Update(CPlayer& pl);
+	void Update();
 	bool Collision(CRectangle r, float& ox, float& oy);
 	bool CollisionAttack(CRectangle r, float& ox, int type);
 	void Render(void);
@@ -84,4 +86,7 @@ public:
 	float GetScrollX(){ return m_ScrollX; }
 	float GetScrollY(){ return m_ScrollY; }
 	bool GetStageCollision() { return m_StCollision; }
+	bool IsGoal() { return _player->IsGoal(); }
+	bool IsPlayerDead() { return _player->IsDead(); }
+	bool IsEnd() { return _player->IsEnd(); }
 };

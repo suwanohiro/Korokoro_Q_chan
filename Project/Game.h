@@ -13,8 +13,6 @@
 
 class CGame {
 private:
-	//プレイヤー
-	CPlayer		m_Player;
 	//ステージ
 	CStage		m_Stage;
 	//エフェクト

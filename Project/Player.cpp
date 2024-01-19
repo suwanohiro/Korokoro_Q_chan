@@ -717,6 +717,11 @@ void CPlayer::Release(void)
 	m_PlayerUI.Release();
 }
 
+void CPlayer::SetAudio(CAudio* audio)
+{
+	m_Audio = audio;
+}
+
 CRectangle CPlayer::getHitBox()
 {
 	//”»’è‚ð•Ô‚·‚æ‚¤‚É‚·‚é
