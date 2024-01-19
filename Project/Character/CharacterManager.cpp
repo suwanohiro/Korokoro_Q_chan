@@ -17,12 +17,30 @@ int CharacterManager::__searchEnemyDataID(std::string ID)
 CharacterManager::CharacterManager(spAudioManager audioManager, spEffectManager effectManager)
 	: _audioManager(audioManager)
 	, _effectManager(effectManager)
+	, _player(nullptr)
+	, _playerShotTexture(new CTexture)
+	, _enemyShotTexture(new CTexture)
 {
+	_playerData.Texture = spCTexture(new CTexture);
+}
+
+void CharacterManager::Load()
+{
+	_playerData.Texture->Load("Image/Player/player.png");
+	_playerShotTexture->Load("Image/Player/P_missile.png");
+	_enemyShotTexture->Load("Image/Enemy/E_missile.png");
+}
+
+void CharacterManager::Initialize()
+{
+	if (_player != nullptr) _player->Release();
+	_player = nullptr;
+	_enemyArray.clear();
 }
 
 void CharacterManager::FixedUpdate(Vector2 scroll)
 {
-	_player->FixedUpdate(scroll);
+	if (_player != nullptr) _player->FixedUpdate(scroll);
 
 	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
 		const spEnemy work = _enemyArray[cnt];
@@ -32,7 +50,7 @@ void CharacterManager::FixedUpdate(Vector2 scroll)
 
 void CharacterManager::Update()
 {
-	_player->Update();
+	if (_player != nullptr) _player->Update();
 
 	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
 		const spEnemy work = _enemyArray[cnt];
@@ -42,7 +60,7 @@ void CharacterManager::Update()
 
 void CharacterManager::LateUpdate()
 {
-	_player->LateUpdate();
+	if (_player != nullptr) _player->LateUpdate();
 
 	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
 		const spEnemy work = _enemyArray[cnt];
@@ -52,7 +70,10 @@ void CharacterManager::LateUpdate()
 
 void CharacterManager::Render()
 {
-	_player->Render();
+	if (_player != nullptr) {
+		_player->Render();
+		_player->RenderRect();
+	}
 
 	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
 		const spEnemy work = _enemyArray[cnt];
@@ -62,8 +83,9 @@ void CharacterManager::Render()
 
 void CharacterManager::Release()
 {
-	_player->Release();
-	_playerData.Texture->Release();
+	if (_player != nullptr) _player->Release();
+	if (_playerShotTexture != nullptr) _playerShotTexture->Release();
+	if (_enemyShotTexture != nullptr) _enemyShotTexture->Release();
 
 	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
 		const spEnemy work = _enemyArray[cnt];
@@ -81,8 +103,7 @@ void CharacterManager::setPlayer(Vector2 initPos)
 	spPlayer work(new Player(__getAudioManager(), __getEffectManager()));
 	work->setTexture(_playerData.Texture);
 
-	// TODO : ShotTexture‚ÌŽÀ‘•‚ð‚Ç‚¤‚É‚©‚·‚é
-	work->setShotTexture(spCTexture());
+	work->setShotTexture(_playerShotTexture);
 
 	work->Initialize(initPos);
 
@@ -97,6 +118,7 @@ void CharacterManager::addEnemy(std::string ID, Vector2 initPos)
 	const spCTexture texture = _enemyDataArray[dataTarget].Texture;
 
 	work->setTexture(texture);
+	work->setShotTexture(_enemyShotTexture);
 
 	work->Initialize(initPos);
 

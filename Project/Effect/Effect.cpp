@@ -31,7 +31,7 @@ void Effect::Render()
 
 	const Vector2 scroll = __getScroll();
 	const Vector2 pos = getPosition() + scroll;
-	getTexture()->Render(pos.x, pos.y);
+	if(getTexture() != nullptr) getTexture()->Render(pos.x, pos.y);
 }
 
 void Effect::Start(Vector2 startPos)
@@ -39,5 +39,5 @@ void Effect::Start(Vector2 startPos)
 	__setMotionRect();
 	setPosition(startPos - __getMotionRectSize() * 0.5f);
 	isActive(true);
-	__getMotion().ChangeMotion(0);
+	__getMotion()->ChangeMotion(0);
 }

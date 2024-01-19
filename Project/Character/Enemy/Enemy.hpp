@@ -17,8 +17,8 @@ private:
 
 protected:
 	// ƒ‚[ƒVƒ‡ƒ“ŠÖ˜A
-	EnemyMotion __getMotionNo() { return (EnemyMotion)__getMotion().GetMotionNo(); }
-	void __changeMotion(EnemyMotion motion) { __getMotion().ChangeMotion((int)motion); }
+	EnemyMotion __getMotionNo() { return (EnemyMotion)__getMotion()->GetMotionNo(); }
+	void __changeMotion(EnemyMotion motion) { __getMotion()->ChangeMotion((int)motion); }
 
 	void __damage();
 

@@ -31,10 +31,14 @@ public:
 	/// </summary>
 	virtual void Initialize() = 0;
 
+	virtual void FixedUpdate() {};
+
 	/// <summary>
 	/// XVˆ—
 	/// </summary>
 	virtual void Update() = 0;
+
+	virtual void LateUpdate() {};
 
 	/// <summary>
 	/// •`‰æˆ—

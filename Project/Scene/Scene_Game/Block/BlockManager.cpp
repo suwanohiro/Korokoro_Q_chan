@@ -6,47 +6,44 @@
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void BlockManager::__loadMapData()
+// マップデータ読み込み
+void BlockManager::__loadMapData(std::string mapFileName)
 {
-	//const auto mainLayer = _mapData["MapData"]["Main"];
-	//const auto mapData = mainLayer["MapData"];
-	//const int length = mainLayer["Length"];
+	// 既存のデータを一度削除する
+	_blockArray.clear();
 
-	//for (int cnt = 0; cnt < length; cnt++) {
-	//	const auto blockData = mapData[cnt];
-	//	const std::string BlockID = blockData["BlockID"];
-	//	const auto Pos = blockData["Position"];
-	//	const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
-	//	
-	//	__addBlock(BlockID, Position);
+	// マップファイルを読み込む
+	const std::string mapPath = "Resource/MapData/" + mapFileName + ".swnstg";
+	_mapData = FileAction::ReadJSON(mapPath);
 
-	//	if (std::holds_alternative<int>(work)) {
-	//		if (std::get<int>(work) == NULL) continue;
-	//	}
+	const auto mainLayer = _mapData["MapData"]["Main"];
+	const auto mapData = mainLayer["MapData"];
+	const int length = mainLayer["Length"];
 
-	//	// ブロックデータは全て_blockDatasに格納
-	//	if (std::holds_alternative<spBlock_Ground>(work)) {
-	//		_blockDatas.push_back(std::get<spBlock_Ground>(work));
-	//	}
-
-	//	// 別途格納すべきデータはこの下に記述
-	//}
+	for (int cnt = 0; cnt < length; cnt++) {
+		const auto blockData = mapData[cnt];
+		const std::string BlockID = blockData["BlockID"];
+		const auto Pos = blockData["Position"];
+		const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
+		
+		__addBlock(BlockID, Position);
+	}
 }
 
 // ブロックデータ読み込み処理
-void BlockManager::__loadBlockData(std::string blockDataFileName)
+void BlockManager::__loadBlockData()
 {
 	// ブロックデータを読み込む
-	const std::string filePath = "Resource/MapData/" + blockDataFileName + ".swnjsn";
+	const std::string filePath = "Resource/MapData/" + _blockDataFileName + ".swnjsn";
 	const JSON blockDatas = FileAction::ReadJSON(filePath);
 
 	const int length = blockDatas["Length"];
 
 	for (int cnt = 0; cnt < length; cnt++) {
 		const auto blockData = blockDatas["BlockDatas"][cnt];
-		const std::string BlockID = blockData["BlockID"];
+		BlockIDElem BlockID(blockData["BlockID"]);
 
-		if (BlockID == "blank") continue;
+		if (BlockID.isBlank()) continue;
 
 		// テクスチャ関連
 		const std::string ImageFileName = blockData["ImageFileName"];
@@ -54,8 +51,11 @@ void BlockManager::__loadBlockData(std::string blockDataFileName)
 		const spCTexture texture(new CTexture);
 		const bool flg = texture->Load(ImageFilePath.c_str());
 
-		const BlockDataElem work = { BlockID, texture };
-		__addBlockData(work);
+		if (!flg) {
+			int a = 0;
+		}
+
+		__addBlockData({BlockID.ID(), texture});
 	}
 }
 
@@ -75,40 +75,53 @@ void BlockManager::__addBlockData(BlockDataElem data)
 // ブロックID検索処理
 int BlockManager::__searchBlockID(std::string blockID)
 {
-	int index = -1;
 	for (int cnt = 0; cnt < _blockDataArray.size(); cnt++) {
-		const BlockDataElem work = _blockDataArray[cnt];
-		if (work.ID != blockID) continue;
-
-		index = cnt;
-		break;
+		BlockDataElem work = _blockDataArray[cnt];
+		if (work.ID == blockID) return cnt;
 	}
-	return index;
+	return -1;
 }
 
 void BlockManager::__addBlock(std::string BlockID, Vector2 position)
 {
+	BlockIDElem ID(BlockID);
+
 	const int blockIndex = __searchBlockID(BlockID);
-	const bool isFound = blockIndex != -1;
+	const bool isFound = blockIndex > -1;
+
+	if (blockIndex != -1) {
+		int a = 0;
+	}
 
 	// 存在しないIDならここで処理終了
 	if (!isFound) return;
 
 	// blankならここで処理終了
-	if (BlockID == "blank") return;
+	if (ID.isBlank()) return;
 
 	const BlockDataElem blockData = _blockDataArray[blockIndex];
 
-	if (BlockID == "Player") {
+	if (ID.isPlayer()) {
 		// プレイヤー
-		// TODO : Playerだった場合の処理を追加
+		// TODO : Player初期座標の調整 (現状ブロックの配置インデックスになっている)
+		position *= Vector2(40, 40);
+		__getCharacterManager()->setPlayer(position);
 	}
 	else {
 		// その他地形
-		spBlock_Ground work(new Block_Ground(blockData, position));
+		spBlock_Ground work(new Block_Ground(blockData));
+		work->Initialize(position);
+		work->setTexture(blockData.Texture);
 		_blockArray.push_back(work);
 	}
 }
+
+BlockManager::BlockManager(spCharacterManager characterManager, std::string blockDataFileName)
+	: _characterManager(characterManager)
+	, _blockDataFileName(blockDataFileName)
+{
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,15 +130,17 @@ void BlockManager::__addBlock(std::string BlockID, Vector2 position)
 // 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// 初期化処理
-void BlockManager::Initialize(Vector2 initPos, std::string blockDataFileName)
+void BlockManager::Load()
 {
-	__loadBlockData(blockDataFileName);
+	__loadBlockData();
+}
 
-	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
-		_blockArray[cnt]->Initialize(initPos);
-	}
-;}
+// 初期化処理
+void BlockManager::Initialize(std::string mapFileName)
+{
+	__getCharacterManager()->Initialize();
+	__loadMapData(mapFileName);
+}
 
 void BlockManager::FixedUpdate(Vector2 scroll)
 {
@@ -145,6 +160,16 @@ void BlockManager::LateUpdate()
 {
 	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
 		_blockArray[cnt]->LateUpdate();
+	}
+}
+
+void BlockManager::Render()
+{
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		spGameObject work = _blockArray[cnt];
+		work->Render();
+
+		// _blockArray[cnt]->Render();
 	}
 }
 

@@ -4,7 +4,11 @@ CGameApp::CGameApp()
 	: _audioManager(new AudioManager)
 	, _effectManager(new EffectManager)
 {
-	_scene = spScene_Base(new Scene_Game("mario"));
+	_characterManager = spCharacterManager(new CharacterManager(_audioManager, _effectManager));
+
+	_blockManager = spBlockManager(new BlockManager(_characterManager, "BlockDatas"));
+
+	_scene = spScene_Base(new Scene_Game("test_stage_2024-01-12_1", _blockManager, _characterManager));
 }
 
 MofBool CGameApp::Initialize(void){
@@ -13,6 +17,8 @@ MofBool CGameApp::Initialize(void){
 
 	_audioManager->Load();
 	_effectManager->Load();
+	_characterManager->Load();
+	_blockManager->Load();
 
 	_scene->Initialize();
 
@@ -30,6 +36,7 @@ MofBool CGameApp::Update(void){
 	/////////////////////////////////////////////////////
 	// TODO : FixedUpdate‚Ìˆø”‚ð³í‚È‚à‚Ì‚ÉC³‚·‚é
 	_effectManager->FixedUpdate(Vector2(0, 0));
+	_scene->FixedUpdate();
 
 
 	/////////////////////////////////////////////////////
@@ -47,6 +54,7 @@ MofBool CGameApp::Update(void){
 	// 
 	/////////////////////////////////////////////////////
 	_effectManager->LateUpdate();
+	_scene->LateUpdate();
 	
 	return TRUE;
 }

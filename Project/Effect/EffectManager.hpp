@@ -15,7 +15,7 @@ private:
 	std::vector<spCTexture> _effectTexture;
 	std::vector<spEffect> _effectArray;
 
-	spCTexture __getTexture(EffectType type) { return _effectTexture[(int)type]; }
+	spCTexture __getTexture(EffectType type);
 
 public:
 	EffectManager();

@@ -112,8 +112,8 @@ private:
 	void __heelHP() { if (getHP() < getMaxHP()) updateHP(ADD_HP); }
 
 	// ƒ‚[ƒVƒ‡ƒ“ŠÖ˜A
-	PlayerMotion __getMotionNo() { return (PlayerMotion)__getMotion().GetMotionNo(); }
-	void __changeMotion(PlayerMotion motion) { __getMotion().ChangeMotion((int)motion); }
+	PlayerMotion __getMotionNo() { return (PlayerMotion)__getMotion()->GetMotionNo(); }
+	void __changeMotion(PlayerMotion motion) { __getMotion()->ChangeMotion((int)motion); }
 
 	bool __isPlayerMove() { return getMoveSpd().x != 0 || (__isWallMove() && getMoveSpd().y != 0); }
 	bool __isPlayerStop();

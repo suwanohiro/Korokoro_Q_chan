@@ -9,8 +9,10 @@ protected:
 	std::string _blockID;
 
 public:
-	Block_Base(BlockDataElem blockData, Vector2 position);
+	Block_Base(BlockDataElem blockData);
 	~Block_Base();
+
+	virtual void Initialize(Vector2 initPos) override;
 
 	/// <summary>
 	/// BlockIDŽæ“¾

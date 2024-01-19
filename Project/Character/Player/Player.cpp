@@ -342,7 +342,7 @@ void Player::__updateMove()
 	// 減速処理 (壁)
 	__decelerationWall();
 
-	// __gravity();
+	__gravity();
 
 	//壁に張り付いているときに敵と当たったとき
 	if (__getMotionNo() == PlayerMotion::Damage && __isWallMove()) __isWallMove(false);
@@ -452,12 +452,75 @@ void Player::Initialize(Vector2 initPos)
 	isReverse(false);
 	__isJump(false);
 
+	//アニメーションを作成
+	SpriteAnimationCreate anim[] = {
+		// {
+		// 	"待機",
+		// 	0,0,
+		// 	60,64,
+		// 	TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0},{5,4,0},{5,5,0},{5,6,0},{5,7,0}}
+		// },
+		{
+			"待機",
+			0,0,
+			40,40,
+			TRUE,{{5,0,0}}
+		},
+		{
+			"移動",
+			0,70,
+			60,64,
+			TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0},{5,4,0},{5,5,0}}
+		},
+		{
+			"ジャンプ開始",
+			0,140,
+			60,64,
+			FALSE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0}}
+		},
+		{
+			"ジャンプ終了",
+			240,140,
+			60,64,
+			FALSE,{{2,0,0},{2,1,0}}
+		},
+		{
+			"攻撃",
+			0,350,
+			90,64,
+			FALSE,{{2,0,0},{2,1,0},{2,2,0},{2,3,0},{2,4,0},{2,5,0},{2,6,0}}
+		},
+		{
+			"攻撃2",
+			0,350,
+			90,64,
+			FALSE,{{2,0,0},{2,1,0},{2,2,0},{2,3,0},{2,4,0},{2,5,0},{2,6,0}}
+		},
+		{
+			"ダメージ",
+			480,0,
+			60,64,
+			FALSE,{{20,0,0},}
+		},
+		{
+			"壁歩き",
+			0,140,
+			60,64,
+			TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0}}
+		},
+	};
+
+	__createMotion(anim, (int)PlayerMotion::Length);
+	__setMotionRect();
+
 	__changeMotion(PlayerMotion::Wait);
 }
 
 void Player::FixedUpdate(Vector2 scroll)
 {
 	if (!isActive()) return;
+
+	// scroll = Vector2(0, 0);
 
 	Character::FixedUpdate(scroll);
 
@@ -506,7 +569,7 @@ void Player::LateUpdate()
 
 	Character::LateUpdate();
 
-	__gravity();
+	// __gravity();
 
 	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
 		const spPlayerShot work = __getShotArray()[cnt];
@@ -522,6 +585,13 @@ void Player::Render()
 	if (!isActive()) return;
 
 	Character::Render();
+
+	CGraphicsUtilities::RenderString(0, 50, "DamageWait : %d", getDamageWait());
+
+	const Vector2 rend = __getMotionRectSize();
+	CGraphicsUtilities::RenderString(0, 100, "Position\nx : %0.2f\ny : %0.2f", (float)rend.x, (float)rend.y);
+
+	CGraphicsUtilities::RenderString(0, 180, "RenderFlg : %s", !(getDamageWait() % 4 >= 2) ? "true" : "false");
 
 	for (int cnt = 0; cnt < __getShotArray().size(); cnt++) {
 		const spPlayerShot work = __getShotArray()[cnt];

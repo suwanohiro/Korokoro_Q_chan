@@ -6,19 +6,27 @@
 class Scene_Game : public Scene_Base
 {
 private:
-	// マップデータ関連
-	JSON _mapData;
-	void __loadMapData();
+	spBlockManager _blockManager;
+	spBlockManager __getBlockManager() { return _blockManager; };
 
-	BlockManager _blockManager;
-	std::vector<spBlock_Base> _blockDatas;
+
+	spCharacterManager _characterManager;
+	spCharacterManager __getCharacterManager() { return _characterManager; };
+
+	// マップデータ関連
+	std::string _mapFileName;
+
+	// スクロール値
+	Vector2 _scroll;
 
 protected:
 
 public:
-	Scene_Game(std::string mapFileName);
+	Scene_Game(std::string mapFileName, spBlockManager blockManager, spCharacterManager characterManager);
 	void Initialize();
+	void FixedUpdate();
 	void Update();
+	void LateUpdate();
 	void Render();
 	void Release();
 };

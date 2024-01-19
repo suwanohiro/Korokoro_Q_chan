@@ -99,14 +99,9 @@ public:
 	virtual CRectangle getRect() { return getTextureRect(); };
 
 	/// <summary>
-	/// テクスチャ取得 (share ptr)
-	/// </summary>
-	spCTexture getspTexture() { return _texture; }
-
-	/// <summary>
 	/// テクスチャ取得
 	/// </summary>
-	CTexture* getTexture() { return getspTexture().get(); }
+	spCTexture getTexture();
 
 	/// <summary>
 	/// テクスチャサイズ取得

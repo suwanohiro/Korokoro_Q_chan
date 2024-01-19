@@ -4,7 +4,7 @@
 #include "./Block_Base.h"
 #include "./Block_Ground.h"
 
-#include "../../../Character/Player/Player.hpp"
+#include "../../../Character/CharacterManager.hpp"
 
 using addBlockResult = std::variant<
 	int,
@@ -15,6 +15,11 @@ using addBlockResult = std::variant<
 class BlockManager
 {
 private:
+	spCharacterManager _characterManager;
+	spCharacterManager __getCharacterManager() { return _characterManager; };
+
+	std::string _blockDataFileName;
+
 	/// <summary>
 	/// Blockデータ配列
 	/// </summary>
@@ -22,10 +27,10 @@ private:
 
 	// マップデータ関連
 	JSON _mapData;
-	void __loadMapData();
+	void __loadMapData(std::string mapFileName);
 	std::vector<spGameObject> _blockArray;
 
-	void __loadBlockData(std::string blockDataFileName);
+	void __loadBlockData();
 	void __addBlockData(BlockDataElem data);
 
 	/// <summary>
@@ -36,15 +41,20 @@ private:
 
 	void __addBlock(std::string BlockID, Vector2 position);
 public:
+	BlockManager(spCharacterManager characterManager, std::string blockDataFileName);
+
+	void Load();
+
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	/// <param name="blockDataFileName">ブロックデータファイル名</param>
-	void Initialize(Vector2 initPos, std::string blockDataFileName);
+	void Initialize(std::string mapFileName);
 
 	void FixedUpdate(Vector2 scroll);
 	void Update();
 	void LateUpdate();
+
+	void Render();
 
 	/// <summary>
 	/// 開放処理
@@ -52,3 +62,4 @@ public:
 	void Release();
 };
 
+using spBlockManager = std::shared_ptr<BlockManager>;

@@ -1,61 +1,53 @@
 #include "Scene_Game.hpp"
 
-void Scene_Game::__loadMapData()
+Scene_Game::Scene_Game(std::string mapFileName, spBlockManager blockManager, spCharacterManager characterManager)
+	: _blockManager(blockManager)
+	, _characterManager(characterManager)
+	, _scroll()
 {
-	//const auto mainLayer = _mapData["MapData"]["Main"];
-	//const auto mapData = mainLayer["MapData"];
-	//const int length = mainLayer["Length"];
-
-	//for (int cnt = 0; cnt < length; cnt++) {
-	//	const auto blockData = mapData[cnt];
-	//	const std::string BlockID = blockData["BlockID"];
-	//	const auto Pos = blockData["Position"];
-	//	const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
-
-	//	addBlockResult work = _blockManager.__addBlock(BlockID, Position);
-
-	//	if (std::holds_alternative<int>(work)) {
-	//		if (std::get<int>(work) == NULL) continue;
-	//	}
-
-	//	// ブロックデータは全て_blockDatasに格納
-	//	if (std::holds_alternative<spBlock_Ground>(work)) {
-	//		_blockDatas.push_back(std::get<spBlock_Ground>(work));
-	//	}
-
-	//	// 別途格納すべきデータはこの下に記述
-	//}
-}
-
-Scene_Game::Scene_Game(std::string mapFileName)
-	: _blockManager()
-{
-	// マップファイルを読み込む
-	const std::string mapPath = "Resource/MapData/" + mapFileName + ".swnstg";
-	_mapData = FileAction::ReadJSON(mapPath);
+	_mapFileName = mapFileName;
 }
 
 void Scene_Game::Initialize()
 {
-	// TODO : initPosを定義する
-	Vector2 initPos;
-	_blockManager.Initialize(initPos, "BlockDatas");
+	__getBlockManager()->Initialize(_mapFileName);
+}
 
-	__loadMapData();
+void Scene_Game::FixedUpdate()
+{
+	// TODO : scrollを定義する
+	if (g_pInput->IsKeyHold(MOFKEY_LEFT)) {
+		_scroll.x--;
+	}
+
+	if (g_pInput->IsKeyHold(MOFKEY_RIGHT)) {
+		_scroll.x++;
+	}
+
+	__getBlockManager()->FixedUpdate(_scroll);
+	__getCharacterManager()->FixedUpdate(_scroll);
 }
 
 void Scene_Game::Update()
 {
+	__getBlockManager()->Update();
+	__getCharacterManager()->Update();
+}
+
+void Scene_Game::LateUpdate()
+{
+	__getBlockManager()->LateUpdate();
+	__getCharacterManager()->LateUpdate();
 }
 
 void Scene_Game::Render()
 {
-	for (int cnt = 0; cnt < _blockDatas.size(); cnt++) {
-		_blockDatas[cnt]->Render();
-	}
+	__getBlockManager()->Render();
+	__getCharacterManager()->Render();
+
+	CGraphicsUtilities::RenderString(0, 0, "scroll [x] : %0.2f", _scroll.x);
 }
 
 void Scene_Game::Release()
 {
-	_blockManager.Release();
 }

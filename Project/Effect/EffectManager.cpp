@@ -1,5 +1,11 @@
 #include "EffectManager.hpp"
 
+spCTexture EffectManager::__getTexture(EffectType type)
+{
+	if ((int)type < _effectTexture.size()) return _effectTexture[(int)type];
+	return nullptr;
+}
+
 EffectManager::EffectManager()
 	: _effectTexture()
 	, _effectArray()
@@ -12,6 +18,8 @@ bool EffectManager::Load()
 
 	for (int cnt = 0; cnt < texturePaths.size(); cnt++) {
 		const std::string path = texturePaths[cnt][0];
+
+		if (path == "") continue;
 
 		spCTexture work(new CTexture());
 		const bool result = work->Load(path.c_str());
@@ -77,6 +85,12 @@ void EffectManager::Release()
 void EffectManager::startEffect(EffectType type, Vector2 pos)
 {
 	spCTexture texture = __getTexture(type);
+
+	if (texture == nullptr) {
+		OutputDebugString("[ Error ] エフェクトテクスチャを取得できませんでした。\n");
+		return;
+	}
+
 	spEffect work(new Effect());
 	work->setTexture(texture);
 	work->Initialize(pos);

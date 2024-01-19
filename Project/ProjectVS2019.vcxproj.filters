@@ -34,71 +34,74 @@
     <Filter Include="swnLibrary\Socket\Server">
       <UniqueIdentifier>{27f13821-91d3-4fa9-a0a7-8a958b3241dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{67c2eab6-c9e5-4037-b2fa-66bc90a1bfaa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Game">
-      <UniqueIdentifier>{290f8bf8-4776-4553-b3b4-3fa663a79251}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MapData">
       <UniqueIdentifier>{f15a0438-2e69-47b1-9fa8-03b3f6c43881}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Game\Block">
-      <UniqueIdentifier>{8595920d-c15a-4e7f-b502-6f2cf1de9f72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Game\Block\Block">
-      <UniqueIdentifier>{1381c818-d39b-405d-ba1a-21ec3201ff19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Game\Block\Block_Base">
-      <UniqueIdentifier>{0844bb43-8d27-4861-a349-339e9307356f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Game\Block\BlockManager">
-      <UniqueIdentifier>{17e1514c-1286-42af-830b-a9b44600e2cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Game\Block\Ground">
-      <UniqueIdentifier>{06fe36df-ed97-416a-bec2-3e3324c6c597}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{44c3badf-55e2-453e-88ba-fb384e3c45ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Character">
-      <UniqueIdentifier>{650e746a-cc75-4742-ab30-828e0bbb2297}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Character\Enemy">
-      <UniqueIdentifier>{4f1fd88f-199c-4d25-80a8-0d8c6c9cbfba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Character\Enemy\Enemy1">
-      <UniqueIdentifier>{37236ea9-a68b-4c26-8ac3-f73a35fb3fb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Character\Enemy\Base">
-      <UniqueIdentifier>{8e40b2b1-ff2f-45f2-8fc6-d6880f7c9ea2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Character\Enemy\EnemyShot">
-      <UniqueIdentifier>{551c4c51-8e3e-476d-ab22-6311f91b806d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Character\Shot">
-      <UniqueIdentifier>{6ffbb20a-3997-4617-beba-6d2bf743e8ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="swnLibrary\AudioCtrl">
       <UniqueIdentifier>{e9e6bbf9-f81c-4022-b16d-5511ae21ffec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Audio">
+    <Filter Include="Project">
+      <UniqueIdentifier>{2732da46-f49c-4c07-b2dc-0d3b5bcd451e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Audio">
       <UniqueIdentifier>{ce4d4acf-e475-4134-928e-1d6ac328b9b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Character\Player">
+    <Filter Include="Project\Character">
+      <UniqueIdentifier>{650e746a-cc75-4742-ab30-828e0bbb2297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Character\Enemy">
+      <UniqueIdentifier>{4f1fd88f-199c-4d25-80a8-0d8c6c9cbfba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Character\Enemy\Enemy1">
+      <UniqueIdentifier>{37236ea9-a68b-4c26-8ac3-f73a35fb3fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Character\Enemy\Base">
+      <UniqueIdentifier>{8e40b2b1-ff2f-45f2-8fc6-d6880f7c9ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Character\Enemy\EnemyShot">
+      <UniqueIdentifier>{551c4c51-8e3e-476d-ab22-6311f91b806d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Character\Shot">
+      <UniqueIdentifier>{6ffbb20a-3997-4617-beba-6d2bf743e8ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Character\Player">
       <UniqueIdentifier>{18e3fd36-5b4f-4e76-8674-ef1a2e312c15}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Gravity">
-      <UniqueIdentifier>{4d725791-563d-4855-83a3-38650022e8e4}</UniqueIdentifier>
+    <Filter Include="Project\Character\Player\PlayerShot">
+      <UniqueIdentifier>{fd761ab2-644d-4e01-8907-980b558c4dbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Effect">
+    <Filter Include="Project\Effect">
       <UniqueIdentifier>{945e23c7-d305-4f48-aba9-039f4ce5805d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ResourceManager">
-      <UniqueIdentifier>{32b6952a-dff6-4ca6-9995-cf5de2862ac8}</UniqueIdentifier>
+    <Filter Include="Project\GameObject">
+      <UniqueIdentifier>{44c3badf-55e2-453e-88ba-fb384e3c45ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Character\Player\PlayerShot">
-      <UniqueIdentifier>{fd761ab2-644d-4e01-8907-980b558c4dbc}</UniqueIdentifier>
+    <Filter Include="Project\Gravity">
+      <UniqueIdentifier>{4d725791-563d-4855-83a3-38650022e8e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Scene">
+      <UniqueIdentifier>{67c2eab6-c9e5-4037-b2fa-66bc90a1bfaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Scene\Game">
+      <UniqueIdentifier>{290f8bf8-4776-4553-b3b4-3fa663a79251}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Scene\Game\Block">
+      <UniqueIdentifier>{8595920d-c15a-4e7f-b502-6f2cf1de9f72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Scene\Game\Block\Block">
+      <UniqueIdentifier>{1381c818-d39b-405d-ba1a-21ec3201ff19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Scene\Game\Block\Block_Base">
+      <UniqueIdentifier>{0844bb43-8d27-4861-a349-339e9307356f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Scene\Game\Block\BlockManager">
+      <UniqueIdentifier>{17e1514c-1286-42af-830b-a9b44600e2cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Scene\Game\Block\Ground">
+      <UniqueIdentifier>{06fe36df-ed97-416a-bec2-3e3324c6c597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\ResourceManager">
+      <UniqueIdentifier>{32b6952a-dff6-4ca6-9995-cf5de2862ac8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -124,73 +127,73 @@
       <Filter>swnLibrary\Socket\Server</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_Base.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Project\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_Game\Scene_Game.cpp">
-      <Filter>Scene\Game</Filter>
+      <Filter>Project\Scene\Game</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_Game\Block\Block.cpp">
-      <Filter>Scene\Game\Block\Block</Filter>
+      <Filter>Project\Scene\Game\Block\Block</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_Game\Block\Block_Base.cpp">
-      <Filter>Scene\Game\Block\Block_Base</Filter>
+      <Filter>Project\Scene\Game\Block\Block_Base</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_Game\Block\BlockManager.cpp">
-      <Filter>Scene\Game\Block\BlockManager</Filter>
+      <Filter>Project\Scene\Game\Block\BlockManager</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_GameOver\Scene_GameOver.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_Game\Block\Block_Ground.cpp">
-      <Filter>Scene\Game\Block\Ground</Filter>
+      <Filter>Project\Scene\Game\Block\Ground</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\GameObject.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>Project\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Character\Character.cpp">
-      <Filter>Character</Filter>
+      <Filter>Project\Character</Filter>
     </ClCompile>
     <ClCompile Include="Character\Enemy\Enemy1.cpp">
-      <Filter>Character\Enemy\Enemy1</Filter>
+      <Filter>Project\Character\Enemy\Enemy1</Filter>
     </ClCompile>
     <ClCompile Include="Character\Enemy\Enemy.cpp">
-      <Filter>Character\Enemy\Base</Filter>
+      <Filter>Project\Character\Enemy\Base</Filter>
     </ClCompile>
     <ClCompile Include="Character\Enemy\EnemyShot\EnemyShot.cpp">
-      <Filter>Character\Enemy\EnemyShot</Filter>
+      <Filter>Project\Character\Enemy\EnemyShot</Filter>
     </ClCompile>
     <ClCompile Include="Character\Shot\Shot.cpp">
-      <Filter>Character\Shot</Filter>
+      <Filter>Project\Character\Shot</Filter>
     </ClCompile>
     <ClCompile Include="swnLibrary\AudioCtrl\AudioCtrl.cpp">
       <Filter>swnLibrary\AudioCtrl</Filter>
     </ClCompile>
     <ClCompile Include="Audio\AudioManager.cpp">
-      <Filter>Audio</Filter>
+      <Filter>Project\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Character\Player\Player.cpp">
-      <Filter>Character\Player</Filter>
+      <Filter>Project\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\GameObjectMotion.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>Project\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Gravity\Gravity.cpp">
-      <Filter>Gravity</Filter>
+      <Filter>Project\Gravity</Filter>
     </ClCompile>
     <ClCompile Include="Effect\Effect.cpp">
-      <Filter>Effect</Filter>
+      <Filter>Project\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Effect\EffectManager.cpp">
-      <Filter>Effect</Filter>
+      <Filter>Project\Effect</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager\ResourceManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Character\Player\PlayerShot\PlayerShot.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Project\Character\Player\PlayerShot</Filter>
     </ClCompile>
     <ClCompile Include="Character\CharacterManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Project\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,91 +225,91 @@
       <Filter>swnLibrary\Socket\Server</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Base.hpp">
-      <Filter>Scene</Filter>
+      <Filter>Project\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_List.hpp">
-      <Filter>Scene</Filter>
+      <Filter>Project\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Game\Scene_Game.hpp">
-      <Filter>Scene\Game</Filter>
+      <Filter>Project\Scene\Game</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Game\Block\Block.h">
-      <Filter>Scene\Game\Block\Block</Filter>
+      <Filter>Project\Scene\Game\Block\Block</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Game\Block\Block_Base.h">
-      <Filter>Scene\Game\Block\Block_Base</Filter>
+      <Filter>Project\Scene\Game\Block\Block_Base</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Game\Block\BlockManager.h">
-      <Filter>Scene\Game\Block\BlockManager</Filter>
+      <Filter>Project\Scene\Game\Block\BlockManager</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_GameOver\Scene_GameOver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Game\Block\Block_Ground.h">
-      <Filter>Scene\Game\Block\Ground</Filter>
+      <Filter>Project\Scene\Game\Block\Ground</Filter>
     </ClInclude>
     <ClInclude Include="GameObject\GameObject.hpp">
-      <Filter>GameObject</Filter>
+      <Filter>Project\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Character\Character.h">
-      <Filter>Character</Filter>
+      <Filter>Project\Character</Filter>
     </ClInclude>
     <ClInclude Include="Character\Enemy\Enemy1.hpp">
-      <Filter>Character\Enemy\Enemy1</Filter>
+      <Filter>Project\Character\Enemy\Enemy1</Filter>
     </ClInclude>
     <ClInclude Include="Character\Enemy\Enemy.hpp">
-      <Filter>Character\Enemy\Base</Filter>
+      <Filter>Project\Character\Enemy\Base</Filter>
     </ClInclude>
     <ClInclude Include="Character\Enemy\EnemyShot\EnemyShot.hpp">
-      <Filter>Character\Enemy\EnemyShot</Filter>
+      <Filter>Project\Character\Enemy\EnemyShot</Filter>
     </ClInclude>
     <ClInclude Include="Character\Shot\Shot.hpp">
-      <Filter>Character\Shot</Filter>
+      <Filter>Project\Character\Shot</Filter>
     </ClInclude>
     <ClInclude Include="swnLibrary\AudioCtrl\AudioCtrl.h">
       <Filter>swnLibrary\AudioCtrl</Filter>
     </ClInclude>
     <ClInclude Include="Audio\AudioManager.hpp">
-      <Filter>Audio</Filter>
+      <Filter>Project\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Character\Player\Player.hpp">
-      <Filter>Character\Player</Filter>
+      <Filter>Project\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="Character\Player\PlayerStatus.hpp">
-      <Filter>Character\Player</Filter>
+      <Filter>Project\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="GameObject\GameObjectMotion.hpp">
-      <Filter>GameObject</Filter>
+      <Filter>Project\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Gravity\Gravity.hpp">
-      <Filter>Gravity</Filter>
+      <Filter>Project\Gravity</Filter>
     </ClInclude>
     <ClInclude Include="Effect\Effect.hpp">
-      <Filter>Effect</Filter>
+      <Filter>Project\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Effect\EffectManager.hpp">
-      <Filter>Effect</Filter>
+      <Filter>Project\Effect</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager\ResourceManager.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Character\Enemy\EnemyMotion.hpp">
-      <Filter>Character\Enemy\Base</Filter>
+      <Filter>Project\Character\Enemy\Base</Filter>
     </ClInclude>
     <ClInclude Include="Character\Player\PlayerMotion.hpp">
-      <Filter>Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Character\Player\PlayerShot\PlayerShot.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Character\CharacterManager.hpp">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Project\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Game\Block\BlockData.hpp">
-      <Filter>Scene\Game\Block</Filter>
+      <Filter>Project\Scene\Game\Block</Filter>
     </ClInclude>
     <ClInclude Include="Character\Enemy\EnemyStatus.hpp">
-      <Filter>Character\Enemy\Base</Filter>
+      <Filter>Project\Character\Enemy\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\Player\PlayerShot\PlayerShot.hpp">
+      <Filter>Project\Character\Player\PlayerShot</Filter>
+    </ClInclude>
+    <ClInclude Include="Character\CharacterManager.hpp">
+      <Filter>Project\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

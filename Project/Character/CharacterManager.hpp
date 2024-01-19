@@ -13,9 +13,11 @@ private:
 	spEffectManager __getEffectManager() { return _effectManager; }
 
 	spPlayer _player;
+	spCTexture _playerShotTexture;
 	BlockDataElem _playerData;
 
 	std::vector<BlockDataElem> _enemyDataArray;
+	spCTexture _enemyShotTexture;
 	std::vector<spEnemy> _enemyArray;
 
 	int __searchEnemyDataID(std::string ID);
@@ -27,6 +29,10 @@ public:
 	BlockDataElem PlayerData() { return _playerData; }
 	void addEnemyData(BlockDataElem data) { _enemyDataArray.push_back(data); };
 	BlockDataElem EnemyData(int target) { return _enemyDataArray[target]; };
+
+	void Load();
+
+	void Initialize();
 
 	void FixedUpdate(Vector2 scroll);
 	void Update();
@@ -40,3 +46,4 @@ public:
 	void addEnemy(std::string ID, Vector2 initPos);
 };
 
+using spCharacterManager = std::shared_ptr<CharacterManager>;

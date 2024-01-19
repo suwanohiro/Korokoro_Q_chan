@@ -2,6 +2,8 @@
 
 void GameObject::__setTextureSize()
 {
+	if (getTexture() == nullptr) return;
+
 	_textureSize = Vector2(
 		(float)getTexture()->GetWidth(),
 		(float)getTexture()->GetHeight()
@@ -12,7 +14,7 @@ GameObject::GameObject()
 	: _isActive(true)
 	, _textureSize(0, 0)
 	, _position(0, 0)
-	, _texture(new CTexture())
+	, _texture(nullptr)
 	, _isReverse(false)
 {
 }
@@ -77,7 +79,7 @@ void GameObject::RenderRect(const char* borderColor)
 
 void GameObject::Release()
 {
-	getTexture()->Release();
+	if (getTexture() != nullptr) getTexture()->Release();
 }
 
 Vector2 GameObject::__getScreenSize()
@@ -92,6 +94,14 @@ CRectangle GameObject::getTextureRect()
 {
 	const Vector2 work = _position + _textureSize;
 	return CRectangle(_position, work);
+}
+
+spCTexture GameObject::getTexture()
+{
+	if (_texture == nullptr) {
+		OutputDebugString("[ Error ] Texture is nullptr\n");
+	}
+	return _texture;
 }
 
 void GameObject::setTexture(spCTexture value)

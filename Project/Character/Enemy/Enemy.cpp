@@ -71,7 +71,7 @@ void Enemy::Initialize(Vector2 initPos)
 			FALSE,{{20,0,0}}
 		},
 	};
-	__getMotion().Create(anim, (int)EnemyMotion::Length);
+	__getMotion()->Create(anim, (int)EnemyMotion::Length);
 }
 
 void Enemy::FixedUpdate(Vector2 scroll)

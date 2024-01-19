@@ -30,6 +30,8 @@ void Character::Render()
 {
 	if (!isActive()) return;
 
+	if (getTexture() == nullptr) return;
+
 	if (getDamageWait() % 4 >= 2) return;
 
 	CRectangle rec = __getMotionRect();
