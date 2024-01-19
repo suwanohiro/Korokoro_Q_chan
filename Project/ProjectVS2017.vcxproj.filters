@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="swnLibrary">
+      <UniqueIdentifier>{4895e581-8934-4633-97d9-e5ae61b39ff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLibrary\FileAction">
+      <UniqueIdentifier>{24c0cc6d-5f24-451c-ac04-d22e259b9689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLibrary\StringAction">
+      <UniqueIdentifier>{a2e24deb-880a-48cf-a4ca-10f5529f6e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnLibrary\WebColor">
+      <UniqueIdentifier>{6cbbde87-d911-43d3-823f-9bc95825cc00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram">
+      <UniqueIdentifier>{a5f2b9c0-fe4c-46fa-bda8-050421700eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram\Block">
+      <UniqueIdentifier>{a30448f6-922b-4ed0-8d35-99cccb97c32f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram\Block\BlockManager">
+      <UniqueIdentifier>{47a021b3-d5a8-4ce3-ace4-6d82e085ec19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram\Block\Base">
+      <UniqueIdentifier>{d612484c-b61c-47c1-a85a-affe3dcf05b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram\Block\Ground">
+      <UniqueIdentifier>{f08beb71-4b87-4738-a40d-dd2a0928375f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram\Block\BlockData">
+      <UniqueIdentifier>{56a354d4-884a-4c9c-b500-73ee71f4c3a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram\GameObject">
+      <UniqueIdentifier>{95e32bb6-e1ee-4d4e-a5a8-7f3fa6682c33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swnProgram\Character">
+      <UniqueIdentifier>{33c30fb5-32e9-4781-8e29-95c50fc59a8f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClear.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyShot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Gravity.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameContinue.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioCtrl.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Countdown.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHeel.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="swnLibrary\FileAction\FileAction.cpp">
+      <Filter>swnLibrary\FileAction</Filter>
+    </ClCompile>
+    <ClCompile Include="swnLibrary\StringAction\StringAction.cpp">
+      <Filter>swnLibrary\StringAction</Filter>
+    </ClCompile>
+    <ClCompile Include="swnProgram\Block\BlockManager.cpp">
+      <Filter>swnProgram\Block\BlockManager</Filter>
+    </ClCompile>
+    <ClCompile Include="swnProgram\Block\Block_Base.cpp">
+      <Filter>swnProgram\Block\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="swnProgram\Block\Block_Ground.cpp">
+      <Filter>swnProgram\Block\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="swnProgram\GameObject\GameObject.cpp">
+      <Filter>swnProgram\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="swnProgram\GameObject\GameObjectMotion.cpp">
+      <Filter>swnProgram\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="swnProgram\Character\CharacterManager.cpp">
+      <Filter>swnProgram\Character</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameApp.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClear.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDefine.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyShot.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Gravity.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShot.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameContinue.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioCtrl.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Countdown.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemHeel.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLibrary\FileAction\FileAction.h">
+      <Filter>swnLibrary\FileAction</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLibrary\FileAction\json.hpp">
+      <Filter>swnLibrary\FileAction</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLibrary\swnLibrary.h">
+      <Filter>swnLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLibrary\StringAction\StringAction.h">
+      <Filter>swnLibrary\StringAction</Filter>
+    </ClInclude>
+    <ClInclude Include="swnLibrary\WebColor\WebColor.h">
+      <Filter>swnLibrary\WebColor</Filter>
+    </ClInclude>
+    <ClInclude Include="swnProgram\Block\BlockManager.h">
+      <Filter>swnProgram\Block\BlockManager</Filter>
+    </ClInclude>
+    <ClInclude Include="swnProgram\Block\Block_Base.h">
+      <Filter>swnProgram\Block\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="swnProgram\Block\Block_Ground.h">
+      <Filter>swnProgram\Block\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="swnProgram\Block\BlockData.hpp">
+      <Filter>swnProgram\Block\BlockData</Filter>
+    </ClInclude>
+    <ClInclude Include="swnProgram\GameObject\GameObject.hpp">
+      <Filter>swnProgram\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="swnProgram\GameObject\GameObjectMotion.hpp">
+      <Filter>swnProgram\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="swnProgram\Character\CharacterManager.hpp">
+      <Filter>swnProgram\Character</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Version.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

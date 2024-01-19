@@ -1,30 +1,96 @@
+/*************************************************************************//*!
+					
+					@file	GameApp.h
+					@brief	基本ゲームアプリ。
+
+															@author	濱田　享
+															@date	2014.05.14
+*//**************************************************************************/
+
 #pragma once
 
-#include	"./swnLibrary/swnLibrary.h"
+//INCLUDE
+#include	"Mof.h"
+#include	"GameDefine.h"
+#include	"Title.h"
+//結合時変更点
+#include	"StageSelect.h"
+#include	"Game.h"
+#include	"GameClear.h"
+#include	"GameOver.h"
+#include	"GameContinue.h"
+#include	"Audio.h"
 
+/*******************************//*!
+@brief	基本ゲームアプリ。
 
-#include "./Audio/AudioManager.hpp"
-#include "./Effect/EffectManager.hpp"
-#include "./Scene/Scene_Game/Block/BlockManager.h"
-#include "./Character/CharacterManager.hpp"
-
-#include "./Scene/Scene_Base.hpp"
-#include "./Scene/Scene_Game/Scene_Game.hpp"
-
+@author	濱田　享
+*//********************************/
 class CGameApp : public CSingleGameApplication {
 private:
-	spAudioManager _audioManager;
-	spEffectManager _effectManager;
-	spBlockManager _blockManager;
-	spCharacterManager _characterManager;
+	//現在のシーン
+	int						m_Scene;
+	//変更するシーン
+	int						m_ChangeScene;
 
-	spScene_Base _scene;
+	//各シーンクラス
+	CTitle					m_TitleScene;
+	CGame					m_GameScene;
+	CGameClear				m_GameClearScene;
+	CGameOver				m_GameOverScene;
+	//結合時変更点
+	CStageSelect			m_StageSelect;
+	CGameContinue			m_GameContinue;
+	CAudio					m_Audio;
+
+	//デバッグ表示フラグ
+	bool					m_bDebug;
 
 public:
-	CGameApp();
+	/*************************************************************************//*!
+			@brief			コンストラクタ
+			@param			None
+
+			@return			None
+	*//**************************************************************************/
+	CGameApp() {}
+	/*************************************************************************//*!
+			@brief			デストラクタ
+			@param			None
+
+			@return			None
+	*//**************************************************************************/
 	virtual ~CGameApp(){	Release();	}
+	/*************************************************************************//*!
+			@brief			アプリケーションの初期化
+			@param			None
+				
+			@return			TRUE		成功<br>
+							それ以外	失敗、エラーコードが戻り値となる
+	*//**************************************************************************/
 	virtual MofBool Initialize(void);
+	/*************************************************************************//*!
+			@brief			アプリケーションの更新
+			@param			None
+				
+			@return			TRUE		成功<br>
+							それ以外	失敗、エラーコードが戻り値となる
+	*//**************************************************************************/
 	virtual MofBool Update(void);
+	/*************************************************************************//*!
+			@brief			アプリケーションの描画
+			@param			None
+				
+			@return			TRUE		成功<br>
+							それ以外	失敗、エラーコードが戻り値となる
+	*//**************************************************************************/
 	virtual MofBool Render(void);
+	/*************************************************************************//*!
+			@brief			アプリケーションの解放
+			@param			None
+				
+			@return			TRUE		成功<br>
+							それ以外	失敗、エラーコードが戻り値となる
+	*//**************************************************************************/
 	virtual MofBool Release(void);
 };
