@@ -1,28 +1,283 @@
 #include	"Stage.h"
 #include	<sys/stat.h>
 
+int CStage::__searchBlockID(std::string blockID)
+{
+	for (int cnt = 0; cnt < _blockDataArray.size(); cnt++) {
+		BlockDataElem work = _blockDataArray[cnt];
+		if (work.ID == blockID) return cnt;
+	}
+	return -1;
+}
+
+void CStage::__loadBlockData()
+{
+	// ブロックデータを読み込む
+	const std::string filePath = "Resource/MapData/BlockDatas.swnjsn";
+	const JSON blockDatas = FileAction::ReadJSON(filePath);
+
+	const int length = blockDatas["Length"];
+
+	for (int cnt = 0; cnt < length; cnt++) {
+		const auto blockData = blockDatas["BlockDatas"][cnt];
+		BlockIDElem BlockID(blockData["BlockID"]);
+
+		if (BlockID.isBlank()) continue;
+
+		// テクスチャ関連
+		const std::string ImageFileName = blockData["ImageFileName"];
+		const std::string ImageFilePath = "Image/Blocks/" + ImageFileName;
+		const spCTexture texture(new CTexture);
+		const bool flg = texture->Load(ImageFilePath.c_str());
+		if (!flg) OutputDebugString("[ Error ] ブロック画像の読み込みに失敗しました。");
+
+		__addBlockData({ BlockID.ID(), texture });
+	}
+}
+
+void CStage::__addBlockData(BlockDataElem data)
+{
+	// BlockIDが既に存在するかどうか
+	const bool isFoundID = __searchBlockID(data.ID) != -1;
+
+	// 既に存在するならここで処理終了
+	if (isFoundID) return;
+
+	// テクスチャ最大サイズの更新
+	const float w = data.Texture->GetWidth();
+	const float h = data.Texture->GetHeight();
+	if (w > _maxBlockTextureSize.x) _maxBlockTextureSize.x = w;
+	if (h > _maxBlockTextureSize.y) _maxBlockTextureSize.y = h;
+
+	// データを追加
+	_blockDataArray.push_back(data);
+}
+
+void CStage::__addBlock(std::string BlockID, Vector2 position)
+{
+	BlockIDElem ID(BlockID);
+
+	const int blockIndex = __searchBlockID(BlockID);
+	const bool isFound = blockIndex > -1;
+
+	// 存在しないIDならここで処理終了
+	if (!isFound) return;
+
+	// blankならここで処理終了
+	if (ID.isBlank()) return;
+
+	const BlockDataElem blockData = _blockDataArray[blockIndex];
+
+	if (ID.isPlayer()) {
+		// プレイヤー
+		// TODO : Player初期座標の調整 (現状ブロックの配置インデックスになっている)
+		position *= Vector2(40, 40);
+		__setPlayer(position);
+	}
+	else if (ID.isID("Enemy")) {
+		// TODO : Enemy追加処理仮実装状態
+		spCEnemy work(new CEnemy);
+		work->Initialize(position.x, position.y, 0);
+		work->SetEffectManager(_pmng);
+		work->SetAudio(_audio);
+
+		_enemyArray.push_back(work);
+	}
+	else if (ID.isID("item")) {
+		// TODO : Item追加処理仮実装状態
+		spCItem work(new CItem);
+		work->Initialize(position.x, position.y, 0);
+
+		_itemArray.push_back(work);
+	}
+	else {
+		// その他地形
+		spBlock_Ground work(new Block_Ground(blockData));
+		work->Initialize(position);
+		work->setTexture(blockData.Texture);
+		_blockArray.push_back(work);
+	}
+}
+
+void CStage::__setPlayer(Vector2 pos)
+{
+	spCPlayer work(new CPlayer);
+	work->Load();
+	work->Initialize();
+	work->SetPos(pos);
+	work->SetEffectManager(_pmng);
+	work->SetAudio(_audio);
+
+	_player = work;
+}
+
+void CStage::__updateScroll()
+{
+	//プレイヤーの矩形取得
+	CRectangle prec = _player->getHitBox();
+	//スクリーンの幅
+	const float sw = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
+
+	//ステージ全体の幅
+	const float stgw = _maxBlockTextureSize.x * _mapSize.x;
+
+	//座標が画面端によっている（各端から200pixel）場合スクロールを行って補正する
+	const float scrollLimit = 200.0f;
+	if (prec.Left - m_ScrollX < scrollLimit) {
+		m_ScrollX -= scrollLimit - (prec.Left - m_ScrollX);
+		if (m_ScrollX < 0) m_ScrollX = 0;
+	}
+	else if (prec.Right - m_ScrollX > sw - scrollLimit) {
+		m_ScrollX += (prec.Right - m_ScrollX) - (sw - scrollLimit);
+		if (m_ScrollX >= stgw - sw) m_ScrollX = stgw - sw;
+	}
+}
+
+void CStage::__updatePlayer()
+{
+	_player->Update();
+
+	//ステージとプレイヤーの当たり判定
+	float ox = 0, oy = 0;
+	const bool flg = Collision(_player->getHitBox(), ox, oy);
+	if (flg) {
+		_player->CollisionStage(ox, oy);
+		_player->SetStCollision(GetStageCollision());
+	}
+	else {
+		_player->NotCollisionStage();
+	}
+
+	if (CollisionAttack(_player->getAttackBox(), ox, 1)) {
+		_player->CollisionStageAttackLeft();
+	}
+	else if (CollisionAttack(_player->getAttackBox(), ox, 0)) {
+		_player->CollisionStageAttackRight();
+	}
+
+	// アイテムとの判定
+	for (int cnt = 0; cnt < _itemArray.size(); cnt++) {
+		// TODO : spItemを無理矢理変換しているのでバグの発生可能性有
+		_player->CollisionItem(*_itemArray[cnt].get());
+	}
+
+	// 敵との判定
+	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
+		// TODO : spCEnemyを無理矢理変換しているのでバグの発生可能性有
+		_player->CollisionEnemy(*_enemyArray[cnt].get());
+	}
+}
+
+void CStage::__updateItem(spCItem targetElem)
+{
+	targetElem->Update();
+
+	float ox = 0, oy = 0;
+	const bool flg = Collision(targetElem->GetRect(), ox, oy);
+
+	if (flg) targetElem->CollisionStage(oy);
+}
+
+// 敵 更新
+void CStage::__updateEnemy(spCEnemy targetElem)
+{
+	targetElem->TypeCheck(_player->getPosition(), m_ScrollX, m_ScrollY);
+
+	if (!targetElem->GetShow()) return;
+
+	targetElem->Update();
+
+	float ox = 0, oy = 0;
+	const bool flg = Collision(targetElem->GetRect(), ox, oy);
+
+	if (flg) targetElem->CollisionStage(ox, oy);
+}
+
+void CStage::__renderBackGround()
+{
+	//遠景の描画
+	int scw = g_pGraphics->GetTargetWidth();
+	int sch = g_pGraphics->GetTargetHeight();
+	int wn = m_BackTexture.GetWidth();
+	int hn = m_BackTexture.GetHeight();
+	for (float y = ((int)-m_ScrollX % hn) - hn; y < sch; y += hn) {
+		for (float x = ((int)-m_ScrollX % wn) - wn; y < scw; y += wn) {
+			m_BackTexture.Render(x, y);
+		}
+	}
+}
+
+void CStage::__collisionBottom(CRectangle cr, CRectangle r, bool& re, float& oy)
+{
+	CRectangle brec = r;
+	brec.Top = brec.Bottom - 1;
+	brec.Expansion(-6, 0);
+
+	if (cr.CollisionRect(brec)) {
+		re = true;
+
+		//下の埋まりなのでチップ上端から矩形の下端の値を引いた値が埋まりの値
+		oy += cr.Top - brec.Bottom;
+		r.Top += cr.Top - brec.Bottom;
+		r.Bottom += cr.Top - brec.Bottom;
+	}
+}
+
+void CStage::__collisionTop(CRectangle cr, CRectangle r, bool& re, float& oy)
+{
+	CRectangle trec = r;
+	trec.Bottom = trec.Top + 1;
+	trec.Expansion(-6, 0);
+	//上と当たり判定
+	if (cr.CollisionRect(trec)) {
+		re = true;
+		//上の埋まりなのでチップの下端から矩形の上端の値を引いた値が埋まりの値
+		oy += cr.Bottom - trec.Top;
+		r.Top += cr.Bottom - trec.Top;
+		r.Bottom += cr.Bottom - trec.Top;
+	}
+}
+
+void CStage::__collisionLeftRight(CRectangle cr, CRectangle r, bool& re, float& ox)
+{
+	CRectangle lrec = r;
+	lrec.Right = lrec.Left + 1;
+	lrec.Expansion(0, -6);
+	CRectangle rrec = r;
+	rrec.Left = rrec.Right - 1;
+	rrec.Expansion(0, -6);
+
+	//左と当たり判定
+	if (cr.CollisionRect(lrec)) {
+		re = true;
+		//左の埋まりなのでチップ右端から矩形の左端の値を引いた値が埋まりの値
+		ox += cr.Right - lrec.Left;
+		r.Left += cr.Right - lrec.Left;
+		r.Right += cr.Right - lrec.Left;
+		return;
+	}
+	//右との当たり判定
+	if (cr.CollisionRect(rrec)) {
+		re = true;
+		//右の埋まりなのでチップ左端から矩形の右端を引いた値が埋まりの値
+		ox += cr.Left - rrec.Right;
+		r.Left += cr.Left - rrec.Right;
+		r.Right += cr.Left - rrec.Right;
+	}
+}
+
 /**
  * コンストラクタ
  *
  */
-CStage::CStage() :
-m_ChipTexture() ,
-m_BackTexture() ,
-m_ChipSize(0) ,
-m_XCount(0) ,
-m_YCount(0) ,
-m_pChipData(NULL) ,
-m_ScrollX(0) ,
-m_ScrollY(0),
-m_EnemyTextureCount(0),
-m_pEnemyTexture(NULL),
-m_pEnemyData(NULL),
-m_EnamyCount(0),
-m_ItemTextureCount(0),
-m_pItemTexture(NULL),
-m_pItemData(NULL),
-m_ItemCount(0),
-m_StCollision(false)
+CStage::CStage()
+	: m_BackTexture()
+	, m_ScrollX(0)
+	, m_ScrollY(0)
+	, m_StCollision(false)
+	, _player(new CPlayer)
+	, _mapSize(0, 0)
+	, _maxBlockTextureSize(0, 0)
 {
 }
 
@@ -40,7 +295,29 @@ CStage::~CStage(){
  * 引数
  * [in]			pName				ステージファイルの名前
  */
-bool CStage::Load(char* pName){
+bool CStage::LoadMapData(std::string mapFileName){
+	// 既存のデータを一度削除する
+	_blockArray.clear();
+
+	// マップファイルを読み込む
+	const std::string mapPath = "Resource/MapData/" + mapFileName + ".swnstg";
+	_mapData = FileAction::ReadJSON(mapPath);
+
+	const auto mainLayer = _mapData["MapData"]["Main"];
+	const auto mapData = mainLayer["MapData"];
+	const int length = mainLayer["Length"];
+
+	for (int cnt = 0; cnt < length; cnt++) {
+		const auto blockData = mapData[cnt];
+		const std::string BlockID = blockData["BlockID"];
+		const auto Pos = blockData["Position"];
+		const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
+
+		if (Position.x > _mapSize.x) _mapSize.x = Position.x;
+		if (Position.y > _mapSize.y) _mapSize.y = Position.y;
+		
+		__addBlock(BlockID, Position);
+	}
 	return true;
 }
 
@@ -48,36 +325,13 @@ bool CStage::Load(char* pName){
  * 初期化
  * パラメーターや座標を初期化する。
  */
-void CStage::Initialize(CEnemy* pEnemy,CItem* pItem){
+void CStage::Initialize(CEffectManager* pmng, CAudio* audio){
 	m_ScrollX = 0;
 	m_ScrollY = 0;
-	int n = 0;
-	for (int y = 0; y < m_YCount; y++) {
-		for (int x = 0; x < m_XCount; x++) {
-			//配置番号
-			//番号０は配置しない
-			char on = m_pEnemyData[y * m_XCount + x] - 1;
-			if (on < 0) {
-				continue;
-			}
-			pEnemy[n].SetTexture(&m_pEnemyTexture[on]);
-			pEnemy[n++].Initialize(x * m_ChipSize, y * m_ChipSize, on);
-		}
-	}
-	n = 0;
-	for (int y = 0; y < m_YCount; y++) {
-		for (int x = 0; x < m_XCount; x++) {
-			//配置番号
-			//番号０は配置しない
-			char on = m_pItemData[y * m_XCount + x] - 1;
-			if (on < 0) {
-				continue;
-			}
-			pItem[n].SetTexture(&m_pItemTexture[on]);
-			pItem[n++].Initialize(x * m_ChipSize, y * m_ChipSize, on);
-		}
-	}
 	m_StCollision = false;
+
+	_pmng = pmng;
+	_audio = audio;
 }
 
 /**
@@ -87,124 +341,85 @@ void CStage::Initialize(CEnemy* pEnemy,CItem* pItem){
  * [in]			pl					プレイヤー、スクロールの判定に使用
  */
 void CStage::Update(CPlayer& pl){
-	//プレイヤーの矩形取得
-	CRectangle prec = pl.getHitBox();
-	//スクリーンの幅
-	float sw = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
-	//ステージ全体の幅
-	float stgw = m_ChipSize * m_XCount;
-	//座標が画面端によっている（各端から200pixel）場合スクロールを行って補正する
-	if (prec.Left - m_ScrollX < 200) {
-		m_ScrollX -= 200 - (prec.Left - m_ScrollX);
-		if (m_ScrollX <= 0) {
-			m_ScrollX = 0;
-		}
+	////////////////////////////////////////////////////////////////////////
+	// 
+	// FixedUpdate
+	// 
+	////////////////////////////////////////////////////////////////////////
+
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		_blockArray[cnt]->FixedUpdate(Vector2(m_ScrollX, m_ScrollY));
 	}
-	else if (prec.Right - m_ScrollX > sw - 200) {
-		m_ScrollX += (prec.Right - m_ScrollX) - (sw - 200);
-		if (m_ScrollX >= stgw - sw) {
-			m_ScrollX = stgw - sw;
-		}
+
+	////////////////////////////////////////////////////////////////////////
+	// 
+	// Update
+	// 
+	////////////////////////////////////////////////////////////////////////
+
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		_blockArray[cnt]->Update();
 	}
+
+	for (int cnt = 0; cnt < _itemArray.size(); cnt++) {
+		spCItem targetElem = _itemArray[cnt];
+		__updateItem(targetElem);
+
+		if (targetElem->GetShow()) continue;
+
+		// 非表示状態なら配列から削除する
+		_itemArray.erase(_itemArray.begin() + cnt);
+	}
+
+	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
+		spCEnemy targetElem = _enemyArray[cnt];
+		__updateEnemy(targetElem);
+
+		if (targetElem->GetShow()) continue;
+
+		// 非表示状態なら配列から削除する
+		_enemyArray.erase(_enemyArray.begin() + cnt);
+	}
+
+	__updatePlayer();
+
+	////////////////////////////////////////////////////////////////////////
+	// 
+	// LateUpdate
+	// 
+	////////////////////////////////////////////////////////////////////////
+
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		spGameObject targetElem = _blockArray[cnt];
+		targetElem->LateUpdate();
+
+		if (targetElem->isActive()) continue;
+
+		// 無効状態の要素は配列から削除する
+		_blockArray.erase(_blockArray.begin() + cnt);
+	}
+
+	__updateScroll();
 }
 
 bool CStage::Collision(CRectangle r, float& ox, float& oy)
 {
 	m_StCollision = true;
 	bool re = false;
-	//当たり判定を矩形の左上と右下のチップ位置を決める
-	int lc = r.Left / m_ChipSize;
-	int rc = r.Right / m_ChipSize;
-	int tc = r.Top / m_ChipSize;
-	int bc = r.Bottom / m_ChipSize;
-	//ステージの範囲外にはならないようにする
-	if (lc < 0) { lc = 0; }
-	if (tc < 0) { tc = 0; }
-	if (rc >= m_XCount) { rc = m_XCount - 1; }
-	if (bc >= m_YCount) { bc = m_YCount - 1; }
 
-	//当たり判定をする矩形の左上から右下の範囲のみ当たり判定を行う
-	//それ以外の番号は当たることはないので判定が必要ない
-	for (int y = tc; y <= bc; y++) {
-		for (int x = lc; x <= rc; x++) {
-			//描画するチップ番号
-			//チップ番号０は当たり判定しない
-			char cn = m_pChipData[y * m_XCount + x] - 1;
-			if (cn < 0) {
-				continue;
-			}
-			//マップチップの矩形
-			CRectangle cr(x * m_ChipSize, y * m_ChipSize, x * m_ChipSize + m_ChipSize, y * m_ChipSize + m_ChipSize);
-			//当たり判定用のキャラクター矩形
-			//下で範囲を限定した専用の矩形を作成する
-			CRectangle brec = r;
-			brec.Top = brec.Bottom - 1;
-			brec.Expansion(-6, 0);
-			//下と当たり判定
-			if (cr.CollisionRect(brec)) {
-				re = true;
-				//チップが斜面の場合自分の立ち位置から高さの割合を求める
-				if (cn == LEFTSLOPE) {
-					float sp = (brec.Right - cr.Left) / cr.GetWidth();
-					if(sp < 0.0f) { sp = 0.0f; }
-					else if (sp > 1.0f) { sp = 1.0f; }
-					//斜面の上の位置を求める
-					float cTop = cr.Bottom - cr.GetHeight() * sp;
-					//求めた上辺より上にある場合は埋まっていない
-					if (brec.Bottom < cTop) { continue; }
-					//下の埋まりなので坂上端から矩形の下端の値を引いた値が埋まりの値
-					oy += cTop - brec.Bottom;
-					r.Top += cTop - brec.Bottom;
-					r.Bottom += cTop - brec.Bottom;
-				}
-				else {
-					//下の埋まりなのでチップ上端から矩形の下端の値を引いた値が埋まりの値
-					oy += cr.Top - brec.Bottom;
-					r.Top += cr.Top - brec.Bottom;
-					r.Bottom += cr.Top - brec.Bottom;
-				}
-			}
-			//チップが屋面の場合壁・天井としての当たり判定を行わない
-			if (cn == LEFTSLOPE) { continue; }
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		spGameObject targetElem = _blockArray[cnt];
+		CRectangle cr = targetElem->getRect();
 
-			//当たり判定用のキャラクタ矩形
-			//左、右それぞれで範囲を限定した専用矩形を作成する
-			CRectangle lrec = r;
-			lrec.Right = lrec.Left + 1;
-			lrec.Expansion(0, -6);
-			CRectangle rrec = r;
-			rrec.Left = rrec.Right - 1;
-			rrec.Expansion(0, -6);
-			//左と当たり判定
-			if (cr.CollisionRect(lrec)) {
-				re = true;
-				//左の埋まりなのでチップ右端から矩形の左端の値を引いた値が埋まりの値
-				ox += cr.Right - lrec.Left;
-				r.Left += cr.Right - lrec.Left;
-				r.Right += cr.Right - lrec.Left;
-			}
-			//右との当たり判定
-			else if (cr.CollisionRect(rrec)) {
-				re = true;
-				//右の埋まりなのでチップ左端から矩形の右端を引いた値が埋まりの値
-				ox += cr.Left - rrec.Right;
-				r.Left += cr.Left - rrec.Right;
-				r.Right += cr.Left - rrec.Right;
-			}
-			//当たり判定用のキャラクタ矩形
-			//上で範囲を限定した専用矩形を作成する
-			CRectangle trec = r;
-			trec.Bottom = trec.Top + 1;
-			trec.Expansion(-6, 0);
-			//上と当たり判定
-			if (cr.CollisionRect(trec)) {
-				re = true;
-				//上の埋まりなのでチップの下端から矩形の上端の値を引いた値が埋まりの値
-				oy += cr.Bottom - trec.Top;
-				r.Top += cr.Bottom - trec.Top;
-				r.Bottom += cr.Bottom - trec.Top;
-			}
-		}
+		// 下方向の判別
+		__collisionBottom(cr, r, re, oy);
+
+		// 左右方向の判別
+		__collisionLeftRight(cr, r, re, ox);
+
+		// 上方向の判別
+		__collisionTop(cr, r, re, oy);
+		
 	}
 	return re;
 }
@@ -213,64 +428,29 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
 {
 	bool re = false;
 	m_StCollision = true;
-	//あたり判定する矩形の左上と右下のチップ位置を求める
-	int lc = r.Left / m_ChipSize;
-	int rc = r.Right / m_ChipSize;
-	int tc = r.Top / m_ChipSize;
-	int bc = r.Bottom / m_ChipSize;
-	//ステージの範囲外にならないようにする
-	if (lc < 0) { lc = 0; }
-	if (tc < 0) { tc = 0; }
-	if (rc >= m_XCount) { rc = m_XCount - 1; }
-	if (bc >= m_YCount) { bc = m_YCount - 1; }
 
-	//あたり判定をする矩形の左上から右下の範囲のみあたり判定を行う
-	//それ以外の番号は当たらないので判定の必要なし
-	for (int y = tc; y <= bc; y++) {
-		for (int x = lc; x <= rc; x++) {
-			//描画するチップ番号
-			//チップ番号0は当たり判定はしない
-			char cn = m_pChipData[y * m_XCount + x] - 1;
-			if (cn < 0) {
-				continue;
-			}
-			//マップチップの矩形
-			CRectangle cr(x * m_ChipSize, y * m_ChipSize,
-				x * m_ChipSize + m_ChipSize, y * m_ChipSize + m_ChipSize);
-			//チップが斜面の場合壁・天井としてのあたり判定を行わない
-			if (cn == LEFTSLOPE) { continue; }
-			//あたり判定用のキャラクター矩形
-				//左右で範囲を限定した専用の矩形を作成する
-			CRectangle lrec = r;
-			lrec.Right = lrec.Left + 1;//左の矩形は右側を左と同じ値にする
-			lrec.Expansion(0, -6);		//縦の範囲を少し狭める
+	// 攻撃typeが規定のものでないならここで処理終了
+	const bool isAttack = (type == 0 || type == 1);
+	if (!isAttack) return false;
 
-			//あたり判定用のキャラクター矩形
-			//左右で範囲を限定した専用の矩形を作成する
-			CRectangle rrec = r;
-			rrec.Left = rrec.Right - 1;//右の矩形は左側を右と同じ値にする
-			rrec.Expansion(0, -6);		//縦の範囲を少し狭める
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		spGameObject targetElem = _blockArray[cnt];
+		CRectangle cr = targetElem->getRect();
 
-			switch (type)
-			{
-			case 0:			//CollitionLeftAttack
-				//左と当たり判定
-				if (cr.CollisionRect(lrec)) {
-					re = true;
-				}
-				break;
-			case 1:			//CollitionRightAttack
-				//右と当たり判定(左)  OK
-				if (cr.CollisionRect(rrec)) {
-					re = true;
-				}
-				break;
-			default:
-				break;
-			}
+		//あたり判定用のキャラクター矩形
+		//左右で範囲を限定した専用の矩形を作成する
+		CRectangle lrec = r;
+		lrec.Right = lrec.Left + 1;//左の矩形は右側を左と同じ値にする
+		lrec.Expansion(0, -6);		//縦の範囲を少し狭める
 
+		//あたり判定用のキャラクター矩形
+		//左右で範囲を限定した専用の矩形を作成する
+		CRectangle rrec = r;
+		rrec.Left = rrec.Right - 1;//右の矩形は左側を右と同じ値にする
+		rrec.Expansion(0, -6);		//縦の範囲を少し狭める
 
-		}
+		CRectangle targetRect = (type == 0) ? lrec : rrec;
+		re = cr.CollisionRect(targetRect);
 	}
 	return re;
 }
@@ -280,35 +460,21 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
  *
  */
 void CStage::Render(void){
-	//遠景の描画
-	int scw = g_pGraphics->GetTargetWidth();
-	int sch = g_pGraphics->GetTargetHeight();
-	int wn = m_BackTexture.GetWidth();
-	int hn = m_BackTexture.GetHeight();
-	for (float y = ((int)-m_ScrollX % hn) - hn; y < sch; y += hn) {
-		for (float x = ((int)-m_ScrollX % wn) - wn; y < scw; y += wn) {
-			m_BackTexture.Render(x,y);
-		}
+	__renderBackGround();
+
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		_blockArray[cnt]->Render();
 	}
 
-	//テクスチャの横幅からマップチップの縦オフセットを求める
-	int tcx = m_ChipTexture.GetWidth() / m_ChipSize;
-	//マップチップの描画
-	for (int y = 0; y < m_YCount; y++) {
-		for (int x = 0; x < m_XCount; x++) {
-			//描画するチップ番号
-			//チップ番号０は描画しない
-			char cn = m_pChipData[y * m_XCount + x] - 1;
-			if (cn < 0) {
-				continue;
-			}
-			//マップチップの矩形
-			CRectangle cr(m_ChipSize * (cn % tcx), m_ChipSize * (cn / tcx),
-				m_ChipSize * (cn % tcx + 1), m_ChipSize * (cn / tcx + 1));
-			//マップチップの描画
-			m_ChipTexture.Render(-m_ScrollX + x * m_ChipSize, -m_ScrollY + y * m_ChipSize, cr);
-		}
+	for (int cnt = 0; cnt < _itemArray.size(); cnt++) {
+		_itemArray[cnt]->Render(m_ScrollX, m_ScrollY);
 	}
+
+	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
+		_enemyArray[cnt]->Render(m_ScrollX, m_ScrollY);
+	}
+
+	_player->Render(m_ScrollX, m_ScrollY);
 }
 
 /**
@@ -318,6 +484,18 @@ void CStage::Render(void){
 void CStage::RenderDebug(void){
 	//位置の描画
 	CGraphicsUtilities::RenderString(10,100,"スクロール X : %.0f , Y : %.0f",m_ScrollX,m_ScrollY);
+
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		_blockArray[cnt]->RenderRect();
+	}
+
+	for (int cnt = 0; cnt < _itemArray.size(); cnt++) {
+		_itemArray[cnt]->RenderDebug(m_ScrollX, m_ScrollY);
+	}
+
+	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
+		_enemyArray[cnt]->RenderDebug(m_ScrollX, m_ScrollY);
+	}
 }
 
 /**
@@ -325,26 +503,20 @@ void CStage::RenderDebug(void){
  *
  */
 void CStage::Release(void){
-	m_ChipTexture.Release();
+
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		_blockArray[cnt]->Release();
+	}
+
+	for (int cnt = 0; cnt < _itemArray.size(); cnt++) {
+		_itemArray[cnt]->Release();
+	}
+
+	for (int cnt = 0; cnt < _enemyArray.size(); cnt++) {
+		_enemyArray[cnt]->Release();
+	}
+
+	_player->Release();
+
 	m_BackTexture.Release();
-	if (m_pChipData) {
-		free(m_pChipData);
-		m_pChipData = NULL;
-	}
-	if (m_pEnemyData) {
-		free(m_pEnemyData);
-		m_pEnemyData = NULL;
-	}
-	if (m_pEnemyTexture) {
-		delete[] m_pEnemyTexture;
-		m_pEnemyTexture = NULL;
-	}
-	if (m_pItemData) {
-		free(m_pItemData);
-		m_pItemData = NULL;
-	}
-	if (m_pItemTexture) {
-		delete[] m_pItemTexture;
-		m_pItemTexture = NULL;
-	}
 }

@@ -22,7 +22,7 @@ constexpr int		PLAYER_ATTACKWIDTH = 30;
 constexpr int		PLAYER_RECTDECREASE	= 12;
 
 //HPâÒïúó 
-constexpr float		ADD_HP = 0.05;// * 10000
+constexpr float		ADD_HP = 0.05f;// * 10000
 
 
 //íeÇÃî≠éÀå¿äEêî
@@ -184,7 +184,8 @@ public:
 	void SetEffectManager(CEffectManager* pmng) { m_pEffectManager = pmng; }
 	void SetAudio(CAudio* audio) { m_Audio = audio; }
 	void SetStCollision(bool flg) { m_bStCollision = flg; }
-	void SetPos(int a, int b) { m_Position = Vector2(a, b); }
+	void SetPos(Vector2 pos) { m_Position = pos; }
+	void SetPos(float x, float y) { m_Position = Vector2(x, y); }
 
 	CRectangle GetAttackRect() {
 		//îªíËÇï‘Ç∑ÇÊÇ§Ç…Ç∑ÇÈ

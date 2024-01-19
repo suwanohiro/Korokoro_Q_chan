@@ -6,9 +6,7 @@
  * コンストラクタ
  *
  */
-CGame::CGame():
-m_EnemyArray(),
-m_ItemArray()
+CGame::CGame()
 {
 }
 
@@ -27,18 +25,11 @@ bool CGame::Load(void){
 	//プレイヤーの素材読み込み
 	m_Player.Load();
 	//ステージの素材読み込み
-	m_Stage.Load("Stage1.txt");
-	//敵メモリ確保
-	m_EnemyArray = new CEnemy[m_Stage.GetEnemyCount()];
-	
-	//変更部分
-	//敵の素材読み込み
-	for (int i = 0; i < m_Stage.GetEnemyCount(); i++) {
-		m_EnemyArray[i].Load();
-	}
+	// TODO : ステージの読み込みが1ステージ分しかできていない問題
+	m_Stage.LoadMapData("test_stage_2024-01-12_1");
 
-	//アイテムメモリ確保
-	m_ItemArray = new CItem[m_Stage.GetItemCount()];
+	// TODO : アイテムの配列をStageに追加
+
 	//エフェクトの素材読み込み
 	m_EffectManager.Load();
 	//メニューの素材読み込み
@@ -56,7 +47,7 @@ void CGame::Initialize(){
 	//プレイヤーの状態初期化
 	m_Player.Initialize();
 	//ステージの状態初期化
-	m_Stage.Initialize(m_EnemyArray,m_ItemArray);
+	m_Stage.Initialize(&m_EffectManager, &*m_Audio);
 	//エフェクトの状態初期化
 	m_EffectManager.Initialize();
 	//結合時変更点
@@ -66,15 +57,6 @@ void CGame::Initialize(){
 	m_Audio->Initialize();
 	//カウントダウンの初期化
 	m_Countdown.Initialize();
-
-	//プレイヤーと敵にエフェクトクラスの設定
-	//プレイヤーと敵にオーディオクラスの設定
-	m_Player.SetEffectManager(&m_EffectManager);
-	m_Player.SetAudio(&*m_Audio);
-	for (int i = 0; i < m_Stage.GetEnemyCount(); i++) {
-		m_EnemyArray[i].SetEffectManager(&m_EffectManager);
-		m_EnemyArray[i].SetAudio(&*m_Audio);
-	}
 	
 	m_Menu.SetAudio(&*m_Audio);
 
@@ -102,64 +84,7 @@ void CGame::Update(int& ChangeScene){
 		ChangeScene = SCENENO_GAMEOVER;
 		return;
 	}
-
-	//プレイヤーの更新
-	m_Player.Update();
-	//ステージとプレイヤーの当たり判定
-	float ox = 0, oy = 0;
-	if (m_Stage.Collision(m_Player.getHitBox(), ox, oy)) {
-		m_Player.CollisionStage(ox, oy);
-		m_Player.SetStCollision(m_Stage.GetStageCollision());
-	}
-	else {
-		//変更点＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-		m_Player.NotCollisionStage();
-	}
-	//変更点＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-	if (m_Stage.CollisionAttack(m_Player.getAttackBox(), ox, 1)) {
-		m_Player.CollisionStageAttackLeft();
-	}
-	else if (m_Stage.CollisionAttack(m_Player.getAttackBox(), ox, 0)) {
-		m_Player.CollisionStageAttackRight();
-	}
-	//敵の更新
-	for (int i = 0; i < m_Stage.GetEnemyCount(); i++) {
-		m_EnemyArray[i].TypeCheck(m_Player.getPosition(), m_Stage.GetScrollX(), m_Stage.GetScrollY());
-		if (!m_EnemyArray[i].GetShow()) {
-			continue;
-		}
-
-		//変更部分
-		m_EnemyArray[i].Update();
-		
-		float ox = 0, oy = 0;
-		if (m_Stage.Collision(m_EnemyArray[i].GetRect(), ox, oy)) {
-			m_EnemyArray[i].CollisionStage(ox, oy);
-		}
-		
-	}
-	//アイテムの更新
-	for (int i = 0; i < m_Stage.GetItemCount(); i++) {
-		if (!m_ItemArray[i].GetShow()) {
-			continue;
-		}
-		m_ItemArray[i].Update();
-		float ox = 0, oy = 0;
-		if (m_Stage.Collision(m_ItemArray[i].GetRect(), ox, oy)) {
-			m_ItemArray[i].CollisionStage(oy);
-		}
-	}
-	//当たり判定の実行
-	for (int i = 0; i < m_Stage.GetEnemyCount(); i++) {
-		//結合時変更点
-		
-		//敵と当たればサウンドを鳴らす
-		(m_Player.CollisionEnemy(m_EnemyArray[i]));
-
-	}
-	for (int i = 0; i < m_Stage.GetItemCount(); i++) {
-		m_Player.CollisionItem(m_ItemArray[i]);
-	}
+	
 	//ステージの更新
 	m_Stage.Update(m_Player);
 	//エフェクトの更新
@@ -200,17 +125,7 @@ void CGame::Update(int& ChangeScene){
 void CGame::Render(void){
 	//ステージの描画
 	m_Stage.Render();
-	//プレイヤーの描画
-	m_Player.Render(m_Stage.GetScrollX(), m_Stage.GetScrollY());
-	m_Player.RenderShot(m_Stage.GetScrollX());
-	//敵の描画
-	for (int i = 0; i < m_Stage.GetEnemyCount(); i++) {
-		m_EnemyArray[i].Render(m_Stage.GetScrollX(), m_Stage.GetScrollY());
-	}
-	//アイテムの描画
-	for (int i = 0; i < m_Stage.GetItemCount(); i++) {
-		m_ItemArray[i].Render(m_Stage.GetScrollX(), m_Stage.GetScrollY());
-	}
+
 	//エフェクトの描画
 	m_EffectManager.Render(m_Stage.GetScrollX(), m_Stage.GetScrollY());
 	//UIの描画
@@ -220,9 +135,6 @@ void CGame::Render(void){
 	//結合時変更点
 	//メニューの描画
 	m_Menu.Render();
-
-	//CGraphicsUtilities::RenderString(10,10,"ゲーム画面");
-	//CGraphicsUtilities::RenderString(10,40,"F2キーでゲームクリア、F3キーでゲームオーバー");
 }
 
 /**
@@ -234,14 +146,7 @@ void CGame::RenderDebug(void){
 	m_Stage.RenderDebug();
 	//プレイヤーのデバッグ描画
 	m_Player.RenderDebug(m_Stage.GetScrollX(), m_Stage.GetScrollY());
-	//敵のデバック描画
-	for (int i = 0; i < m_Stage.GetEnemyCount(); i++) {
-		m_EnemyArray[i].RenderDebug(m_Stage.GetScrollX(), m_Stage.GetScrollY());
-	}
-	//アイテムのデバック描画
-	for (int i = 0; i < m_Stage.GetItemCount(); i++) {
-		m_ItemArray[i].RenderDebug(m_Stage.GetScrollX(), m_Stage.GetScrollY());
-	}
+
 	//エフェクトのデバック描画
 	//m_EffectManager.RenderDebug(m_Stage.GetScrollX(), m_Stage.GetScrollY());
 }
@@ -255,16 +160,7 @@ void CGame::Release(void){
 	m_Stage.Release();
 	//プレイヤーの解放
 	m_Player.Release();
-	//敵の解放
-	if (m_EnemyArray) {
-		delete[] m_EnemyArray;
-		m_EnemyArray = NULL;
-	}
-	//アイテムの解放
-	if (m_ItemArray) {
-		delete[] m_ItemArray;
-		m_ItemArray = NULL;
-	}
+
 	//エフェクトの解放
 	m_EffectManager.Release();
 

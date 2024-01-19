@@ -42,8 +42,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>../../MofLibrary/Include;../../../MofLibrary/Include;$(IncludePath);</IncludePath>
-    <LibraryPath>../../MofLibrary/Library;../../../MofLibrary/Library;$(LibraryPath);</LibraryPath>
+    <IncludePath>C:/Tools/MofLibrary/Include;C:/Tools/MofLibrary/Include;$(IncludePath);</IncludePath>
+    <LibraryPath>C:/Tools/MofLibrary/Library;C:/Tools/MofLibrary/Library;$(LibraryPath);</LibraryPath>
     <OutDir>$(SolutionDir)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -119,10 +119,8 @@
     <ClCompile Include="StageSelect.cpp" />
     <ClCompile Include="swnLibrary\FileAction\FileAction.cpp" />
     <ClCompile Include="swnLibrary\StringAction\StringAction.cpp" />
-    <ClCompile Include="swnProgram\Block\BlockManager.cpp" />
     <ClCompile Include="swnProgram\Block\Block_Base.cpp" />
     <ClCompile Include="swnProgram\Block\Block_Ground.cpp" />
-    <ClCompile Include="swnProgram\Character\CharacterManager.cpp" />
     <ClCompile Include="swnProgram\GameObject\GameObject.cpp" />
     <ClCompile Include="swnProgram\GameObject\GameObjectMotion.cpp" />
     <ClCompile Include="Title.cpp" />
@@ -157,10 +155,8 @@
     <ClInclude Include="swnLibrary\swnLibrary.h" />
     <ClInclude Include="swnLibrary\WebColor\WebColor.h" />
     <ClInclude Include="swnProgram\Block\BlockData.hpp" />
-    <ClInclude Include="swnProgram\Block\BlockManager.h" />
     <ClInclude Include="swnProgram\Block\Block_Base.h" />
     <ClInclude Include="swnProgram\Block\Block_Ground.h" />
-    <ClInclude Include="swnProgram\Character\CharacterManager.hpp" />
     <ClInclude Include="swnProgram\GameObject\GameObject.hpp" />
     <ClInclude Include="swnProgram\GameObject\GameObjectMotion.hpp" />
     <ClInclude Include="Title.h" />

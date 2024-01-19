@@ -17,12 +17,8 @@ private:
 	CPlayer		m_Player;
 	//ステージ
 	CStage		m_Stage;
-	//敵
-	CEnemy*		m_EnemyArray;
 	//エフェクト
 	CEffectManager m_EffectManager;
-	//アイテム
-	CItem*		m_ItemArray;
 	//メニュー
 	CMenu		m_Menu;
 	//サウンド

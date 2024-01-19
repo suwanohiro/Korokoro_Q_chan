@@ -45,3 +45,5 @@ public:
 	CRectangle GetRect();												//当たり矩形
 	ItemType GetType() { return m_ItemType; }							//アイテムの種類
 };
+
+using spCItem = std::shared_ptr<CItem>;
