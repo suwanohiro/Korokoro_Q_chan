@@ -180,10 +180,10 @@ void CStage::__updatePlayer()
 	const float screenWidth = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
 	Vector2 pos = _player->GetPos();
 	const float recRight = _player->getHitBox().Right;
-	if (pos.x < 0) pos.x = 0;
+	// if (pos.x < 0) pos.x = 0;
 
 	const float rightLimit = m_ScrollX + screenWidth;
-	if (rightLimit < recRight) pos.x = rightLimit;
+	// if (rightLimit < recRight) pos.x = rightLimit;
 
 	_player->SetPos(pos);
 
