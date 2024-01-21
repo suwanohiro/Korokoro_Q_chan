@@ -20,7 +20,7 @@ private:
 	//メニュー
 	CMenu		m_Menu;
 	//サウンド
-	CAudio*		m_Audio;
+	spCAudio		m_Audio;
 	//カウントダウン
 	Countdown	m_Countdown;
 
@@ -28,12 +28,12 @@ public:
 	CGame();
 	~CGame();
 	bool Load(void);
-	void Initialize(void);
+	void Initialize(int stage);
 	void Update(int& ChangeScene);
 	void Render(void);
 	void RenderDebug(void);
 	void Release(void);
-	void SetAudio(CAudio* audio) {
+	void SetAudio(spCAudio audio) {
 		m_Audio = audio;
 	}
 };

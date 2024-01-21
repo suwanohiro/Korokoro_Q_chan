@@ -16,7 +16,7 @@ private:
 	int         m_PlusRGB;		//文字画像の色の変動値
 	int			m_RGB;			//文字画像の色のRGB値
 	CTexture    m_BackTexture;  //バックの画像
-	CAudio*		m_Audio;
+	spCAudio		m_Audio;
 	int			m_Volume;
 public:
 	CTitle();
@@ -28,6 +28,6 @@ public:
 	void RenderDebug(void);
 	void Release(void);
 
-	void SetAudio(CAudio* audio) {m_Audio = audio; }
+	void SetAudio(spCAudio audio) {m_Audio = audio; }
 };
 

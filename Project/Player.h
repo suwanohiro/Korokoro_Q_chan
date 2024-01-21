@@ -119,7 +119,7 @@ private:
 	CGravity				m_Gravity;
 	CPlayerUI				m_PlayerUI;
 
-	CAudio* m_Audio;
+	spCAudio m_Audio;
 
 public:
 	CPlayer();
@@ -182,7 +182,7 @@ public:
 	bool IsGoal(void) { return m_bGoal; }
 
 	void SetEffectManager(CEffectManager* pmng) { m_pEffectManager = pmng; }
-	void SetAudio(CAudio* audio);
+	void SetAudio(spCAudio audio);
 	void SetStCollision(bool flg) { m_bStCollision = flg; }
 	void SetPos(Vector2 pos) { m_Position = pos; }
 	void SetPos(float x, float y) { m_Position = Vector2(x, y); }

@@ -7,7 +7,7 @@ enum tag_Audio
 	Audio_GameOverBGM,			//ゲームオーバーBGM
 	Audio_GameClearBGM,			//ゲームクリアBGM
 	Audio_GameContinueBGM,		//ゲームコンテニューBGM
-	Audio_StageBGM,				//ステージBGM
+	Audio_Stage,				//ステージBGM
 
 	Audio_Button,				//ボタンクリックSE
 	Audio_Select,				//選択SE
@@ -25,6 +25,9 @@ enum tag_Audio
 	Audio_EnemyDead,			//敵死亡SE
 
 	Audio_Heel,					//回復SE
+
+	Audio_StageBGM,
+	Audio_StageSelectBGM,
 
 	Audio_Count,
 };
@@ -46,3 +49,4 @@ public:
 	void Release();
 };
 
+using spCAudio = std::shared_ptr<CAudio>;

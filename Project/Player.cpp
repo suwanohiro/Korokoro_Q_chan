@@ -728,7 +728,7 @@ void CPlayer::Release(void)
 	m_PlayerUI.Release();
 }
 
-void CPlayer::SetAudio(CAudio* audio)
+void CPlayer::SetAudio(spCAudio audio)
 {
 	m_Audio = audio;
 }

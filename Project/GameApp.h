@@ -13,6 +13,8 @@
 #include	"Mof.h"
 #include	"GameDefine.h"
 #include	"Title.h"
+
+#include "./swnLibrary/swnLibrary.h"
 //結合時変更点
 #include	"StageSelect.h"
 #include	"Game.h"
@@ -20,7 +22,7 @@
 #include	"GameOver.h"
 #include	"GameContinue.h"
 #include	"Audio.h"
-
+#include <thread>
 /*******************************//*!
 @brief	基本ゲームアプリ。
 
@@ -41,10 +43,15 @@ private:
 	//結合時変更点
 	CStageSelect			m_StageSelect;
 	CGameContinue			m_GameContinue;
-	CAudio					m_Audio;
+	spCAudio				m_Audio;
 
 	//デバッグ表示フラグ
 	bool					m_bDebug;
+
+	std::thread				_loadThread;
+	bool					_isLoaded;
+
+	void __renderLoading();
 
 public:
 	/*************************************************************************//*!

@@ -22,7 +22,9 @@ bool CAudio::Load()
 		"EnemyAttack.mp3",
 		"EnemyDamege.mp3",
 		"EnemyDead.mp3",
-		"Heel.mp3"
+		"Heel.mp3",
+		"BGM_Stage.mp3",
+		"BGM_StageSelect.mp3",
 	};
 	
 	for (int i = 0; i < Audio_Count; i++) {

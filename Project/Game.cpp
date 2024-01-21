@@ -39,13 +39,19 @@ bool CGame::Load(void){
  * パラメーターや座標を初期化する。
  * 状態を初期化したいときに実行する。
  */
-void CGame::Initialize(){
+void CGame::Initialize(int stage){
+	// ステージ番号が1以上になっているので配列添字に合わせるため1引く
+	stage--;
+
 	//ステージの状態初期化
 	m_Stage.Initialize(&m_EffectManager, m_Audio);
 
 	CSVData mapList = FileAction::ReadCSV("Resource/MapData/MapList.swn");
 
-	m_Stage.LoadMapData(mapList[0][0]);
+	const bool isFoundStage = stage < mapList.size();
+	if (isFoundStage) {
+		m_Stage.LoadMapData(mapList[stage][0]);
+	}
 
 	//エフェクトの状態初期化
 	m_EffectManager.Initialize();
@@ -60,8 +66,10 @@ void CGame::Initialize(){
 	m_Menu.SetAudio(m_Audio);
 
 	//カウントダウン時間の設定
-	m_Countdown.SetCountdown(20);
+	m_Countdown.SetCountdown(300);
 	m_Countdown.Start();
+
+	m_Audio->Play(Audio_StageBGM, true);
 }
 
 /**

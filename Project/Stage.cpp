@@ -398,8 +398,6 @@ bool CStage::LoadMapData(std::string mapFileName){
 		
 		__addBlock(BlockID, Position);
 	}
-
-	int a = _blockArray.size();
 	return true;
 }
 
@@ -412,7 +410,7 @@ bool CStage::LoadBKTexture()
  * 初期化
  * パラメーターや座標を初期化する。
  */
-void CStage::Initialize(CEffectManager* pmng, CAudio* audio){
+void CStage::Initialize(CEffectManager* pmng, spCAudio audio){
 	m_ScrollX = 0;
 	m_ScrollY = 0;
 	m_StCollision = false;
@@ -574,6 +572,7 @@ void CStage::Render(void){
 
 	if (!_isPlayerSeted) return;
 	_player->Render(m_ScrollX, m_ScrollY);
+	_player->RenderShot(m_ScrollX);
 	_player->RenderUI();
 }
 

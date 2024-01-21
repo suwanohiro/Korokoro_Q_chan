@@ -16,7 +16,7 @@ private:
 
 	int m_Select;					//何のシーンを選んでいるか
 
-	CAudio* m_Audio;
+	spCAudio m_Audio;
 
 public:
 	CMenu();
@@ -27,7 +27,7 @@ public:
 	void Render();
 	void Release();
 
-	void SetAudio(CAudio* audio) { m_Audio = audio; }
+	void SetAudio(spCAudio audio) { m_Audio = audio; }
 
 	//メニュー画面が開かれているか
 	bool GetMenu() { return m_Menu; }

@@ -27,7 +27,7 @@ void CStageSelect::Load()
 	m_Texture[1].Load("Title&Select/ステージ選択_背景なし1.png");
 	m_Texture[2].Load("Title&Select/ステージ選択_背景なし2.png");
 	m_Texture[3].Load("Title&Select/ステージ選択_背景なし3.png");
-
+	
 	m_NoSelectTexture.Load("Title&Select/ステージ選択_背景なしa.png");
 
 }
@@ -40,6 +40,7 @@ void CStageSelect::Initialize()
 	m_Change = false;
 	m_Volume = 50;
 	m_Audio->SetVolume(m_Volume);
+	m_Audio->Play(Audio_StageSelectBGM, true);
 }
 
 void CStageSelect::Update(int& ChangeScene)

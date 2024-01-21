@@ -18,7 +18,7 @@ private:
 	bool					m_StCollision;
 
 	CEffectManager* _pmng;
-	CAudio* _audio;
+	spCAudio _audio;
 
 	///////////////////////////////////////////////////////
 	// 
@@ -77,7 +77,7 @@ public:
 	~CStage();
 	bool LoadMapData(std::string mapFileName);
 	bool LoadBKTexture();
-	void Initialize(CEffectManager* pmng, CAudio* audio);
+	void Initialize(CEffectManager* pmng, spCAudio audio);
 	void Update();
 	bool Collision(CRectangle r, float& ox, float& oy);
 	bool CollisionAttack(CRectangle r, float& ox, int type);

@@ -14,6 +14,26 @@
 
 
 
+void CGameApp::__renderLoading()
+{
+	Vector2 screenSize = {
+			(float)g_pGraphics->GetTargetWidth(),
+			(float)g_pGraphics->GetTargetHeight()
+	};
+
+	CRectangle bk(0, 0, g_pGraphics->GetTargetWidth(), g_pGraphics->GetTargetHeight());
+	CGraphicsUtilities::RenderFillRect(bk, getRGB(WebColor::white));
+
+	std::string nowloading = "Now Loading";
+	Vector2 size = StringAction::GetStringSize(nowloading.c_str());
+	Vector2 padding(30, 30);
+	size += padding;
+
+	Vector2 pos = screenSize * 0.5 - size * 0.5;
+
+	CGraphicsUtilities::RenderString(pos.x, pos.y, getRGB(WebColor::black), "Now Loading");
+}
+
 /*************************************************************************//*!
 		@brief			アプリケーションの初期化
 		@param			None
@@ -24,29 +44,39 @@
 MofBool CGameApp::Initialize(void){
 	//リソース配置ディレクトリの設定
 	CUtilities::SetCurrentDirectory("Resource");
-	//シーンの必要リソースを全て読み込む
-	m_TitleScene.Load();
-	//結合時変更点
-	m_StageSelect.Load();
-	m_GameScene.Load();
-	m_GameClearScene.Load();
-	m_GameOverScene.Load();
-	m_GameContinue.Load();
-	m_Audio.Load();
 
-	m_Scene = SCENENO_TITLE;
-	m_ChangeScene = SCENENO_TITLE;
-	m_bDebug = false;
-	
-	m_TitleScene.SetAudio(&m_Audio);
-	m_StageSelect.SetAudio(&m_Audio);
-	m_GameScene.SetAudio(&m_Audio);
-	m_GameClearScene.SetAudio(&m_Audio);
-	m_GameOverScene.SetAudio(&m_Audio);
-	m_GameContinue.SetAudio(&m_Audio);
+	m_Audio = spCAudio(new CAudio);
 
-	//最初に実行されるシーンの初期化
-	m_TitleScene.Initialize();
+	_isLoaded = false;
+
+	_loadThread = std::thread([=]() {
+		//シーンの必要リソースを全て読み込む
+		m_TitleScene.Load();
+		//結合時変更点
+		m_StageSelect.Load();
+		m_GameScene.Load();
+		m_GameClearScene.Load();
+		m_GameOverScene.Load();
+		m_GameContinue.Load();
+		m_Audio->Load();
+
+		m_Scene = SCENENO_TITLE;
+		m_ChangeScene = SCENENO_TITLE;
+		m_bDebug = false;
+
+		m_TitleScene.SetAudio(m_Audio);
+		m_StageSelect.SetAudio(m_Audio);
+		m_GameScene.SetAudio(m_Audio);
+		m_GameClearScene.SetAudio(m_Audio);
+		m_GameOverScene.SetAudio(m_Audio);
+		m_GameContinue.SetAudio(m_Audio);
+
+		//最初に実行されるシーンの初期化
+		m_TitleScene.Initialize();
+
+		_isLoaded = true;
+	});
+	_loadThread.detach();
 	return TRUE;
 }
 /*************************************************************************//*!
@@ -59,6 +89,8 @@ MofBool CGameApp::Initialize(void){
 MofBool CGameApp::Update(void){
 	//キーの更新
 	g_pInput->RefreshKey();
+
+	if (!_isLoaded) return TRUE;
 	
 	//シーン番号によって更新
 	switch(m_Scene)
@@ -97,7 +129,7 @@ MofBool CGameApp::Update(void){
 				m_StageSelect.Initialize();
 				break;
 			case SCENENO_GAME:
-				m_GameScene.Initialize();
+				m_GameScene.Initialize(m_StageSelect.getStageNumber());
 				break;
 			case SCENENO_GAMECLEAR:
 				m_GameClearScene.Initialize();
@@ -131,6 +163,15 @@ MofBool CGameApp::Render(void){
 	g_pGraphics->RenderStart();
 	//画面のクリア
 	g_pGraphics->ClearTarget(0.0f,0.0f,1.0f,0.0f,1.0f,0);
+
+	if (!_isLoaded) {
+		__renderLoading();
+
+		//描画の終了
+		g_pGraphics->RenderEnd();
+		return TRUE;
+	}
+
 	
 	//シーン番号によって描画
 	switch(m_Scene)
@@ -196,6 +237,8 @@ MofBool CGameApp::Render(void){
 						それ以外	失敗、エラーコードが戻り値となる
 *//**************************************************************************/
 MofBool CGameApp::Release(void){
+	if (!_isLoaded) _loadThread.join();
+
 	m_TitleScene.Release();
 	//結合時変更点
 	m_StageSelect.Release();
@@ -203,6 +246,7 @@ MofBool CGameApp::Release(void){
 	m_GameClearScene.Release();
 	m_GameOverScene.Release();
 	m_GameContinue.Release();
-	m_Audio.Release();
+	m_Audio->Release();
+
 	return TRUE;
 }
