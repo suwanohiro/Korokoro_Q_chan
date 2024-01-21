@@ -1,12 +1,12 @@
 #include "Player.h"
 
-CPlayer::CPlayer():
+CPlayer::CPlayer() :
 	m_CharacterImage(),
 	m_Motion(),
 	m_Position(0, 0),
 	m_bMoveX(false),
 	m_bMoveY(false),
-	m_Move(0,0),
+	m_Move(0, 0),
 	m_WallMove(1.0f),
 	m_bWallMove(false),
 	m_bJump(false),
@@ -57,53 +57,54 @@ bool CPlayer::Load(void)
 		{
 			"待機",
 			0,0,
-			60,64,
-			TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0},{5,4,0},{5,5,0},{5,6,0},{5,7,0}}
+			120,96,
+			TRUE,{{5,1,0},{5,2,0},{5,3,0},{5,4,0},{5,5,0},{5,6,0},{5,7,0}}
 		},
 		{
 			"移動",
-			0,70,
-			60,64,
-			TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0},{5,4,0},{5,5,0}}
+			0,96,
+			120,96,
+			TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0},{5,4,0},{5,5,0},{5,6,0},{5,7,0},{5,8,0},{5,9,0}}
 		},
 		{
 			"ジャンプ開始",
-			0,140,
-			60,64,
-			FALSE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0}}
+			0,0,
+			120,96,
+			FALSE,{{5,0,0}}
 		},
 		{
 			"ジャンプ終了",
-			240,140,
-			60,64,
-			FALSE,{{2,0,0},{2,1,0}}
+			720,96,
+			120,96,
+			FALSE,{{2,0,0},{2,1,0},{2,2,0},{2,3,0}}
 		},
 		{
-			"攻撃",
-			0,350,
-			90,64,
-			FALSE,{{2,0,0},{2,1,0},{2,2,0},{2,3,0},{2,4,0},{2,5,0},{2,6,0}}
+			"攻撃1",
+			0,192,
+			120,96,
+			FALSE,{{3,0,0},{3,1,0},{3,2,0},{3,3,0},{3,4,0}}
 		},
 		{
 			"攻撃2",
-			0,350,
-			90,64,
-			FALSE,{{2,0,0},{2,1,0},{2,2,0},{2,3,0},{2,4,0},{2,5,0},{2,6,0}}
+			0,384,
+			128,96,
+			FALSE,{{3,0,0},{3,1,0},{3,2,0},{3,3,0},{3,4,0},{3,5,0},{3,6,0}}
 		},
 		{
 			"ダメージ",
-			480,0,
-			60,64,
+			960,96,
+			120,96,
 			FALSE,{{20,0,0},}
 		},
 		{
 			"壁歩き",
-			0,140,
-			60,64,
-			TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0}}
+			0,96,
+			120,96,
+			TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0},{5,4,0},{5,5,0},{5,6,0},{5,7,0},{5,8,0},{5,9,0}}
 		},
 	};
 	m_Motion.Create(anim, MOTION_COUNT);
+
 
 	if (!m_PlayerUI.Load()) { return false; }
 
@@ -114,7 +115,7 @@ bool CPlayer::Load(void)
 void CPlayer::Initialize(void)
 {
 	m_PlayerUI.Initializ(m_bEnd);
-	
+
 	m_Position = Vector2(200, 0);
 	m_bMoveX = false;
 	m_bMoveY = false;
@@ -144,7 +145,7 @@ void CPlayer::Initialize(void)
 }
 
 
-void CPlayer::Update(void)
+void CPlayer::Update(float wx)
 {
 	//HPがなくなると爆発の終了を待機して終了
 	if (m_HP <= 0) {
@@ -189,7 +190,18 @@ void CPlayer::Update(void)
 	else if (!m_bStCollision || (!m_bWallMove && m_Move.x == 0) || m_Move.y == 0 || (!m_bWallMove && m_bJump)) {
 		m_Audio->Stop(Audio_PlayerMove);
 	}
+	//画面外に出ないように修正
+	//左
+	if (m_Position.x < 0)
+	{
+		m_Position.x = 0;
 
+	}
+	//右
+	if (m_Position.x + (m_CharacterImage.GetWidth() / 8) - 35 > g_pGraphics->GetTargetWidth() + wx)
+	{
+		m_Position.x = g_pGraphics->GetTargetWidth() + wx - (m_CharacterImage.GetWidth() / 8) + 35;
+	}
 	//弾の発射
 	if (m_ShotWait <= 0)
 	{
@@ -210,7 +222,7 @@ void CPlayer::Update(void)
 				else {
 					m_ShotArray[i].Fire(m_Position.x + (m_CharacterImage.GetWidth() / 8) * 0.5f, m_Position.y, m_bReverse);
 				}
-				
+
 				/*最大HPを減らす*/
 				if (i == 1) {
 					m_MaxHP = m_HP;
@@ -239,7 +251,7 @@ void CPlayer::Update(void)
 			break;
 		}
 	}
-	
+
 
 	//画面外で落下としてHPを0にする
 	if (m_Position.y >= g_pGraphics->GetTargetHeight() && m_HP > 0) {
@@ -296,7 +308,7 @@ void CPlayer::UpdateKey(void)
 		m_Audio->Play(Audio_PlayerJump, false);
 	}
 	//Sキーで攻撃1
-	if (g_pInput->IsKeyPush((int)KeyContents::ATTACK) && !m_bWallMove && m_ShotWait <= 0) {
+	if (g_pInput->IsKeyPush((int)KeyContents::ATTACK) && !m_bWallMove && !m_ShotArray[1].GetShow()) {
 		m_Motion.ChangeMotion(MOTION_ATTACK);
 		m_bShot = true;
 		//攻撃1SEを流す
@@ -319,15 +331,15 @@ void CPlayer::UpdateKey(void)
 		}
 		//TODO:値は変える　画面上外にいくと戻す
 		if (m_Position.y < 0) {//20
-			m_Position.y = 0; 
+			m_Position.y = 0;
 		}
-	
+
 
 	}
 	else if (g_pInput->IsKeyHold((int)KeyContents::WALLDOWNMOVE) && m_bWallMove == true) {
 
 		m_bMoveY = true;
-		
+
 		m_Move.y += m_WallMove;
 		if (m_Move.y >= 1.0f) {
 			m_Move.y = 1.0f;
@@ -355,10 +367,10 @@ void CPlayer::UpdateMove(void)
 			m_Motion.ChangeMotion(MOTION_WAIT);
 		}
 	}
-	
+
 	if (!m_bMoveY && m_bWallMove) {
 		if (m_Move.y > 0) {
-			m_Move.y -=m_WallMove;
+			m_Move.y -= m_WallMove;
 			if (m_Move.y <= 0) {
 				m_Move.y = 0;
 			}
@@ -374,21 +386,21 @@ void CPlayer::UpdateMove(void)
 	if (!m_bWallMove) {
 		//重力で下がる
 		m_Gravity.Gravity(m_Move.y);
-		
+
 	}
 	else {
 		if (m_bReverse) {
 			m_Move.x -= 5.0f;
 		}
-		else if(!m_bReverse)
-		m_Move.x += 5.0f;
+		else if (!m_bReverse)
+			m_Move.x += 5.0f;
 	}
 
 	//壁に張り付いているときに敵と当たったとき
 	if (m_Motion.GetMotionNo() == MOTION_DAMAGE && m_bWallMove) {
 		m_bWallMove = false;
 	}
-	
+
 }
 
 void CPlayer::CollisionStage(float ox, float oy)
@@ -438,7 +450,7 @@ void CPlayer::CollisionStageAttackLeft()
 		return;
 	}
 
-	
+
 }
 
 void CPlayer::CollisionStageAttackRight()
@@ -462,7 +474,7 @@ bool CPlayer::CollisionEnemy(CEnemy& ene)
 		return false;
 	}
 	//敵がダメージ中のため当たり判定を行わない
-	if (ene.GetDamageWait() > 0&&ene.GetShow()) {
+	if (ene.GetDamageWait() > 0 && ene.GetShow()) {
 		m_bEnemyHit = true;
 	}
 	//プレイヤーがダメージ中のためあたり判定を行わない
@@ -539,10 +551,10 @@ bool CPlayer::CollisionEnemy(CEnemy& ene)
 				return true;
 			}
 		}
-		
+
 	}
 	/******************************************************************************************/
-	
+
 	/********************************************************************************************/
 	//攻撃中の場合のみ攻撃とのあたり判定を実行
 	if ((m_Motion.GetMotionNo() != MOTION_ATTACK) || (m_Motion.GetMotionNo() != MOTION_ATTACK2)) {
@@ -587,7 +599,7 @@ bool CPlayer::CollisionItem(CItem& itm)
 			break;
 		}
 
-		
+
 	}
 
 	return false;
@@ -650,8 +662,18 @@ void CPlayer::Render(float wx, float wy)
 			px -= PLAYER_ATTACKWIDTH;
 		}
 	}
-	//描画
-	m_CharacterImage.Render(px, py, dr);
+	if (m_bWallMove && m_Motion.GetMotionNo() == MOTION_WALLMOVE && !m_bReverse) {
+		//描画
+		m_CharacterImage.RenderRotate(px, py + 120, MOF_ToRadian(270), dr);
+	}
+	else if (m_bWallMove && m_Motion.GetMotionNo() == MOTION_WALLMOVE && m_bReverse) {
+		//描画
+		m_CharacterImage.RenderRotate(px + 120, py, MOF_ToRadian(90), dr);
+	}
+	else {
+		//描画
+		m_CharacterImage.Render(px, py, dr);
+	}
 
 }
 
@@ -682,11 +704,13 @@ void CPlayer::RenderDebug(float wx, float wy)
 		CRectangle hr = GetAttackRect();
 		CGraphicsUtilities::RenderRect(hr.Left - wx, hr.Top - wy, hr.Right - wx, hr.Bottom - wy, MOF_XRGB(255, 0, 0));
 	}
-
+	//壁へのあたり判定
+	CRectangle wl = getAttackBox();
+	CGraphicsUtilities::RenderRect(wl.Left - wx, wl.Top - wy, wl.Right - wx, wl.Bottom - wy, MOF_XRGB(255, 255, 255));
 	//弾の描画
 	for (int i = 0; i < PLAYERSHOT_COUNT; i++)
 	{
-		m_ShotArray[i].RenderDebug();
+		m_ShotArray[i].RenderDebug(wx);
 	}
 
 	if (m_bPlayerHit)
@@ -712,27 +736,35 @@ void CPlayer::SetAudio(CAudio* audio)
 CRectangle CPlayer::getHitBox()
 {
 	//判定を返すようにする
-		if (IsAttack() || IsAttack2())
-		{
-			m_HitBox = CRectangle(m_Position.x + PLAYER_RECTDECREASE, m_Position.y + PLAYER_RECTDECREASE,
-				m_Position.x + m_SrcRect.GetWidth() - PLAYER_RECTDECREASE - PLAYER_ATTACKWIDTH, m_Position.y + m_SrcRect.GetHeight());
+	if (IsAttack() || IsAttack2())
+	{
+		if (m_bReverse) {
+			m_HitBox = CRectangle(m_Position.x, m_Position.y,
+				m_Position.x + m_SrcRect.GetWidth(), m_Position.y + m_SrcRect.GetHeight());
 			return m_HitBox;
 		}
-		m_HitBox = CRectangle(m_Position.x + PLAYER_RECTDECREASE, m_Position.y + PLAYER_RECTDECREASE,
-			m_Position.x + m_SrcRect.GetWidth() - PLAYER_RECTDECREASE, m_Position.y + m_SrcRect.GetHeight());
+		else {
+			m_HitBox = CRectangle(m_Position.x, m_Position.y,
+				m_Position.x + m_SrcRect.GetWidth(), m_Position.y + m_SrcRect.GetHeight());
+			return m_HitBox;
+		}
+	}
+	m_HitBox = CRectangle(m_Position.x, m_Position.y,
+		m_Position.x + m_SrcRect.GetWidth(), m_Position.y + m_SrcRect.GetHeight());
 	return m_HitBox;
 }
 
 CRectangle CPlayer::getAttackBox()
 {
+	//TODO:変える
 	CRectangle rec;
 	//判定を返すようにする
 	if (IsAttack2())
 	{
 		if (m_bReverse) {
-			rec = CRectangle(m_Position.x - PLAYER_ATTACKWIDTH,
+			rec = CRectangle(m_Position.x - 10,
 				m_Position.y + m_PlayerWallRec,
-				m_Position.x + 12,
+				m_Position.x + PLAYER_ATTACKWIDTH,
 				m_Position.y + m_SrcRect.GetHeight());
 		}
 		else {

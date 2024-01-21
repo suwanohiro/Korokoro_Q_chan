@@ -174,7 +174,7 @@ void CStage::__updatePlayer()
 {
 	if (!_isPlayerSeted) return;
 
-	_player->Update();
+	_player->Update(m_ScrollX);
 	_player->UpdateUI();
 
 	//ƒXƒNƒŠ[ƒ“‚Ì•

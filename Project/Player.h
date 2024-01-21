@@ -19,7 +19,7 @@ constexpr float PLAYER_JUMP = -10.0f;
 //攻撃時の横幅
 constexpr int		PLAYER_ATTACKWIDTH = 30;
 //当たり判定減衰幅
-constexpr int		PLAYER_RECTDECREASE	= 12;
+constexpr int		PLAYER_RECTDECREASE = 12;
 
 //HP回復量
 constexpr float		ADD_HP = 0.05f;// * 10000
@@ -69,7 +69,7 @@ private:
 	float					m_MaxHP;
 	int						m_DamageWait;
 
-	
+
 
 	CEffectManager* m_pEffectManager;
 
@@ -118,8 +118,8 @@ private:
 
 	CGravity				m_Gravity;
 	CPlayerUI				m_PlayerUI;
-	
-	CAudio*					m_Audio;
+
+	CAudio* m_Audio;
 
 public:
 	CPlayer();
@@ -128,24 +128,24 @@ public:
 	/// 読み込み処理
 	/// </summary>
 	//virtual bool 
-	bool Load(void) ;
+	bool Load(void);
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
 	//virtual 
-	void Initialize(void) ;
+	void Initialize(void);
 
 	/// <summary>
 	/// 更新処理
 	/// </summary>
 	//virtual
-	void Update(void) ;
+	void Update(float wx);
 	void UpdateKey(void);
 	void UpdateMove(void);
 
 	void CollisionStage(float ox, float oy);
 	void NotCollisionStage() {
-		m_bWallMove = false;
+		//m_bWallMove = false;
 		m_bStCollision = false;
 	}
 	void CollisionStageAttackLeft();
@@ -161,7 +161,7 @@ public:
 	/// 描画処理
 	/// </summary>
 	//virtual 
-	void Render(float wx, float wy) ;
+	void Render(float wx, float wy);
 	//Game.cppでステージの値をもらう
 	void RenderShot(float wx);
 
@@ -173,8 +173,8 @@ public:
 	/// 解放処理
 	/// </summary>
 	//virtual
-	void Release(void) ;
-	
+	void Release(void);
+
 	bool IsAttack() { return m_Motion.GetMotionNo() == MOTION_ATTACK; }
 	bool IsAttack2() { return m_Motion.GetMotionNo() == MOTION_ATTACK2; }
 	bool IsDead(void) { return m_bDead; }
@@ -195,12 +195,12 @@ public:
 		//反転中
 		if (m_bReverse)
 		{
-			m_HitBox = CRectangle(m_Position.x - PLAYER_ATTACKWIDTH, m_Position.y,
-									m_Position.x + PLAYER_RECTDECREASE, m_Position.y + m_SrcRect.GetHeight());
+			m_HitBox = CRectangle(m_Position.x + PLAYER_ATTACKWIDTH, m_Position.y,
+				m_Position.x, m_Position.y + m_SrcRect.GetHeight());
 			return m_HitBox;
 		}
 		m_HitBox = CRectangle(m_Position.x + m_SrcRect.GetWidth() - PLAYER_RECTDECREASE - PLAYER_ATTACKWIDTH, m_Position.y,
-								m_Position.x + m_SrcRect.GetWidth(), m_Position.y + m_SrcRect.GetHeight());
+			m_Position.x + m_SrcRect.GetWidth(), m_Position.y + m_SrcRect.GetHeight());
 		return m_HitBox;
 	}
 
@@ -211,25 +211,25 @@ public:
 	/// <returns>キャラクターの当たり判定の矩形</returns>
 	CRectangle getHitBox();
 	CRectangle getAttackBox();
-		//判定を返すようにする
-		/*if (IsAttack())
-		{
-			return CRectangle(m_Position.x + PLAYER_RECTDECREASE, m_Position.y + PLAYER_RECTDECREASE,
-				m_Position.x + m_SrcRect.GetWidth() - PLAYER_RECTDECREASE - PLAYER_ATTACKWIDTH, m_Position.y + m_SrcRect.GetHeight());
-		}
+	//判定を返すようにする
+	/*if (IsAttack())
+	{
 		return CRectangle(m_Position.x + PLAYER_RECTDECREASE, m_Position.y + PLAYER_RECTDECREASE,
-			m_Position.x + m_SrcRect.GetWidth() - PLAYER_RECTDECREASE, m_Position.y + m_SrcRect.GetHeight());*/
-	
-	/*float getGravity() {
-		return 0.3f;
-	}*/
+			m_Position.x + m_SrcRect.GetWidth() - PLAYER_RECTDECREASE - PLAYER_ATTACKWIDTH, m_Position.y + m_SrcRect.GetHeight());
+	}
+	return CRectangle(m_Position.x + PLAYER_RECTDECREASE, m_Position.y + PLAYER_RECTDECREASE,
+		m_Position.x + m_SrcRect.GetWidth() - PLAYER_RECTDECREASE, m_Position.y + m_SrcRect.GetHeight());*/
 
-	float getReverse(){ return m_bReverse; }
+		/*float getGravity() {
+			return 0.3f;
+		}*/
 
-	Vector2 getPosition() { 
-		return Vector2(m_Position.x + m_SrcRect.GetWidth() * 0.5f, m_Position.y + m_SrcRect.GetHeight() * 0.5f); 
+	float getReverse() { return m_bReverse; }
+
+	Vector2 getPosition() {
+		return Vector2(m_Position.x + m_SrcRect.GetWidth() * 0.5f, m_Position.y + m_SrcRect.GetHeight() * 0.5f);
 	}
 
-}; 
+};
 
 using spCPlayer = std::shared_ptr<CPlayer>;
