@@ -34,7 +34,7 @@ private:
 
 	Vector2		m_Pos;
 
-	CAudio*		m_Audio;
+	spCAudio		m_Audio;
 	int 		m_Volume;
 
 public:
@@ -46,6 +46,6 @@ public:
 	void Render(void);
 	void RenderDebug(void);
 	void Release(void);
-	void SetAudio(CAudio* audio) { m_Audio = audio; }
+	void SetAudio(spCAudio audio) { m_Audio = audio; }
 };
 

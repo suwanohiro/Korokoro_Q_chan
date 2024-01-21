@@ -44,7 +44,7 @@ private:
 
 	CEffectManager*			m_pEffectManager;
 
-	CAudio*					m_Audio;
+	spCAudio					m_Audio;
 
 	//ƒ‚[ƒVƒ‡ƒ“í—Ş’è‹`
 	enum tag_MOTION {
@@ -81,7 +81,7 @@ public:
 	void SetTexture(CTexture* pt) { m_Texture = pt; }
 	void SetEffectManager(CEffectManager* pmng) { m_pEffectManager = pmng; }
 	void SetShotShow(bool* bs, int i) { m_ShotArray[i].SetShow(bs); }
-	void SetAudio(CAudio* audio) { m_Audio = audio; }
+	void SetAudio(spCAudio audio) { m_Audio = audio; }
 
 	bool GetShow(void) { return m_bShow; }
 	int  GetDamageWait(void) { return m_DamageWait; }

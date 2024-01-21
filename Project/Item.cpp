@@ -91,6 +91,9 @@ void CItem::Render(float wx, float wy)
 
 void CItem::RenderDebug(float wx, float wy)
 {
+	//”ñ•\Ž¦
+	if (!m_bShow) return;
+
 	//“–‚½‚è”»’è‚Ì•\Ž¦
 	CRectangle hr = GetRect();
 	CGraphicsUtilities::RenderRect(hr.Left - wx, hr.Top - wy, hr.Right - wx, hr.Bottom - wy, MOF_XRGB(0, 255, 0));

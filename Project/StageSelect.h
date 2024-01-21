@@ -7,7 +7,7 @@
 class CStageSelect
 {
 private:
-	CAudio*	m_Audio;
+	spCAudio	m_Audio;
 	int		m_Volume;
 
 	CTexture m_Texture[SceneCount];				//ステージ選択時画像
@@ -28,6 +28,7 @@ public:
 	void Render();
 	void RenderDebug();
 	void Release();
-	void SetAudio(CAudio* audio) { m_Audio = audio; }
+	void SetAudio(spCAudio audio) { m_Audio = audio; }
+	int getStageNumber() const { return m_Select; }
 };
 
