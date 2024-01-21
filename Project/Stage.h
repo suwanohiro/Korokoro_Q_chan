@@ -48,6 +48,7 @@ private:
 
 	// マップデータ関連
 	JSON _mapData;
+	Vector2 _mapTileCount;
 	Vector2 _mapSize;
 	std::vector<spGameObject> _blockArray;
 	void __addBlock(std::string BlockID, Vector2 position);

@@ -126,7 +126,8 @@ void CStage::__updateScroll()
 	const float screenWidth = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
 
 	//ステージ全体の幅
-	const float stageWidth = _maxBlockTextureSize.x * _mapSize.x;
+	// const float stageWidth = _maxBlockTextureSize.x * _mapTileCount.x;
+	const float stageWidth = _mapSize.x;
 
 	//座標が画面端によっている（各端から400pixel）場合スクロールを行って補正する
 	const float limit = 400.0f;
@@ -245,16 +246,34 @@ void CStage::__updateEnemy(spCEnemy targetElem)
 	if (flg) targetElem->CollisionStage(ox, oy);
 }
 
+void renderVector2(const std::string& title, const Vector2& value) {
+	std::string msg = "[ Info ] " + title + " | x : " + std::to_string(value.x) + "\t y : " + std::to_string(value.y) + "\n";
+	OutputDebugString(msg.c_str());
+}
+
 void CStage::__renderBackGround()
 {
 	//遠景の描画
-	int scw = g_pGraphics->GetTargetWidth();
-	int sch = g_pGraphics->GetTargetHeight();
-	int wn = m_BackTexture.GetWidth();
-	int hn = m_BackTexture.GetHeight();
-	for (float y = ((int)-m_ScrollX % hn) - hn; y < sch; y += hn) {
-		for (float x = ((int)-m_ScrollX % wn) - wn; y < scw; y += wn) {
-			m_BackTexture.Render(x, y);
+	Vector2 screenSize = { (float)g_pGraphics->GetTargetWidth(),(float) g_pGraphics->GetTargetHeight() };
+	Vector2 bkSize = { (float)m_BackTexture.GetWidth(), (float)m_BackTexture.GetHeight() };
+
+	struct count {
+		int Start;
+		int Count;
+		int End;
+	};
+
+	count y;
+	y.Start = (int)(m_ScrollY / bkSize.y);
+	y.End = (int)((m_ScrollY + screenSize.y) / bkSize.y) + 1;
+	for (y.Count = y.Start; y.Count < y.End; y.Count++) {
+		count x;
+		x.Start = (int)(m_ScrollX / bkSize.x);
+		x.End = (int)((m_ScrollX + screenSize.x) / bkSize.x) + 1;
+		for (x.Count = x.Start; x.Count < x.End; x.Count++) {
+			Vector2 renderPos(x.Count, y.Count);
+			renderPos *= bkSize;
+			m_BackTexture.Render(renderPos.x - m_ScrollX, renderPos.y - m_ScrollY);
 		}
 	}
 }
@@ -328,6 +347,7 @@ CStage::CStage()
 	, m_ScrollY(0)
 	, m_StCollision(false)
 	, _player(nullptr)
+	, _mapTileCount(0, 0)
 	, _mapSize(0, 0)
 	, _maxBlockTextureSize(0, 0)
 {
@@ -371,8 +391,10 @@ bool CStage::LoadMapData(std::string mapFileName){
 		const auto Pos = blockData["Position"];
 		const Vector2 Position = Vector2(Pos["x"], Pos["y"]);
 
-		if (Position.x > _mapSize.x) _mapSize.x = Position.x;
-		if (Position.y > _mapSize.y) _mapSize.y = Position.y;
+		if (Position.x > _mapTileCount.x) _mapTileCount.x = Position.x;
+		if (Position.y > _mapTileCount.y) _mapTileCount.y = Position.y;
+
+		_mapSize = _maxBlockTextureSize * _mapTileCount;
 		
 		__addBlock(BlockID, Position);
 	}
