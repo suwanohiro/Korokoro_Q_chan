@@ -566,12 +566,12 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
 	if (!isAttack) return false;
 
 	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
-		spGameObject targetElem = _blockArray[cnt];
-		const Vector2 pos = targetElem->getPosition();
-		CRectangle cr = targetElem->getRect();
+		spGameObject targetBlock = _blockArray[cnt];
+		const Vector2 blockPos = targetBlock->getPosition();
+		CRectangle blockRect = targetBlock->getRect();
 
-		if (pos.x + (cr.Right - cr.Left) < r.Left) continue;
-		if (r.Right < pos.x) continue;
+		if (blockPos.x + (blockRect.Right - blockRect.Left) < r.Left) continue;
+		if (r.Right < blockPos.x) continue;
 
 		//あたり判定用のキャラクター矩形
 		//左右で範囲を限定した専用の矩形を作成する
@@ -586,7 +586,21 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
 		rrec.Expansion(0, -6);		//縦の範囲を少し狭める
 
 		CRectangle targetRect = (type == 0) ? lrec : rrec;
-		re = cr.CollisionRect(targetRect);
+
+		const bool flg = blockRect.CollisionRect(targetRect);
+
+		std::string flgstr = (flg) ? "[ Info ] true" : "[ Error ] false";
+		std::string msg = flgstr + "\n";
+
+		if (flg) {
+			for (int cnt = 0; cnt < 20; cnt++) {
+				OutputDebugString("\n");
+			}
+		}
+
+		OutputDebugString(msg.c_str());
+
+		re = flg;
 	}
 	return re;
 }
@@ -616,10 +630,6 @@ void CStage::Render(void){
 
 	// TODO : あとで消す
 	if (BottomLimit < pos.y) _player->SetHP(0);
-	CGraphicsUtilities::RenderString(0, 150, "PlayerPos : %0.2f, %0.2f", pos.x, pos.y);
-
-
-	CGraphicsUtilities::RenderString(0, 100, "X : %0.2f\nY : %0.2f", m_ScrollX, m_ScrollY);
 
 	if (!_isPlayerSeted) return;
 	_player->Render(m_ScrollX, m_ScrollY);

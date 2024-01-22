@@ -58,7 +58,7 @@ void CPlayerUI::Render(CTexture texture)
 	m_HPTexture.Render(248, 20, m_HPRect);
 	//ƒtƒŒ[ƒ€‚ğã•”‚É•`‰æ
 	m_FrameTexture.Render(0, 0);
-	texture.Render(0, 60, m_LifeRect);
+	texture.RenderScale(0, 60, 0.75,CRectangle(0, 0, 120, 96));
 	CGraphicsUtilities::RenderString(45, 85, "~%d", m_Life);
 }
 
