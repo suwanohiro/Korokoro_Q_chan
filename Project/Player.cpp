@@ -181,6 +181,8 @@ void CPlayer::Update(float wx)
 	UpdateMove();
 	//ÀÛ‚ÉÀ•W‚ğˆÚ“®‚³‚¹‚é
 	m_Position.x += m_Move.x;
+
+	// TODO : ‚ ‚Æ‚Å‚¯‚·
 	m_Position.y += m_Move.y;
 
 	//ˆÚ“®SE‚ğ—¬‚·
@@ -611,11 +613,9 @@ void CPlayer::Damage(bool hit)
 	m_DamageWait = 60;
 	if (hit) {
 		m_Move.x = -5.0f;
-		m_bReverse = false;
 	}
 	else {
 		m_Move.x = 5.0f;
-		m_bReverse = true;
 	}
 	m_Motion.ChangeMotion(MOTION_DAMAGE);
 	if (m_HP <= 0) {
@@ -749,8 +749,20 @@ CRectangle CPlayer::getHitBox()
 			return m_HitBox;
 		}
 	}
-	m_HitBox = CRectangle(m_Position.x, m_Position.y,
-		m_Position.x + m_SrcRect.GetWidth(), m_Position.y + m_SrcRect.GetHeight());
+
+	const Vector2 recSize = { m_SrcRect.GetWidth(), m_SrcRect.GetHeight() };
+	Vector2 base = m_Position;
+	Vector2 after = base + recSize;
+
+	// ‰EŒü‚«‚Ì
+	if (!m_bReverse) {
+		base.x += (recSize.x * 0.5);
+	}
+	else {
+		after.x -= (recSize.x * 0.5);
+	}
+
+	m_HitBox = CRectangle(base, after);
 	return m_HitBox;
 }
 

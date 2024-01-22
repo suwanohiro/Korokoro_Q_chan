@@ -74,10 +74,17 @@ void CStage::__addBlock(std::string BlockID, Vector2 position)
 		position *= Vector2(40, 40);
 		__setPlayer(position);
 	}
-	else if (ID.isID("Enemy")) {
+	else if (ID.isID("Enemy") || ID.isID("Enemy2")) {
 		// TODO : Enemy追加処理仮実装状態
 		spCEnemy work(new CEnemy);
-		work->Initialize(position.x, position.y, 0);
+
+		int type = (ID.isID("Enemy")) ? 0 : 1;
+
+		Vector2 pos = position;
+		pos *= blockData.Texture->GetWidth();
+		work->Load();
+		work->Initialize(pos.x, pos.y, type);
+		work->SetTexture(&_enemyTexture);
 		work->SetEffectManager(_pmng);
 		work->SetAudio(_audio);
 
@@ -124,10 +131,12 @@ void CStage::__updateScroll()
 	CRectangle prec = _player->getHitBox();
 	//スクリーンの幅
 	const float screenWidth = CGraphicsUtilities::GetGraphics()->GetTargetWidth();
+	const float screenHeight = CGraphicsUtilities::GetGraphics()->GetTargetHeight();
 
 	//ステージ全体の幅
 	// const float stageWidth = _maxBlockTextureSize.x * _mapTileCount.x;
 	const float stageWidth = _mapSize.x;
+	const float stageHeight = _mapSize.y;
 
 	//座標が画面端によっている（各端から400pixel）場合スクロールを行って補正する
 	const float limit = 400.0f;
@@ -135,6 +144,8 @@ void CStage::__updateScroll()
 	struct {
 		float Left;
 		float Right;
+		float Top;
+		float Bottom;
 	} scrollLimit;
 
 	scrollLimit.Left = m_ScrollX;
@@ -151,10 +162,29 @@ void CStage::__updateScroll()
 		m_ScrollX += (prec.Right - scrollLimit.Right);
 		const float limitScrollRight = stageWidth - screenWidth;
 		if (m_ScrollX > limitScrollRight) m_ScrollX = limitScrollRight;
-
-		// もしステージの全長が画面幅より小さければ
-		// if (stageWidth < screenWidth) m_ScrollX = 0;
 	}
+
+
+	return;
+
+
+	scrollLimit.Top = m_ScrollY;
+	scrollLimit.Bottom = m_ScrollY;
+
+	scrollLimit.Top += limit;
+	scrollLimit.Bottom += screenHeight - limit;
+
+	if (prec.Top < scrollLimit.Top) {
+		m_ScrollY -= (scrollLimit.Top - prec.Top);
+		if (m_ScrollY < 0) m_ScrollY = 0;
+	}
+	else if (prec.Bottom > scrollLimit.Bottom) {
+		m_ScrollY += (prec.Bottom - scrollLimit.Bottom);
+		const float limitScrollBottom = stageHeight - screenHeight;
+		if (m_ScrollY > limitScrollBottom) m_ScrollY = limitScrollBottom;
+	}
+
+
 
 	return;
 
@@ -417,6 +447,8 @@ void CStage::Initialize(CEffectManager* pmng, spCAudio audio){
 
 	_pmng = pmng;
 	_audio = audio;
+
+	_enemyTexture.Load("enemy.png");
 }
 
 /**
@@ -498,11 +530,11 @@ bool CStage::Collision(CRectangle r, float& ox, float& oy)
 
 	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
 		spGameObject targetElem = _blockArray[cnt];
-		const Vector2 pos = targetElem->getPosition();
+		const Vector2 blockPos = targetElem->getPosition();
 		const CRectangle cr = targetElem->getRect();
 
-		if (pos.x < r.Left) continue;
-		if (r.Right < pos.x) continue;
+		if (blockPos.x + (cr.Right - cr.Left) < r.Left) continue;
+		if (r.Right < blockPos.x) continue;
 
 
 		// 下方向の判別
@@ -532,7 +564,7 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
 		const Vector2 pos = targetElem->getPosition();
 		CRectangle cr = targetElem->getRect();
 
-		if (pos.x < r.Left) continue;
+		if (pos.x + (cr.Right - cr.Left) < r.Left) continue;
 		if (r.Right < pos.x) continue;
 
 		//あたり判定用のキャラクター矩形
@@ -587,11 +619,6 @@ void CStage::Render(void){
 	_player->Render(m_ScrollX, m_ScrollY);
 	_player->RenderShot(m_ScrollX);
 	_player->RenderUI();
-
-	const Vector2 scroll = { m_ScrollX, m_ScrollY };
-	const Vector2 screenSize = { (float)g_pGraphics->GetTargetWidth(), (float)g_pGraphics->GetTargetHeight() };
-	const CRectangle renderScreen(scroll, scroll + screenSize);
-	CGraphicsUtilities::RenderFillRect(renderScreen, getRGBA(WebColor::lightblue, 150));
 }
 
 /**
@@ -638,4 +665,6 @@ void CStage::Release(void){
 	if (_player != nullptr) _player->Release();
 
 	m_BackTexture.Release();
+
+	_enemyTexture.Release();
 }

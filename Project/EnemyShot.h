@@ -37,3 +37,4 @@ public:
 	}
 	bool GetShow(void) { return m_bShow; }
 };
+using spCEnemyShot = std::shared_ptr<CEnemyShot>;

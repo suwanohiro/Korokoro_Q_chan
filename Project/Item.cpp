@@ -28,8 +28,8 @@ void CItem::Initialize(float px, float py, int type)
 	m_ItemType = (ItemType)type;
 	//アニメーションを作成
 	SpriteAnimationCreate anim = {
-		"アイテム",0,0,32,32,
-		TRUE,{{5,0,0},{5,1,0},{5,2,0},{5,3,0}}
+		"アイテム",0,0,40,40,
+		TRUE,{{5,0,0}}
 	};
 	m_Motion.Create(anim);	
 }

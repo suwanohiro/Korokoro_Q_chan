@@ -15,7 +15,6 @@ m_bMove(false),
 m_SrcRect(),
 m_ShotMaxCount(10),
 m_pEffectManager(),
-m_ShotArray(),
 m_Gravity()
 {
 }
@@ -27,12 +26,8 @@ CEnemy::~CEnemy()
 
 bool CEnemy::Load(void)
 {
-	m_ShotArray = new CEnemyShot[m_ShotMaxCount];
 	if (!m_ShotTexture.Load("E_missile.png")) {
 		return false;
-	}
-	for (int i = 0; i < m_ShotMaxCount; i++) {
-		m_ShotArray[i].SetTexture(&m_ShotTexture);
 	}
 	return true;
 }
@@ -47,24 +42,20 @@ void CEnemy::Initialize(float px, float py, int type)
 	m_bMove = false;
 	m_HP = 10;
 	m_DamageWait = 0;
-	
-	for (int i = 0; i < m_ShotMaxCount; i++) {
-		m_ShotArray[i].Initialize();
-	}
 
 	SpriteAnimationCreate anim[] = {
 		{
 			"待機",
-			0,0,60,64,TRUE,
-			{ { 5,0,0 },{ 5,1,0 },{ 5,2,0 },{ 5,3,0 }, }
+			0,0,80,94,TRUE,
+			{ { 5,0,0 }}
 		},
 		{
 			"移動",
-			0,0,60,64,TRUE,
-			{ { 5,0,0 },{ 5,1,0 },{ 5,2,0 },{ 5,3,0 }, }
+			0,0,80,94,TRUE,
+			{ { 5,0,0 } }
 		},
 		{
-			"ダメージ",0,210,60,64,
+			"ダメージ",0,210,80,94,
 			FALSE,{{20,0,0}}
 		},
 	};
@@ -73,6 +64,15 @@ void CEnemy::Initialize(float px, float py, int type)
 
 void CEnemy::Update(void)
 {
+	for (int cnt = 0; cnt < _shotArray.size(); cnt++) {
+		const spCEnemyShot work = _shotArray[cnt];
+
+		if (work->GetShow()) continue;
+
+		// 弾を削除
+		_shotArray.erase(_shotArray.begin() + cnt);
+	}
+
 	//非表示
 	if (!m_bShow)
 	{
@@ -118,6 +118,8 @@ void CEnemy::Update(void)
 		m_Audio->Stop(Audio_EnemyDead);
 	}*/
 
+	m_Pos.y += m_Move.y;
+
 	//重力処理
 	m_Gravity.Gravity(m_Move.y);
 	m_Motion.AddTimer(CUtilities::GetFrameSecond());
@@ -161,11 +163,9 @@ void CEnemy::TypeCheck(Vector2 pPos, float wx, float wy)
 
 void CEnemy::Attack01(Vector2 pPos, float wx, float wy)
 {
-	for (int i = 0; i < m_ShotMaxCount; i++) {
-		if (!m_ShotArray[i].GetShow()) {
-			continue;
-		}
-		m_ShotArray[i].Update(wx, wy);
+	for (int cnt = 0; cnt < _shotArray.size(); cnt++) {
+		const spCEnemyShot work = _shotArray[cnt];
+		work->Update(wx, wy);
 	}
 
 	//画面内かどうかチェック
@@ -180,16 +180,15 @@ void CEnemy::Attack01(Vector2 pPos, float wx, float wy)
 	}
 
 	if (m_DamageWait <= 0 && m_ShotWait <= 0) {
-		for (int i = 0; i < m_ShotMaxCount; i++) {
-			if (m_ShotArray[i].GetShow()) {
-				continue;
-			}
-			m_ShotWait = 120;
-			m_ShotArray[i].AdvSet(pPos, m_Pos.x + GetRect().GetWidth() * 0.5, m_Pos.y + GetRect().GetHeight() * 0.5);
-			//攻撃SEを流す
-			m_Audio->Play(Audio_EnemyAttack, false);
-			break;
-		}
+		m_ShotWait = 120;
+		spCEnemyShot shot(new CEnemyShot);
+		shot->Initialize();
+		shot->SetTexture(&m_ShotTexture);
+		shot->AdvSet(pPos, m_Pos.x + GetRect().GetWidth() * 0.5, m_Pos.y + GetRect().GetHeight() * 0.5);
+		_shotArray.push_back(shot);
+
+		//攻撃SEを流す
+		m_Audio->Play(Audio_EnemyAttack, false);
 	}
 	else {
 		m_ShotWait--;
@@ -206,7 +205,6 @@ void CEnemy::Attack02(float wx, float wy)
 	}
 	m_bMove = true;
 	m_Pos.x += m_Move.x;
-	m_Pos.y += m_Move.y;
 }
 
 void CEnemy::CollisionStage(float ox, float oy) {
@@ -256,9 +254,8 @@ void CEnemy::Damage(int dmg, bool bRev)
 
 void CEnemy::Render(float wx, float wy) {
 	//弾の描画
-	for (int i = 0; i < m_ShotMaxCount; i++) {
-		if (!m_ShotArray[i].GetShow()) { continue; }
-		m_ShotArray[i].Render(wx, wy);
+	for (int cnt = 0; cnt < _shotArray.size(); cnt++) {
+		_shotArray[cnt]->Render(wx, wy);
 	}
 
 	//非表示
@@ -273,7 +270,7 @@ void CEnemy::Render(float wx, float wy) {
 	//描画矩形
 	CRectangle dr = m_SrcRect;
 	//反転フラグがONの場合描画矩形を反転させる
-	if (m_bReverse)
+	if (!m_bReverse)
 	{
 		float tmp = dr.Right;
 		dr.Right = dr.Left;
@@ -293,11 +290,16 @@ void CEnemy::RenderDebug(float wx, float wy) {
 	//当たり判定の表示
 	CRectangle hr = GetRect();
 	CGraphicsUtilities::RenderRect(hr.Left - wx, hr.Top - wy, hr.Right - wx, hr.Bottom - wy, MOF_XRGB(255, 0, 0));
-	for (int i = 0; i < m_ShotMaxCount; i++) {
-		m_ShotArray[i].RenderDebug(wx, wy);
+
+	for (int cnt = 0; cnt < _shotArray.size(); cnt++) {
+		_shotArray[cnt]->RenderDebug(wx, wy);
 	}
 }
 
 void CEnemy::Release(void) {
 	m_Motion.Release();
+
+	for (int cnt = 0; cnt < _shotArray.size(); cnt++) {
+		_shotArray[cnt]->Release();
+	}
 }

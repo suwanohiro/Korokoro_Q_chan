@@ -26,6 +26,8 @@ private:
 	// 
 	///////////////////////////////////////////////////////
 
+	CTexture _enemyTexture;
+
 	spCPlayer _player;
 	bool _isPlayerSeted;
 

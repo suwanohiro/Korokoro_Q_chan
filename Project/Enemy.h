@@ -58,7 +58,10 @@ private:
 	//”­ŽËŠÔŠu
 	int m_ShotWait;
 
-	CEnemyShot* m_ShotArray;
+	// CEnemyShot* m_ShotArray;
+
+	std::vector<spCEnemyShot> _shotArray;
+
 	CGravity m_Gravity;
 
 
@@ -80,7 +83,7 @@ public:
 
 	void SetTexture(CTexture* pt) { m_Texture = pt; }
 	void SetEffectManager(CEffectManager* pmng) { m_pEffectManager = pmng; }
-	void SetShotShow(bool* bs, int i) { m_ShotArray[i].SetShow(bs); }
+	void SetShotShow(bool* bs, int i) { _shotArray[i]->SetShow(bs); }
 	void SetAudio(spCAudio audio) { m_Audio = audio; }
 
 	bool GetShow(void) { return m_bShow; }
@@ -88,9 +91,9 @@ public:
 	CRectangle GetRect() {
 		return CRectangle(m_Pos.x + 10, m_Pos.y + 10, m_Pos.x + m_SrcRect.GetWidth() - 10, m_Pos.y + m_SrcRect.GetHeight());
 	}
-	CRectangle GetShotRect(int i) { return m_ShotArray[i].GetRect(); }
-	int GetShotCount() { return m_ShotMaxCount; }
-	bool GetShotShow(int i) { return m_ShotArray[i].GetShow(); }
+	CRectangle GetShotRect(int i) { return _shotArray[i]->GetRect(); }
+	int GetShotCount() { return _shotArray.size(); }
+	bool GetShotShow(int i) { return _shotArray[i]->GetShow(); }
 };
 
 using spCEnemy = std::shared_ptr<CEnemy>;
