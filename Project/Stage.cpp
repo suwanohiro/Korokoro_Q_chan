@@ -101,6 +101,12 @@ void CStage::__addBlock(std::string BlockID, Vector2 position)
 
 		_itemArray.push_back(work);
 	}
+	else if (ID.isID("block")) {
+		spBlock_Move work(new Block_Move(blockData));
+		work->Initialize(position);
+		work->setTexture(blockData.Texture);
+		_blockArray.push_back(work);
+	}
 	else {
 		// ‚»‚Ì‘¼’nŒ`
 		spBlock_Ground work(new Block_Ground(blockData));

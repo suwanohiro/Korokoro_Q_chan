@@ -4,6 +4,7 @@
 #include "./swnProgram/Block/BlockData.hpp"
 #include "./swnProgram/Block/Block_Base.h"
 #include "./swnProgram/Block/Block_Ground.h"
+#include "./swnProgram/Block/Block_Move.hpp"
 
 #include	"Player.h"
 #include	"Enemy.h"

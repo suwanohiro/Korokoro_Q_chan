@@ -121,6 +121,7 @@
     <ClCompile Include="swnLibrary\StringAction\StringAction.cpp" />
     <ClCompile Include="swnProgram\Block\Block_Base.cpp" />
     <ClCompile Include="swnProgram\Block\Block_Ground.cpp" />
+    <ClCompile Include="swnProgram\Block\Block_Move.cpp" />
     <ClCompile Include="swnProgram\GameObject\GameObject.cpp" />
     <ClCompile Include="swnProgram\GameObject\GameObjectMotion.cpp" />
     <ClCompile Include="Title.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="swnProgram\Block\BlockData.hpp" />
     <ClInclude Include="swnProgram\Block\Block_Base.h" />
     <ClInclude Include="swnProgram\Block\Block_Ground.h" />
+    <ClInclude Include="swnProgram\Block\Block_Move.hpp" />
     <ClInclude Include="swnProgram\GameObject\GameObject.hpp" />
     <ClInclude Include="swnProgram\GameObject\GameObjectMotion.hpp" />
     <ClInclude Include="Title.h" />
