@@ -492,9 +492,18 @@ bool CStage::Collision(CRectangle r, float& ox, float& oy)
 	m_StCollision = true;
 	bool re = false;
 
+	const Vector2 scroll = { m_ScrollX, m_ScrollY };
+	const Vector2 screenSize = { (float)g_pGraphics->GetTargetWidth(), (float)g_pGraphics->GetTargetHeight() };
+	const CRectangle renderScreen(scroll, scroll + screenSize);
+
 	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
 		spGameObject targetElem = _blockArray[cnt];
-		CRectangle cr = targetElem->getRect();
+		const Vector2 pos = targetElem->getPosition();
+		const CRectangle cr = targetElem->getRect();
+
+		if (pos.x < r.Left) continue;
+		if (r.Right < pos.x) continue;
+
 
 		// 下方向の判別
 		__collisionBottom(cr, r, re, oy);
@@ -520,7 +529,11 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
 
 	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
 		spGameObject targetElem = _blockArray[cnt];
+		const Vector2 pos = targetElem->getPosition();
 		CRectangle cr = targetElem->getRect();
+
+		if (pos.x < r.Left) continue;
+		if (r.Right < pos.x) continue;
 
 		//あたり判定用のキャラクター矩形
 		//左右で範囲を限定した専用の矩形を作成する
@@ -574,6 +587,11 @@ void CStage::Render(void){
 	_player->Render(m_ScrollX, m_ScrollY);
 	_player->RenderShot(m_ScrollX);
 	_player->RenderUI();
+
+	const Vector2 scroll = { m_ScrollX, m_ScrollY };
+	const Vector2 screenSize = { (float)g_pGraphics->GetTargetWidth(), (float)g_pGraphics->GetTargetHeight() };
+	const CRectangle renderScreen(scroll, scroll + screenSize);
+	CGraphicsUtilities::RenderFillRect(renderScreen, getRGBA(WebColor::lightblue, 150));
 }
 
 /**
