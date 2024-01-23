@@ -245,12 +245,14 @@ void CPlayer::Update(float wx)
 		m_ShotArray[i].Update();
 	}
 
-	//ˆê•b‚²‚Æ‚ÉHP‚ð‰ñ•œ‚³‚¹‚é
-	if (m_HP < m_MaxHP) {
-		while (true)
-		{
-			m_HP += ADD_HP;
-			break;
+	if (m_Motion.GetMotionNo() == MOTION_MOVE) {
+		//ˆê•b‚²‚Æ‚ÉHP‚ð‰ñ•œ‚³‚¹‚é
+		if (m_HP < m_MaxHP) {
+			while (true)
+			{
+				m_HP += ADD_HP;
+				break;
+			}
 		}
 	}
 
