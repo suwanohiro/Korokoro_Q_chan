@@ -638,9 +638,9 @@ void CPlayer::Damage(bool hit)
 	}
 }
 
-void CPlayer::UpdateUI(void)
+void CPlayer::UpdateUI(float scroll)
 {
-	m_PlayerUI.UpdateHp(m_MaxHP, m_HP);
+	m_PlayerUI.UpdateHp(m_Position, scroll, m_MaxHP, m_HP);
 }
 
 

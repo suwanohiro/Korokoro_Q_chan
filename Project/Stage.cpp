@@ -211,7 +211,7 @@ void CStage::__updatePlayer()
 	if (!_isPlayerSeted) return;
 
 	_player->Update(m_ScrollX);
-	_player->UpdateUI();
+	_player->UpdateUI(m_ScrollX);
 
 	//ƒXƒNƒŠ[ƒ“‚Ì•
 	const float screenWidth = CGraphicsUtilities::GetGraphics()->GetTargetWidth();

@@ -33,7 +33,7 @@ public:
 	~CPlayerUI();
 	bool Load(void);
 	void Initializ(bool end);
-	void UpdateHp(int maxhp, int hp);
+	void UpdateHp(Vector2 pos, float scroll, int maxhp, int hp);
 	void UpdateLife(bool& end);
 	void Render(CTexture texture);
 	void Release(void);

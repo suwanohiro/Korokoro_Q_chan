@@ -27,7 +27,7 @@ bool CPlayerUI::Load(void)
 void CPlayerUI::Initializ(bool end)
 {
 	rectPos = Vector2(0, 15);
-	rectSize = Vector2(532, 15);
+	rectSize = Vector2(120, 7.5);
 
 	rectPos.x = (g_pGraphics->GetTargetWidth() / 2) - (rectSize.x / 2);
 
@@ -37,11 +37,16 @@ void CPlayerUI::Initializ(bool end)
 	if(end){ m_Life = m_MaxLife; }
 }
 
-void CPlayerUI::UpdateHp(int maxhp, int hp)
+void CPlayerUI::UpdateHp(Vector2 pos, float scroll, int maxhp, int hp)
 {
 	//HPÇ∆ç≈ëÂHPÇÃïœâª
 
 	hppercent = (hp * 0.01f);
+
+	rectPos = pos;
+	rectPos.x -= scroll;
+	rectPos.y -= 20;
+
 	Vector2 hprec = rectPos + Vector2(rectSize.x * hppercent, rectSize.y);
 	Vector2 maxhprec = rectPos + Vector2(rectSize.x * (maxhp * 0.01f), rectSize.y);
 
@@ -91,7 +96,6 @@ void CPlayerUI::Render(CTexture texture)
 	if (percent < 50) color = getRGB(WebColor::yellow);
 	if (percent < 30) color = getRGB(WebColor::lightcoral);
 
-	CGraphicsUtilities::RenderString(rec.Left - 75, rec.Top, "HP");
 	CGraphicsUtilities::RenderFillRect(rec, getRGB(WebColor::darkgray));
 	CGraphicsUtilities::RenderFillRect(m_MaxHPRect, getRGB(WebColor::gray));
 	CGraphicsUtilities::RenderFillRect(m_HPRect, color);

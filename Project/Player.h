@@ -158,7 +158,7 @@ public:
 
 	void Damage(bool hit);
 
-	void UpdateUI(void);
+	void UpdateUI(float scroll);
 
 	/// <summary>
 	/// •`‰æˆ—
