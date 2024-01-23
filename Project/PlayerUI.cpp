@@ -26,9 +26,13 @@ bool CPlayerUI::Load(void)
 
 void CPlayerUI::Initializ(bool end)
 {
-	m_MaxHPRect = CRectangle(0, 0, 532, 64);
-	m_HPRect = CRectangle(0, 0, 532, 64);
-	m_LifeRect = CRectangle(0, 0, 60, 64);
+	rectPos = Vector2(0, 15);
+	rectSize = Vector2(532, 15);
+
+	rectPos.x = (g_pGraphics->GetTargetWidth() / 2) - (rectSize.x / 2);
+
+	m_MaxHPRect = CRectangle(rectPos, rectPos + rectSize);
+	m_HPRect = CRectangle(rectPos, rectPos + rectSize);
 	
 	if(end){ m_Life = m_MaxLife; }
 }
@@ -36,8 +40,13 @@ void CPlayerUI::Initializ(bool end)
 void CPlayerUI::UpdateHp(int maxhp, int hp)
 {
 	//HPÇ∆ç≈ëÂHPÇÃïœâª
-	m_HPRect = CRectangle(0, 0, 532 * (hp * 0.01f), 64);
-	m_MaxHPRect = CRectangle(0, 0, 532 * (maxhp * 0.01f), 64);
+
+	hppercent = (hp * 0.01f);
+	Vector2 hprec = rectPos + Vector2(rectSize.x * hppercent, rectSize.y);
+	Vector2 maxhprec = rectPos + Vector2(rectSize.x * (maxhp * 0.01f), rectSize.y);
+
+	m_HPRect = CRectangle(rectPos, hprec);
+	m_MaxHPRect = CRectangle(rectPos, maxhprec);
 }
 
 void CPlayerUI::UpdateLife(bool& end)
@@ -54,10 +63,26 @@ void CPlayerUI::UpdateLife(bool& end)
 
 void CPlayerUI::Render(CTexture texture)
 {
-	m_MaxHPTexture.Render(248, 20, m_MaxHPRect);
-	m_HPTexture.Render(248, 20, m_HPRect);
+	// m_MaxHPTexture.Render(248, 20, m_MaxHPRect);
+	// m_HPTexture.Render(248, 20, m_HPRect);
 	//ÉtÉåÅ[ÉÄÇè„ïîÇ…ï`âÊ
-	m_FrameTexture.Render(0, 0);
+	// m_FrameTexture.Render(0, 0);
+
+	CRectangle rec = m_MaxHPRect;
+	rec.Expansion(3, 3);
+
+	float maxhpsize = getRecSize(m_MaxHPRect).x;
+	float hpsize = getRecSize(m_HPRect).x;
+	float percent = (hpsize / maxhpsize) * 100;
+
+	unsigned long color = getRGB(WebColor::lightgreen);
+
+	if (percent < 50) color = getRGB(WebColor::yellow);
+	if (percent < 30) color = getRGB(WebColor::lightcoral);
+
+	CGraphicsUtilities::RenderFillRect(rec, getRGB(WebColor::black));
+	CGraphicsUtilities::RenderFillRect(m_MaxHPRect, getRGB(WebColor::gray));
+	CGraphicsUtilities::RenderFillRect(m_HPRect, color);
 }
 
 void CPlayerUI::Release(void)

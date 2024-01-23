@@ -716,10 +716,6 @@ void CStage::Render(void){
 
 	// TODO : Ç†Ç∆Ç≈è¡Ç∑
 	if (BottomLimit < pos.y) _player->SetHP(0);
-	CGraphicsUtilities::RenderString(0, 150, "PlayerPos : %0.2f, %0.2f", pos.x, pos.y);
-
-
-	CGraphicsUtilities::RenderString(0, 100, "X : %0.2f\nY : %0.2f", m_ScrollX, m_ScrollY);
 
 	if (!_isPlayerSeted) return;
 	_player->Render(m_ScrollX, m_ScrollY);
