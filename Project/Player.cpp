@@ -328,6 +328,7 @@ void CPlayer::UpdateKey(void)
 
 		m_bMoveY = true;
 		m_Move.y -= m_WallMove;
+		m_bJump = false;
 		if (m_Move.y <= -1.0f) {
 			m_Move.y = -1.0f;
 		}
@@ -341,7 +342,7 @@ void CPlayer::UpdateKey(void)
 	else if (g_pInput->IsKeyHold((int)KeyContents::WALLDOWNMOVE) && m_bWallMove == true) {
 
 		m_bMoveY = true;
-
+		m_bJump = false;
 		m_Move.y += m_WallMove;
 		if (m_Move.y >= 1.0f) {
 			m_Move.y = 1.0f;
@@ -786,15 +787,15 @@ CRectangle CPlayer::getAttackBox()
 	{
 		if (m_bReverse) {
 			rec = CRectangle(m_Position.x - 10,
-				m_Position.y + m_PlayerWallRec,
+				m_Position.y,
 				m_Position.x + PLAYER_ATTACKWIDTH,
-				m_Position.y + m_SrcRect.GetHeight());
+				m_Position.y + m_SrcRect.GetHeight() - m_PlayerWallRec);
 		}
 		else {
 			rec = CRectangle(m_Position.x + m_SrcRect.GetWidth() - PLAYER_ATTACKWIDTH - 12,
-				m_Position.y + m_PlayerWallRec,
+				m_Position.y,
 				m_Position.x + m_SrcRect.GetWidth() + 20,
-				m_Position.y + m_SrcRect.GetHeight());
+				m_Position.y + m_SrcRect.GetHeight() - m_PlayerWallRec);
 		}
 		return rec;
 	}
