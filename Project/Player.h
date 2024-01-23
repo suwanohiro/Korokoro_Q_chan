@@ -145,7 +145,7 @@ public:
 
 	void CollisionStage(float ox, float oy);
 	void NotCollisionStage() {
-		//m_bWallMove = false;
+		m_bWallMove = false;
 		m_bStCollision = false;
 	}
 	void CollisionStageAttackLeft();

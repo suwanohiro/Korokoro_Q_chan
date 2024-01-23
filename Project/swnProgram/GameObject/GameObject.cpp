@@ -74,7 +74,7 @@ void GameObject::RenderRect()
 
 void GameObject::RenderRect(const char* borderColor)
 {
-	CRectangle rec = getRect();
+	CRectangle rec = getTextureRect();
 
 	rec.Left -= __getScroll().x;
 	rec.Right -= __getScroll().x;

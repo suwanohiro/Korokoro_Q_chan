@@ -83,6 +83,7 @@ public:
 	void Initialize(CEffectManager* pmng, spCAudio audio);
 	void Update();
 	bool Collision(CRectangle r, float& ox, float& oy);
+	bool EneCollision(CRectangle r, float& ox, float& oy);
 	bool CollisionAttack(CRectangle r, float& ox, int type);
 	void Render(void);
 	void RenderDebug(void);

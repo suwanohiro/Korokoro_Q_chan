@@ -762,6 +762,17 @@ CRectangle CPlayer::getHitBox()
 		after.x -= (recSize.x * 0.5);
 	}
 
+	if (m_bWallMove && m_Motion.GetMotionNo() == MOTION_WALLMOVE && !m_bReverse) {
+		m_HitBox = CRectangle(m_Position.x  , m_Position.y,
+			m_Position.x + m_SrcRect.GetHeight(), m_Position.y + m_SrcRect.GetWidth());
+		return m_HitBox;
+	}
+	else if (m_bWallMove && m_Motion.GetMotionNo() == MOTION_WALLMOVE && m_bReverse) {
+		m_HitBox = CRectangle(m_Position.x + 20, m_Position.y,
+			m_Position.x + m_SrcRect.GetHeight() + 20, m_Position.y + m_SrcRect.GetWidth() - 20);
+		return m_HitBox;
+	}
+
 	m_HitBox = CRectangle(base, after);
 	return m_HitBox;
 }
@@ -782,7 +793,7 @@ CRectangle CPlayer::getAttackBox()
 		else {
 			rec = CRectangle(m_Position.x + m_SrcRect.GetWidth() - PLAYER_ATTACKWIDTH - 12,
 				m_Position.y + m_PlayerWallRec,
-				m_Position.x + m_SrcRect.GetWidth(),
+				m_Position.x + m_SrcRect.GetWidth() + 20,
 				m_Position.y + m_SrcRect.GetHeight());
 		}
 		return rec;

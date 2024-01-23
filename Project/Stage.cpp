@@ -71,7 +71,7 @@ void CStage::__addBlock(std::string BlockID, Vector2 position)
 	if (ID.isPlayer()) {
 		// プレイヤー
 		// TODO : Player初期座標の調整 (現状ブロックの配置インデックスになっている)
-		position *= Vector2(40, 40);
+		position *= Vector2(30, 30);
 		__setPlayer(position);
 	}
 	else if (ID.isID("Enemy") || ID.isID("Enemy2")) {
@@ -277,7 +277,7 @@ void CStage::__updateEnemy(spCEnemy targetElem)
 	targetElem->Update();
 
 	float ox = 0, oy = 0;
-	const bool flg = Collision(targetElem->GetRect(), ox, oy);
+	const bool flg = EneCollision(targetElem->GetRect(), ox, oy);
 
 	if (flg) targetElem->CollisionStage(ox, oy);
 }
@@ -542,16 +542,97 @@ bool CStage::Collision(CRectangle r, float& ox, float& oy)
 		if (blockPos.x + (cr.Right - cr.Left) < r.Left) continue;
 		if (r.Right < blockPos.x) continue;
 
+		//あたり判定用のキャラクター矩形
+			//下で範囲を限定した専用の矩形を作成する
+		CRectangle brec = r;
+		brec.Top = brec.Bottom - 1;//下の矩形は上側を下と同じ値にする
+		brec.Expansion(-6, 0);		//横の範囲を少し狭める
+		//下と当たり判定
+		if (cr.CollisionRect(brec)) {
+			re = true;
+			//下の埋まりなのでチップ上端から矩形の下端の値を引いた値が埋まりの値
+			oy += cr.Top - brec.Bottom;
+			r.Top += cr.Top - brec.Bottom;
+			r.Bottom += cr.Top - brec.Bottom;
+		}
 
-		// 下方向の判別
+		//あたり判定用のキャラクター矩形
+		//左右で範囲を限定した専用の矩形を作成する
+		CRectangle lrec = r;
+		lrec.Right = lrec.Left + 1;//左の矩形は右側を左と同じ値にする
+		lrec.Expansion(0, -6);		//縦の範囲を少し狭める
+		CRectangle rrec = r;
+		rrec.Left = rrec.Right - 1;//右の矩形は左側を右と同じ値にする
+		rrec.Expansion(0, -6);		//縦の範囲を少し狭める
+		//左と当たり判定
+		if (cr.CollisionRect(lrec)) {
+			re = true;
+			//左の埋まりなのでチップ右端から矩形の左端の値を引いた値が埋まりの値
+			ox += cr.Right - lrec.Left;
+			r.Left += cr.Right - lrec.Left;
+			r.Right += cr.Right - lrec.Left;
+		}
+		//右と当たり判定
+		if (cr.CollisionRect(rrec)) {
+			re = true;
+			//右の埋まりなのでチップ左端から矩形の右端の値を引いた値が埋まりの値
+			ox += cr.Left - rrec.Right;
+			r.Left += cr.Left - rrec.Right;
+			r.Right += cr.Left - rrec.Right;
+		}
+		//あたり判定用のキャラクター矩形
+		//上で範囲を限定した専用の矩形を作成する
+		CRectangle trec = r;
+		trec.Bottom = trec.Top + 1;//上の矩形は下側を上と同じ値にする
+		trec.Expansion(-6, 0);		//横の範囲を少し狭める
+		//上と当たり判定(下)
+		if (cr.CollisionRect(trec)) {
+			re = true;
+			//上の埋まりなのでチップ下端から矩形の上端の値を引いた値が埋まりの値
+			oy += cr.Bottom - trec.Top;
+			r.Top += cr.Bottom - trec.Top;
+			r.Bottom += cr.Bottom - trec.Top;
+		}
+		//// 下方向の判別
+		//__collisionBottom(cr, r, re, oy);
+
+		//// 左右方向の判別
+		//__collisionLeftRight(cr, r, re, ox);
+
+		//// 上方向の判別
+		//__collisionTop(cr, r, re, oy);
+		
+	}
+	return re;
+}
+
+bool CStage::EneCollision(CRectangle r, float& ox, float& oy)
+{
+	m_StCollision = true;
+	bool re = false;
+
+	const Vector2 scroll = { m_ScrollX, m_ScrollY };
+	const Vector2 screenSize = { (float)g_pGraphics->GetTargetWidth(), (float)g_pGraphics->GetTargetHeight() };
+	const CRectangle renderScreen(scroll, scroll + screenSize);
+
+	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
+		spGameObject targetElem = _blockArray[cnt];
+		const Vector2 blockPos = targetElem->getPosition();
+		const CRectangle cr = targetElem->getRect();
+
+		if (blockPos.x + (cr.Right - cr.Left) < r.Left) continue;
+		if (r.Right < blockPos.x) continue;
+
+		
+		//// 下方向の判別
 		__collisionBottom(cr, r, re, oy);
 
-		// 左右方向の判別
+		//// 左右方向の判別
 		__collisionLeftRight(cr, r, re, ox);
 
-		// 上方向の判別
+		//// 上方向の判別
 		__collisionTop(cr, r, re, oy);
-		
+
 	}
 	return re;
 }
@@ -566,12 +647,12 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
 	if (!isAttack) return false;
 
 	for (int cnt = 0; cnt < _blockArray.size(); cnt++) {
-		spGameObject targetBlock = _blockArray[cnt];
-		const Vector2 blockPos = targetBlock->getPosition();
-		CRectangle blockRect = targetBlock->getRect();
+		spGameObject targetElem = _blockArray[cnt];
+		const Vector2 pos = targetElem->getPosition();
+		CRectangle cr = targetElem->getRect();
 
-		if (blockPos.x + (blockRect.Right - blockRect.Left) < r.Left) continue;
-		if (r.Right < blockPos.x) continue;
+		if (pos.x + (cr.Right - cr.Left) < r.Left) continue;
+		if (r.Right < pos.x) continue;
 
 		//あたり判定用のキャラクター矩形
 		//左右で範囲を限定した専用の矩形を作成する
@@ -585,23 +666,28 @@ bool CStage::CollisionAttack(CRectangle r, float& ox, int type)
 		rrec.Left = rrec.Right - 1;//右の矩形は左側を右と同じ値にする
 		rrec.Expansion(0, -6);		//縦の範囲を少し狭める
 
-		CRectangle targetRect = (type == 0) ? lrec : rrec;
+		/*CRectangle targetRect = (type == 0) ? lrec : rrec;
+		re = cr.CollisionRect(targetRect);*/
 
-		const bool flg = blockRect.CollisionRect(targetRect);
-
-		std::string flgstr = (flg) ? "[ Info ] true" : "[ Error ] false";
-		std::string msg = flgstr + "\n";
-
-		if (flg) {
-			for (int cnt = 0; cnt < 20; cnt++) {
-				OutputDebugString("\n");
+		switch (type)
+		{
+		case 0:			//CollitionLeftAttack
+			//左と当たり判定
+			if (cr.CollisionRect(lrec)) {
+				re = true;
 			}
+			break;
+		case 1:			//CollitionRightAttack
+			//右と当たり判定(左)  OK
+			if (cr.CollisionRect(rrec)) {
+				re = true;
+			}
+			break;
+		default:
+			break;
 		}
-
-		OutputDebugString(msg.c_str());
-
-		re = flg;
 	}
+
 	return re;
 }
 
@@ -630,6 +716,10 @@ void CStage::Render(void){
 
 	// TODO : あとで消す
 	if (BottomLimit < pos.y) _player->SetHP(0);
+	CGraphicsUtilities::RenderString(0, 150, "PlayerPos : %0.2f, %0.2f", pos.x, pos.y);
+
+
+	CGraphicsUtilities::RenderString(0, 100, "X : %0.2f\nY : %0.2f", m_ScrollX, m_ScrollY);
 
 	if (!_isPlayerSeted) return;
 	_player->Render(m_ScrollX, m_ScrollY);

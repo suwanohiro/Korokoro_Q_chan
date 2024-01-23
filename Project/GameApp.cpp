@@ -225,9 +225,6 @@ MofBool CGameApp::Render(void){
 		}
 	}
 
-	float h = g_pGraphics->GetTargetHeight();
-	CGraphicsUtilities::RenderString(0, 0, "%0.2f", h);
-
 	//•`‰æ‚ÌI—¹
 	g_pGraphics->RenderEnd();
 	return TRUE;
