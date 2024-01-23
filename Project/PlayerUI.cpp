@@ -67,6 +67,17 @@ void CPlayerUI::Render(CTexture texture)
 	// m_HPTexture.Render(248, 20, m_HPRect);
 	//ƒtƒŒ[ƒ€‚ðã•”‚É•`‰æ
 	// m_FrameTexture.Render(0, 0);
+	Vector2 base(0, 0);
+	Vector2 size = Vector2(
+		g_pGraphics->GetTargetWidth(),
+		45
+	);
+
+	CRectangle recbk(base, size);
+
+	CGraphicsUtilities::RenderFillRect(recbk, getRGB(WebColor::black));
+
+
 
 	CRectangle rec = m_MaxHPRect;
 	rec.Expansion(3, 3);
@@ -80,7 +91,8 @@ void CPlayerUI::Render(CTexture texture)
 	if (percent < 50) color = getRGB(WebColor::yellow);
 	if (percent < 30) color = getRGB(WebColor::lightcoral);
 
-	CGraphicsUtilities::RenderFillRect(rec, getRGB(WebColor::black));
+	CGraphicsUtilities::RenderString(rec.Left - 75, rec.Top, "HP");
+	CGraphicsUtilities::RenderFillRect(rec, getRGB(WebColor::darkgray));
 	CGraphicsUtilities::RenderFillRect(m_MaxHPRect, getRGB(WebColor::gray));
 	CGraphicsUtilities::RenderFillRect(m_HPRect, color);
 }

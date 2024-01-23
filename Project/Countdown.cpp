@@ -48,5 +48,5 @@ void Countdown::Update()
 
 void Countdown::Render()
 {
-	CGraphicsUtilities::RenderString(850, 40, "Žc‚è%2.2f•b", remaining);
+	CGraphicsUtilities::RenderString(850, 10, "Žc‚è%2.2f•b", remaining);
 }

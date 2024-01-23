@@ -133,6 +133,7 @@ void CGame::Render(void){
 
 	//エフェクトの描画
 	m_EffectManager.Render(m_Stage.GetScrollX(), m_Stage.GetScrollY());
+
 	//カウントダウンの描画
 	m_Countdown.Render();
 	//結合時変更点
